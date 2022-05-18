@@ -79,7 +79,7 @@ export default function App() {
 
         
         <Stack.Screen name='BottomNavigator' component={BottomNavigator} />
-        {/* <Stack.Screen name='Welcome1' component={Dashboard} />
+        <Stack.Screen name='Welcome1' component={Dashboard} />
         <Stack.Screen name='Welcome2' component={Dashboard} />
         <Stack.Screen name='CvPopover' component={Dashboard} />
         <Stack.Screen name='Register' component={Dashboard} />
@@ -93,7 +93,7 @@ export default function App() {
         <Stack.Screen name='MyContracts' component={Dashboard} />
         <Stack.Screen name='MyPaySlips' component={Dashboard} />
         <Stack.Screen name='MyWorkCertificates' component={Dashboard} />
-        <Stack.Screen name='MyOtherDocuments' component={Dashboard} /> */}
+        <Stack.Screen name='MyOtherDocuments' component={Dashboard} />
         
       </Stack.Navigator>
 
