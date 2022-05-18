@@ -10,6 +10,10 @@ import Skills from "./components/Skills";
 import Notifications from "./components/Notifications";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListOffers from "./components/ListOffers";
+import Welcome1 from "./components/Welcome1";
+import Welcome2 from "./components/Welcome2";
+import Inscription from "./components/Inscription";
+import CvPopOver from "./components/CvPopOver";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -84,12 +88,13 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-        {/* <Stack.Screen name='Welcome1' component={Dashboard} />
-        <Stack.Screen name='Welcome2' component={Dashboard} />
-        <Stack.Screen name='CvPopover' component={Dashboard} />
-        <Stack.Screen name='Register' component={Dashboard} />
-        <Stack.Screen name='Dashboard' component={Dashboard} />
+        {/*<Stack.Screen name="BottomNavigator" component={BottomNavigator} /> */}
+        <Stack.Screen name="Welcome1" component={Welcome1} />
+        <Stack.Screen name="Welcome2" component={Dashboard} />
+        <Stack.Screen name="CvPopover" component={Dashboard} />
+        <Stack.Screen name="Register" component={Dashboard} />
+
+        {/*<Stack.Screen name='Dashboard' component={Dashboard} />
         <Stack.Screen name='Skills' component={Dashboard} />
         <Stack.Screen name='PersonalInfo' component={Dashboard} />
         <Stack.Screen name='ListOffers' component={Dashboard} />
