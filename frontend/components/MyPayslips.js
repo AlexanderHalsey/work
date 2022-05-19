@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-export default function MyLikes() {
+export default function MyPayslips() {
   return (
     <View>
-      <Text>MyLikes</Text>
+      <Text>MyPayslips</Text>
     </View>
   )
 }
