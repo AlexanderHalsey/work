@@ -14,6 +14,7 @@ import {
   Heading,
   Center,
 } from "native-base";
+import ListOffersScreen from "./ListOffers";
 
 function OfferCard(props) {
   // on enregistre la dimension de l'écran de l'utilisateur
@@ -38,10 +39,14 @@ function OfferCard(props) {
         marginBottom: 8,
         marginTop: 10,
       }}
+      onPress={
+        () => console.log(props)
+        //props.navigation.navigate("ScreenOffer", { offerFromCard: props.offer })
+      }
     >
       <Image
         source={{
-          uri: props.logoImage,
+          uri: props.offer.logo,
         }}
         style={{ width: width * 0.15, height: width * 0.15 }}
       />
@@ -54,9 +59,9 @@ function OfferCard(props) {
           width: "60%",
         }}
       >
-        <Text style={{ color: "grey" }}>{props.company}</Text>
+        <Text style={{ color: "grey" }}>{props.offer.name}</Text>
         <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-          {props.jobTitle}
+          {props.offer.title}
         </Text>
         <View
           style={{
@@ -65,9 +70,9 @@ function OfferCard(props) {
           }}
         >
           <Text style={{ color: "grey" }}>
-            {Math.floor(props.salary * 151.67)} € /Mois
+            {Math.floor(props.offer.salary * 151.67)} € /Mois
           </Text>
-          <Text style={{ color: "grey" }}>{props.location} </Text>
+          <Text style={{ color: "grey" }}>{props.offer.adress} </Text>
         </View>
       </View>
       <View
@@ -95,7 +100,7 @@ function OfferCard(props) {
             style={{ marginRight: 5, marginLeft: 4 }}
           />
         </View>
-        <Text style={{ color: "grey" }}>{props.distance} km</Text>
+        <Text style={{ color: "grey" }}>{"7"} km</Text>
       </View>
     </TouchableOpacity>
   );
