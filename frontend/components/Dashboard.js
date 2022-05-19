@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Feather } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons'; 
+import { Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 import PersonalInfo from "./PersonalInfo";
 import MyLikes from "./MyLikes";
@@ -120,12 +120,10 @@ export default function Dashboard(props) {
   }
 }
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000b33"
+    backgroundColor: "#000b33",
   },
   me: {
     marginTop: 50,
@@ -134,11 +132,11 @@ const styles = StyleSheet.create({
   image: {
     width: 130,
     height: 130,
-    borderRadius:150,
+    borderRadius: 150,
     marginTop: 10,
-    marginBottom: 60
-  }, 
-  rowContainer:{
+    marginBottom: 60,
+  },
+  rowContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
@@ -154,6 +152,6 @@ const styles = StyleSheet.create({
     borderColor: "#B9FFFF",
   },
   itemText: {
-    color: "#B9FFFF"
-  }
+    color: "#B9FFFF",
+  },
 });
