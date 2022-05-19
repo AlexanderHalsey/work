@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -17,10 +17,8 @@ import Welcome2 from "./components/Welcome2";
 import Inscription from "./components/Inscription";
 import CvPopOver from "./components/CvPopOver";
 
-
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
 
 const BottomNavigator = (props) => {
   return (
@@ -58,7 +56,6 @@ const BottomNavigator = (props) => {
               />
             );
           }
-
         },
       })}
       tabBarOptions={{
@@ -89,7 +86,6 @@ const BottomNavigator = (props) => {
 };
 
 export default function App() {
-
   const [isUser, setIsUser] = useState(null);
 
   useEffect(() => {
@@ -97,21 +93,22 @@ export default function App() {
     // si oui - on "set" user a true
     // si non - on "set" user a false
     setIsUser(true);
-  }, [])
+  }, []);
 
   return (
     <NavigationContainer>
-      { isUser 
-        ?  <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-          </Stack.Navigator>
-        : <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Welcome1" component={Welcome1} />
-            <Stack.Screen name="Welcome2" component={Welcome2} />
-            <Stack.Screen name="CvPopover" component={CvPopOver} />
-            <Stack.Screen name="Register" component={Inscription} />
-          </Stack.Navigator>
-      }
+      {isUser ? (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
+        </Stack.Navigator>
+      ) : (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Welcome1" component={Welcome1} />
+          <Stack.Screen name="Welcome2" component={Welcome2} />
+          <Stack.Screen name="CvPopover" component={CvPopOver} />
+          <Stack.Screen name="Register" component={Inscription} />
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 }
