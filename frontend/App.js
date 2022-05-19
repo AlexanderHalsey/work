@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from "react";
-import { View, StyleSheet, Text } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { CommonActions } from '@react-navigation/native';
 
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -13,51 +11,16 @@ import Dashboard from "./components/Dashboard";
 import Skills from "./components/Skills";
 import Notifications from "./components/Notifications";
 import ListOffers from "./components/ListOffers";
+
 import Welcome1 from "./components/Welcome1";
 import Welcome2 from "./components/Welcome2";
 import Inscription from "./components/Inscription";
 import CvPopOver from "./components/CvPopOver";
-import PersonalInfo from "./components/PersonalInfo";
-import MyLikes from "./components/MyLikes";
-import MyDocuments from "./components/MyDocuments";
-import MyMissions from "./components/MyMissions";
-import MyContracts from "./components/MyContracts";
-import MyPayslips from "./components/MyPayslips";
-import MyOtherDocuments from "./components/MyOtherDocuments";
-import MyWorkCertificates from "./components/MyWorkCertificates";
-
-
 
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
-const ProfileStack = (props) => {
-  useEffect(() => {
-    const unsubscribe = props.navigation.addListener("focus", e => {
-      console.log("hello")
-    });
-    return unsubscribe;
-  }, [props.navigation])
-  return (
-    <Stack.Navigator 
-      screenOptions={{ headerShown: false }}
-    >
-      <Stack.Screen name="Home" component={Dashboard} />
-      <Stack.Screen name='Skills' component={Skills} />
-      <Stack.Screen name='PersonalInfo' component={PersonalInfo} />
-      <Stack.Screen name='ListOffers' component={ListOffers} />
-      <Stack.Screen name='MyLikes' component={MyLikes} />
-      <Stack.Screen name='MyMissions' component={MyMissions} />
-      <Stack.Screen name='MyDocuments' component={MyDocuments} />
-      <Stack.Screen name='MyContracts' component={MyContracts} />
-      <Stack.Screen name='MyPaySlips' component={MyPayslips} />
-      <Stack.Screen name='MyWorkCertificates' component={MyWorkCertificates} />
-      <Stack.Screen name='MyOtherDocuments' component={MyOtherDocuments} />
-    </Stack.Navigator>
-  )
-}
 
 const BottomNavigator = (props) => {
   return (
@@ -117,7 +80,7 @@ const BottomNavigator = (props) => {
         },
       }}
     >
-      <Tab.Screen name="Dashboard" component={ProfileStack} />
+      <Tab.Screen name="Dashboard" component={Dashboard} />
       <Tab.Screen name="ListOffers" component={ListOffers} />
       <Tab.Screen name="Skills" component={Skills} />
       <Tab.Screen name="Notification" component={Notifications} />
@@ -141,17 +104,6 @@ export default function App() {
       { isUser 
         ?  <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-            <Stack.Screen name='Dashboard' component={Dashboard} />
-            <Stack.Screen name='Skills' component={Skills} />
-            <Stack.Screen name='PersonalInfo' component={PersonalInfo} />
-            <Stack.Screen name='ListOffers' component={ListOffers} />
-            <Stack.Screen name='MyLikes' component={MyLikes} />
-            <Stack.Screen name='MyMissions' component={MyMissions} />
-            <Stack.Screen name='MyDocuments' component={MyDocuments} />
-            <Stack.Screen name='MyContracts' component={MyContracts} />
-            <Stack.Screen name='MyPaySlips' component={MyPayslips} />
-            <Stack.Screen name='MyWorkCertificates' component={MyWorkCertificates} />
-            <Stack.Screen name='MyOtherDocuments' component={MyOtherDocuments} />
           </Stack.Navigator>
         : <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Welcome1" component={Welcome1} />
