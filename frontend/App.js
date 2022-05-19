@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions } from "@react-navigation/native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -24,40 +24,37 @@ import MyMissions from "./components/MyMissions";
 import MyContracts from "./components/MyContracts";
 import MyPayslips from "./components/MyPayslips";
 import MyOtherDocuments from "./components/MyOtherDocuments";
+import ScreenOffer from "./components/ScreenOffer";
 import MyWorkCertificates from "./components/MyWorkCertificates";
-
-
-
+import OfferCard from "./components/OfferCard";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
 const ProfileStack = (props) => {
   useEffect(() => {
-    const unsubscribe = props.navigation.addListener("focus", e => {
-      console.log("hello")
+    const unsubscribe = props.navigation.addListener("focus", (e) => {
+      console.log("hello");
     });
     return unsubscribe;
-  }, [props.navigation])
+  }, [props.navigation]);
   return (
-    <Stack.Navigator 
-      screenOptions={{ headerShown: false }}
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={Dashboard} />
-      <Stack.Screen name='Skills' component={Skills} />
-      <Stack.Screen name='PersonalInfo' component={PersonalInfo} />
-      <Stack.Screen name='ListOffers' component={ListOffers} />
-      <Stack.Screen name='MyLikes' component={MyLikes} />
-      <Stack.Screen name='MyMissions' component={MyMissions} />
-      <Stack.Screen name='MyDocuments' component={MyDocuments} />
-      <Stack.Screen name='MyContracts' component={MyContracts} />
-      <Stack.Screen name='MyPaySlips' component={MyPayslips} />
-      <Stack.Screen name='MyWorkCertificates' component={MyWorkCertificates} />
-      <Stack.Screen name='MyOtherDocuments' component={MyOtherDocuments} />
+      <Stack.Screen name="Skills" component={Skills} />
+      <Stack.Screen name="PersonalInfo" component={PersonalInfo} />
+      <Stack.Screen name="ListOffers" component={ListOffers} />
+      <Stack.Screen name="MyLikes" component={MyLikes} />
+      <Stack.Screen name="MyMissions" component={MyMissions} />
+      <Stack.Screen name="MyDocuments" component={MyDocuments} />
+      <Stack.Screen name="MyContracts" component={MyContracts} />
+      <Stack.Screen name="MyPaySlips" component={MyPayslips} />
+      <Stack.Screen name="MyWorkCertificates" component={MyWorkCertificates} />
+      <Stack.Screen name="MyOtherDocuments" component={MyOtherDocuments} />
+      <Stack.Screen name="ScreenOffer" component={MyOtherDocuments} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 const BottomNavigator = (props) => {
   return (
@@ -95,7 +92,6 @@ const BottomNavigator = (props) => {
               />
             );
           }
-
         },
       })}
       tabBarOptions={{
@@ -126,7 +122,6 @@ const BottomNavigator = (props) => {
 };
 
 export default function App() {
-
   const [isUser, setIsUser] = useState(null);
 
   useEffect(() => {
@@ -134,7 +129,7 @@ export default function App() {
     // si oui - on "set" user a true
     // si non - on "set" user a false
     setIsUser(true);
-  }, [])
+  }, []);
 
   return (
     <NavigationContainer>
@@ -144,19 +139,20 @@ export default function App() {
         <Stack.Screen name="Welcome2" component={Welcome2} />
         <Stack.Screen name="CvPopover" component={CvPopOver} />
         <Stack.Screen name="Inscription" component={Dashboard} />
-        
 
-        <Stack.Screen name='Dashboard' component={Dashboard} />
-        <Stack.Screen name='Skills' component={Skills} />
-        <Stack.Screen name='PersonalInfo' component={PersonalInfo} />
-        <Stack.Screen name='ListOffers' component={ListOffers} />
-        <Stack.Screen name='MyLikes' component={MyLikes} />
-        <Stack.Screen name='MyMissions' component={MyMission} />
-        <Stack.Screen name='MyDocuments' component={MyDocuments} />
-        <Stack.Screen name='MyContracts' component={MyDocuments} />
-        <Stack.Screen name='MyPaySlips' component={MyDocuments} />
-        <Stack.Screen name='MyWorkCertificates' component={MyDocuments} />
-        <Stack.Screen name='MyOtherDocuments' component={MyDocuments} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen name="Skills" component={Skills} />
+        <Stack.Screen name="PersonalInfo" component={PersonalInfo} />
+        <Stack.Screen name="ListOffers" component={ListOffers} />
+        <Stack.Screen name="MyLikes" component={MyLikes} />
+        <Stack.Screen name="MyMissions" component={MyMissions} />
+        <Stack.Screen name="MyDocuments" component={MyDocuments} />
+        <Stack.Screen name="MyContracts" component={MyDocuments} />
+        <Stack.Screen name="MyPaySlips" component={MyDocuments} />
+        <Stack.Screen name="MyWorkCertificates" component={MyDocuments} />
+        <Stack.Screen name="MyOtherDocuments" component={MyDocuments} />
+        <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
+        <Stack.Screen name="OfferCard" component={OfferCard} />
       </Stack.Navigator>
     </NavigationContainer>
   );

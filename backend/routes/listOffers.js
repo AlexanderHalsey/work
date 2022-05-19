@@ -11,4 +11,12 @@ router.get("/listOffers", async function (req, res, next) {
   res.json({ offers });
 });
 
+router.post("/displayOffer", async function (req, res, next) {
+  console.log("displayOffer OK :");
+  var offer = await offerModel.findById(req.body.offerId);
+
+  console.log("offer", offer);
+  res.json({ offer });
+});
+
 module.exports = router;

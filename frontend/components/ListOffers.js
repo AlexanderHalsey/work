@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useIsFocused } from "@react-navigation/native";
 
-import {
-  NativeBaseProvider,
-  Box,
-  Actionsheet,
-  Button,
-  useDisclose,
-  HStack,
-  Stack,
-  AspectRatio,
-  Heading,
-  Center,
-  Text,
-} from "native-base";
+import { useDisclose } from "native-base";
 
 import {
   StyleSheet,
@@ -23,6 +12,7 @@ import {
 import OfferCard from "./OfferCard";
 
 export default function ListOffersScreen() {
+  const isFocused = useIsFocused();
   //variable d'état pour récupérer la liste des offres
   const [offersList, setOffersList] = useState([]);
 
@@ -33,13 +23,15 @@ export default function ListOffersScreen() {
 
   useEffect(() => {
     const findOffers = async () => {
-      const data = await fetch("http://10.2.1.215:3000/offers/listOffers");
-      const body = await data.json();
-      console.log(body);
-      setOffersList(body.offers);
+      // console.log(isFocused);
+      if (isFocused) {
+        const data = await fetch("http://10.2.1.215:3000/offers/listOffers");
+        const body = await data.json();
+        setOffersList(body.offers);
+      }
     };
     findOffers();
-  }, []);
+  }, [isFocused]);
 
   return (
     <SafeAreaView
@@ -59,17 +51,7 @@ export default function ListOffersScreen() {
         contentContainerStyle={{ alignItems: "center" }}
       >
         {offersList.map((offer, i) => {
-          return (
-            <OfferCard
-              key={i}
-              company={offer.name}
-              jobTitle={offer.title}
-              distance="7"
-              salary={offer.salary}
-              location={offer.address}
-              logoImage={offer.logo}
-            />
-          );
+          return <OfferCard key={i} offer={offer} />;
         })}
       </ScrollView>
     </SafeAreaView>
