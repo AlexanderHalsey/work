@@ -90,9 +90,9 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {/*<Stack.Screen name="BottomNavigator" component={BottomNavigator} /> */}
         <Stack.Screen name="Welcome1" component={Welcome1} />
-        <Stack.Screen name="Welcome2" component={Dashboard} />
-        <Stack.Screen name="CvPopover" component={Dashboard} />
-        <Stack.Screen name="Register" component={Dashboard} />
+        <Stack.Screen name="Welcome2" component={Welcome2} />
+        <Stack.Screen name="CvPopOver" component={CvPopOver} />
+        <Stack.Screen name="Inscription" component={Inscription} />
 
         {/*<Stack.Screen name='Dashboard' component={Dashboard} />
         <Stack.Screen name='Skills' component={Dashboard} />
