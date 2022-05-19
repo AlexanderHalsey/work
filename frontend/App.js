@@ -14,6 +14,10 @@ import Welcome1 from "./components/Welcome1";
 import Welcome2 from "./components/Welcome2";
 import Inscription from "./components/Inscription";
 import CvPopOver from "./components/CvPopOver";
+import PersonalInfo from "./components/PersonalInfo";
+import MyLikes from "./components/MyLikes";
+import MyMission from "./components/MyMission";
+import MyDocuments from "./components/MyDocuments";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -88,23 +92,24 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/*<Stack.Screen name="BottomNavigator" component={BottomNavigator} /> */}
+        <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
         <Stack.Screen name="Welcome1" component={Welcome1} />
-        <Stack.Screen name="Welcome2" component={Dashboard} />
-        <Stack.Screen name="CvPopover" component={Dashboard} />
-        <Stack.Screen name="Register" component={Dashboard} />
+        <Stack.Screen name="Welcome2" component={Welcome2} />
+        <Stack.Screen name="CvPopover" component={CvPopOver} />
+        <Stack.Screen name="Inscription" component={Dashboard} />
+        
 
-        {/*<Stack.Screen name='Dashboard' component={Dashboard} />
-        <Stack.Screen name='Skills' component={Dashboard} />
-        <Stack.Screen name='PersonalInfo' component={Dashboard} />
-        <Stack.Screen name='ListOffers' component={Dashboard} />
-        <Stack.Screen name='MyLikes' component={Dashboard} />
-        <Stack.Screen name='MyMissions' component={Dashboard} />
-        <Stack.Screen name='MyDocuments' component={Dashboard} />
-        <Stack.Screen name='MyContracts' component={Dashboard} />
-        <Stack.Screen name='MyPaySlips' component={Dashboard} />
-        <Stack.Screen name='MyWorkCertificates' component={Dashboard} />
-        <Stack.Screen name='MyOtherDocuments' component={Dashboard} /> */}
+        <Stack.Screen name='Dashboard' component={Dashboard} />
+        <Stack.Screen name='Skills' component={Skills} />
+        <Stack.Screen name='PersonalInfo' component={PersonalInfo} />
+        <Stack.Screen name='ListOffers' component={ListOffers} />
+        <Stack.Screen name='MyLikes' component={MyLikes} />
+        <Stack.Screen name='MyMissions' component={MyMission} />
+        <Stack.Screen name='MyDocuments' component={MyDocuments} />
+        <Stack.Screen name='MyContracts' component={MyDocuments} />
+        <Stack.Screen name='MyPaySlips' component={MyDocuments} />
+        <Stack.Screen name='MyWorkCertificates' component={MyDocuments} />
+        <Stack.Screen name='MyOtherDocuments' component={MyDocuments} />
       </Stack.Navigator>
     </NavigationContainer>
   );
