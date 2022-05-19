@@ -138,28 +138,26 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      { isUser 
-        ?  <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-            <Stack.Screen name='Dashboard' component={Dashboard} />
-            <Stack.Screen name='Skills' component={Skills} />
-            <Stack.Screen name='PersonalInfo' component={PersonalInfo} />
-            <Stack.Screen name='ListOffers' component={ListOffers} />
-            <Stack.Screen name='MyLikes' component={MyLikes} />
-            <Stack.Screen name='MyMissions' component={MyMissions} />
-            <Stack.Screen name='MyDocuments' component={MyDocuments} />
-            <Stack.Screen name='MyContracts' component={MyContracts} />
-            <Stack.Screen name='MyPaySlips' component={MyPayslips} />
-            <Stack.Screen name='MyWorkCertificates' component={MyWorkCertificates} />
-            <Stack.Screen name='MyOtherDocuments' component={MyOtherDocuments} />
-          </Stack.Navigator>
-        : <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Welcome1" component={Welcome1} />
-            <Stack.Screen name="Welcome2" component={Welcome2} />
-            <Stack.Screen name="CvPopover" component={CvPopOver} />
-            <Stack.Screen name="Register" component={Inscription} />
-          </Stack.Navigator>
-      }
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
+        <Stack.Screen name="Welcome1" component={Welcome1} />
+        <Stack.Screen name="Welcome2" component={Welcome2} />
+        <Stack.Screen name="CvPopover" component={CvPopOver} />
+        <Stack.Screen name="Inscription" component={Dashboard} />
+        
+
+        <Stack.Screen name='Dashboard' component={Dashboard} />
+        <Stack.Screen name='Skills' component={Skills} />
+        <Stack.Screen name='PersonalInfo' component={PersonalInfo} />
+        <Stack.Screen name='ListOffers' component={ListOffers} />
+        <Stack.Screen name='MyLikes' component={MyLikes} />
+        <Stack.Screen name='MyMissions' component={MyMission} />
+        <Stack.Screen name='MyDocuments' component={MyDocuments} />
+        <Stack.Screen name='MyContracts' component={MyDocuments} />
+        <Stack.Screen name='MyPaySlips' component={MyDocuments} />
+        <Stack.Screen name='MyWorkCertificates' component={MyDocuments} />
+        <Stack.Screen name='MyOtherDocuments' component={MyDocuments} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
