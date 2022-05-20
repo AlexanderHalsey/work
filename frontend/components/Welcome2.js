@@ -12,8 +12,6 @@ let deviceWidth = Dimensions.get("window").width;
 
 export default function Welcome2(props) {
 
-  const [cv, setCV] = useState(null);
-
   const handleChooseCV = async () => {
     let result = await DocumentPicker.getDocumentAsync({
       type: "application/pdf"
