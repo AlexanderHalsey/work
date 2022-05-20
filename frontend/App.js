@@ -25,7 +25,7 @@ import MyContracts from "./components/MyContracts";
 import MyPayslips from "./components/MyPayslips";
 import MyOtherDocuments from "./components/MyOtherDocuments";
 import MyWorkCertificates from "./components/MyWorkCertificates";
-
+import SkillsSelect from "./components/SkillsSelect";
 
 
 
@@ -55,6 +55,7 @@ const ProfileStack = (props) => {
       <Stack.Screen name='MyPaySlips' component={MyPayslips} />
       <Stack.Screen name='MyWorkCertificates' component={MyWorkCertificates} />
       <Stack.Screen name='MyOtherDocuments' component={MyOtherDocuments} />
+      <Stack.Screen name="SkillsSelect" component={SkillsSelect}/>
     </Stack.Navigator>
   )
 }
@@ -121,6 +122,7 @@ const BottomNavigator = (props) => {
       <Tab.Screen name="ListOffers" component={ListOffers} />
       <Tab.Screen name="Skills" component={Skills} />
       <Tab.Screen name="Notification" component={Notifications} />
+      <Tab.Screen name="SkillsSelect" component={SkillsSelect}/>
     </Tab.Navigator>
   );
 };
@@ -151,7 +153,7 @@ export default function App() {
         <Stack.Screen name='PersonalInfo' component={PersonalInfo} />
         <Stack.Screen name='ListOffers' component={ListOffers} />
         <Stack.Screen name='MyLikes' component={MyLikes} />
-        <Stack.Screen name='MyMissions' component={MyMission} />
+        <Stack.Screen name='MyMissions' component={MyMissions} />
         <Stack.Screen name='MyDocuments' component={MyDocuments} />
         <Stack.Screen name='MyContracts' component={MyDocuments} />
         <Stack.Screen name='MyPaySlips' component={MyDocuments} />
