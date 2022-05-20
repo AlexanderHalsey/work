@@ -82,6 +82,7 @@ const BottomNavigator = (props) => {
       <Tab.Screen name="ListOffers" component={ListOffers} />
       <Tab.Screen name="Skills" component={Skills} />
       <Tab.Screen name="Notification" component={Notifications} />
+      <Tab.Screen name="SkillsSelect" component={SkillsSelect} />
     </Tab.Navigator>
   );
 };
