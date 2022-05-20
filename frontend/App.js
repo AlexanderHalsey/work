@@ -16,6 +16,7 @@ import Welcome1 from "./components/Welcome1";
 import Welcome2 from "./components/Welcome2";
 import Inscription from "./components/Inscription";
 import CvPopOver from "./components/CvPopOver";
+import ScreenOffer from "./components/ScreenOffer";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -100,6 +101,7 @@ export default function App() {
       {isUser ? (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
+          <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -107,6 +109,7 @@ export default function App() {
           <Stack.Screen name="Welcome2" component={Welcome2} />
           <Stack.Screen name="CvPopover" component={CvPopOver} />
           <Stack.Screen name="Register" component={Inscription} />
+          <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

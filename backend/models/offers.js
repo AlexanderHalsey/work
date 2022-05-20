@@ -18,6 +18,7 @@ var offerSchema = mongoose.Schema({
   description: String,
   start_date: Date,
   end_date: Date,
+  contract: String,
   salary: Number,
   title: String,
   jobs: [
