@@ -1,14 +1,41 @@
-import React from "react";
-import { View, Image, Text } from "react-native";
+import React, { useState } from "react";
+import { View, Image, Text, Pressable } from "react-native";
 import { Button } from "react-native-elements";
 import { Dimensions } from "react-native";
 import IconFontAwesome from "react-native-vector-icons/FontAwesome";
 import IconFontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
+import * as DocumentPicker from 'expo-document-picker';
+
 let deviceHeight = Dimensions.get("window").height;
 let deviceWidth = Dimensions.get("window").width;
 
 export default function Welcome2(props) {
+
+  const [cv, setCV] = useState(null);
+
+  const handleChooseCV = async () => {
+    let result = await DocumentPicker.getDocumentAsync({
+      type: "application/pdf"
+    })
+
+    if (result.type != "cancel") {
+      setCV(result.uri);
+      const formData = new FormData();
+      formData.append("file", {
+        uri: result.uri,
+        type: "application/pdf",
+        name: "cv.pdf"
+      })
+      const res = await fetch("http://10.2.2.41:3000/sendCV", {
+        method: "POST",
+        body: formData
+      });
+      const resJSON = await res.json();
+      console.log(resJSON);
+    }
+  }
+
   return (
     <View
       style={{
@@ -53,23 +80,23 @@ export default function Welcome2(props) {
             color="#000B33"
             style={{ margin: 30 }}
           />
-          <Text style={{ fontSize: 12, width: deviceWidth * 0.2 }}>Photo</Text>
+          <Text style={{ fontSize: 12, width: deviceWidth * 0.2, marginLeft: 30 }}>Photo</Text>
         </View>
         <View style={{ flexDirection: "column", alignItems: "center" }}>
-          <IconFontAwesome5
-            name="file-export"
-            size={55}
-            color="#000B33"
-            style={{ margin: 30 }}
-          />
-          <Text
-            onPress={() => {
-              props.navigation.navigate("CvPopOver");
-            }}
-            style={{ fontSize: 12, width: deviceWidth * 0.2 }}
-          >
-            Upload
-          </Text>
+
+          <Pressable onPress={handleChooseCV}>
+            <IconFontAwesome5
+              name="file-export"
+              size={55}
+              color="#000B33"
+              style={{ margin: 30 }}
+            />
+            <Text
+              style={{ fontSize: 12, width: deviceWidth * 0.2, marginLeft: 25 }}
+            >
+              Upload
+            </Text>
+          </Pressable>
         </View>
       </View>
       <Text
