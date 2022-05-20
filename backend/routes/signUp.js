@@ -60,17 +60,20 @@ router.post("/inscription", async function (req, res, next) {
   res.json({ result, saveUser, error, token });
 });
 
-router.post("sendCV", function(req,res) {
+router.post("/sendCV", async function(req,res) {
   const pdfParser = new PDFParser();
   const callbackFunc = callback => {
     pdfParser.on("pdfParser_dataReady", pdfData => {
       callback(pdfData);
     });
   };
+  
   callbackFunc(async result => {
     const infoExtracted = await extraireInfos(result);
     res.json(infoExtracted);
   })
+
+  pdfParser.parseBuffer(req.files.file.data);
 });
 
 module.exports = router;

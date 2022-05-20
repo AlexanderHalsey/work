@@ -27,7 +27,7 @@ export default function Welcome2(props) {
         type: "application/pdf",
         name: "cv.pdf"
       })
-      const res = await fetch("http://10.2.2.41:3000/sendCV", {
+      const res = await fetch("http://10.2.2.41:3000/signUp/sendCV", {
         method: "POST",
         body: formData
       });
