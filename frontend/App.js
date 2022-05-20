@@ -94,7 +94,7 @@ export default function App() {
     // dans le future on verifiera dans le backend si la persone qui lance l'appli a une compte deja
     // si oui - on "set" user a true
     // si non - on "set" user a false
-    setIsUser(true);
+    setIsUser(false);
   }, []);
 
   return (
