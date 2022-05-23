@@ -16,21 +16,6 @@ import {
 
 export default function ScreenOffer(props) {
   console.log("id dans screen Offer", props.route.params.offerId);
-<<<<<<< Updated upstream
-  const viewSkills = (
-    <View style={styles.viewskills}>
-      <Text style={{ fontWeight: "bold", fontSize: 18, color: "#000B33" }}>
-        Compétences : {screenDisplay.jobs[0].skills[0].skill_title}
-      </Text>
-      <Text style={{ fontSize: 18 }}>
-        Aisance :{screenDisplay.jobs[0].skills[0].level}
-      </Text>
-      <Text style={{ fontSize: 18 }}>
-        Expérience :{screenDisplay.jobs[0].skills[0].experience}
-      </Text>
-    </View>
-  );
-=======
   const [offerData, setOfferData] = useState(null);
   const { height, width } = useWindowDimensions();
 
@@ -102,7 +87,6 @@ export default function ScreenOffer(props) {
       );
     });
 
->>>>>>> Stashed changes
   return (
     <View style={styles.principal}>
       {/* header */}

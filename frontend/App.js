@@ -111,24 +111,6 @@ export default function App() {
   }, []);
 
   return (
-<<<<<<< Updated upstream
-    <NavigationContainer>
-      {isUser ? (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-          <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
-        </Stack.Navigator>
-      ) : (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Welcome1" component={Welcome1} />
-          <Stack.Screen name="Welcome2" component={Welcome2} />
-          <Stack.Screen name="CvPopover" component={CvPopOver} />
-          <Stack.Screen name="Register" component={Inscription} />
-          <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
-        </Stack.Navigator>
-      )}
-    </NavigationContainer>
-=======
     <Provider store={store}>
       <NavigationContainer>
         {isUser ? (
@@ -148,6 +130,5 @@ export default function App() {
         )}
       </NavigationContainer>
     </Provider>
->>>>>>> Stashed changes
   );
 }
