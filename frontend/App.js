@@ -17,6 +17,7 @@ import Welcome2 from "./components/Welcome2";
 import Inscription from "./components/Inscription";
 import CvPopOver from "./components/CvPopOver";
 import ScreenOffer from "./components/ScreenOffer";
+import SkillsSelect from "./components/SkillsSelect";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
