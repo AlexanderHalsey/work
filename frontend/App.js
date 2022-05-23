@@ -12,11 +12,11 @@ import Skills from "./components/Skills";
 import Notifications from "./components/Notifications";
 import ListOffers from "./components/ListOffers";
 
-import {Provider} from 'react-redux';
-import {createStore, combineReducers}  from 'redux';
-import userInfo from './reducers/userInfo.js';
-import professions from './reducers/professions';
-import jobOffers from './reducers/jobOffers';
+import { Provider } from "react-redux";
+import { createStore, combineReducers } from "redux";
+import userInfo from "./reducers/userInfo.js";
+import professions from "./reducers/professions";
+import jobOffers from "./reducers/jobOffers";
 
 import Welcome1 from "./components/Welcome1";
 import Welcome2 from "./components/Welcome2";
@@ -24,15 +24,14 @@ import Inscription from "./components/Inscription";
 import CvPopOver from "./components/CvPopOver";
 import ScreenOffer from "./components/ScreenOffer";
 import SkillsSelect from "./components/SkillsSelect";
-<<<<<<< HEAD
 
-const store = createStore(combineReducers({ 
-  userInfo,
-  professions,
-  jobOffers 
-}));
-=======
->>>>>>> eddy
+const store = createStore(
+  combineReducers({
+    userInfo,
+    professions,
+    jobOffers,
+  })
+);
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
