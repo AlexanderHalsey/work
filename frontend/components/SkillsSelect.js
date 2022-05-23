@@ -18,14 +18,29 @@ import { Center } from "native-base";
 
 import DropDownList from "./DropDownList";
 
-export default function SkillsSelect(props) {
+export default function SkillsSelect() {
+    const [dataStatus, setDataStatus] = useState("loading...");
+    const [searching, setSearching] = useState(0);
+    const [skillsList, setSkillsList] = useState(" ");
+    const [dataSource] = useState(['Android Developer','IT Technician','Web Deveoper','UI Designer'])
+    const [filter, setFilter] = useState(dataSource)
 
+    const onSearch=(text)=> {
 
-  const [dataStatus, setDataStatus] = useState("loading...");
-  const [searching, setSearching] = useState(0);
-  const [skillsList, setSkillsList] = useState(" ");
-  const [filter, setFilter] = useState(dataSource);
-  const [dataSource, setDatasource] = useState([]);
+      if(text) {
+          setSearching(true);
+          const temp =text.toLowerCase();
+
+        const tempList = dataSource.filter(item=>{
+        if (item.match(temp)) 
+        return item
+      })
+      setFilter(tempList)
+      }
+      else {
+        setSearching(false)
+      }
+
 
   useEffect(() => {
 
@@ -37,9 +52,7 @@ export default function SkillsSelect(props) {
     }
     joblist()
   }, []);
- 
-  return ( <h1>{dataStatus}</h1> );
- }
+
 
   // 
   //   "Android Developer",

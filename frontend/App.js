@@ -12,12 +12,24 @@ import Skills from "./components/Skills";
 import Notifications from "./components/Notifications";
 import ListOffers from "./components/ListOffers";
 
+import {Provider} from 'react-redux';
+import {createStore, combineReducers}  from 'redux';
+import userInfo from './reducers/userInfo.js';
+import professions from './reducers/professions';
+import jobOffers from './reducers/jobOffers';
+
 import Welcome1 from "./components/Welcome1";
 import Welcome2 from "./components/Welcome2";
 import Inscription from "./components/Inscription";
 import CvPopOver from "./components/CvPopOver";
 import ScreenOffer from "./components/ScreenOffer";
 import SkillsSelect from "./components/SkillsSelect";
+
+const store = createStore(combineReducers({ 
+  userInfo,
+  professions,
+  jobOffers 
+}));
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,26 +107,28 @@ export default function App() {
     // dans le future on verifiera dans le backend si la persone qui lance l'appli a une compte deja
     // si oui - on "set" user a true
     // si non - on "set" user a false
-    setIsUser(false);
+    setIsUser(true);
   }, []);
 
   return (
-    <NavigationContainer>
-      {isUser ? (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-          <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
-        </Stack.Navigator>
-      ) : (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Welcome1" component={Welcome1} />
-          <Stack.Screen name="Register" component={Inscription} />
-          <Stack.Screen name="CvPopover" component={CvPopOver} />
-          <Stack.Screen name="Welcome2" component={Welcome2} />
+    <Provider store={store}>
+      <NavigationContainer>
+        {isUser ? (
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
+            <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
+          </Stack.Navigator>
+        ) : (
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Welcome1" component={Welcome1} />
+            <Stack.Screen name="Register" component={Inscription} />
+            <Stack.Screen name="CvPopover" component={CvPopOver} />
+            <Stack.Screen name="Welcome2" component={Welcome2} />
 
-          <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
-        </Stack.Navigator>
-      )}
-    </NavigationContainer>
+            <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
+          </Stack.Navigator>
+        )}
+      </NavigationContainer>
+    </Provider>
   );
 }

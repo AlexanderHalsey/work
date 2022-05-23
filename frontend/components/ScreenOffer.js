@@ -28,7 +28,7 @@ export default function ScreenOffer(props) {
       // console.log(isFocused);
       console.log("dans useEffect ScreenOffer");
       const data = await fetch(
-        `http://10.2.1.215:3000/offers/displayOffer?offerId=${props.route.params.offerId}`
+        `http://10.2.2.41:3000/offers/displayOffer?offerId=${props.route.params.offerId}`
       );
       const body = await data.json();
       console.log("body dans ScreenOffer", body.offer);
