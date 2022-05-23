@@ -1,16 +1,29 @@
-import React from "react";
-import { View, Image, Text } from "react-native";
-import { Button } from "react-native-elements";
-import { Dimensions } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
-import IconFontAwesome from "react-native-vector-icons/FontAwesome";
+import React, { useState } from "react";
+import { View, Text, Dimensions, Pressable } from "react-native";
+import { Input } from "react-native-elements";
 import IconFontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import { Fontisto } from "@expo/vector-icons";
 
 let deviceHeight = Dimensions.get("window").height;
 let deviceWidth = Dimensions.get("window").width;
 
-export default function Inscription(props) {
+function Inscription(props) {
+  const [nom, setNom] = useState("");
+  const [prenom, setPrenom] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confPassword, setConfPassword] = useState("");
+
+  var handleSubmitSignin = async () => {
+    const data = await fetch("http://localhost:3000/signUp/inscription", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `nomFromFront=${nom}&prenomFromfront=${prenom}&emailFromFront=${email}&passwordFromFront=${password}&confPasswordFromFront=${confPassword}`,
+    });
+    var datajson = await data.json();
+    console.log(datajson);
+    props.navigation.navigate("");
+  };
+
   return (
     <View
       style={{
@@ -21,58 +34,82 @@ export default function Inscription(props) {
         alignItems: "center",
       }}
     >
-      <View style={{ alignItems: "center", marginBottom: 300 }}>
-        <Text style={{ color: "white" }}>
-          Validons vos informations personnelles
-        </Text>
-        <View style={{ flexDirection: "row", marginBottom: -100 }}>
+      <Text style={{ color: "white", marginTop: 40 }}>
+        Validons vos informations personnelles
+      </Text>
+
+      <View
+        style={{
+          marginBottom: -100,
+          flexDirection: "row",
+
+          marginBottom: 30,
+        }}
+      >
+        <View style={{ flexDirection: "column", alignItems: "center" }}>
           <IconFontAwesome5
             name="male"
             color="white"
-            size={70}
+            size={50}
             style={{ margin: 50 }}
           />
-
+          <Text style={{ color: "skyblue" }}>Homme</Text>
+        </View>
+        <View style={{ flexDirection: "column", alignItems: "center" }}>
           <IconFontAwesome5
             name="female"
             color="white"
-            size={70}
+            size={50}
             style={{ margin: 50 }}
           />
+          <Text style={{ color: "skyblue" }}>Femme</Text>
         </View>
-        <View style={{ flexDirection: "row", marginBottom: 30 }}>
-          <Text style={{ color: "skyblue", margin: 50, marginRight: 10 }}>
-            Homme
-          </Text>
-          <Text style={{ color: "skyblue", margin: 50 }}>Femme</Text>
-        </View>
-        <Input placeholder="BASIC INPUT" />
-
-        <Input
-          placeholder="INPUT WITH ICON"
-          leftIcon={{ type: "font-awesome", name: "chevron-left" }}
-        />
-
-        <Input
-          placeholder="INPUT WITH CUSTOM ICON"
-          leftIcon={<Icon name="user" size={24} color="black" />}
-        />
-
-        <Input
-          placeholder="Comment"
-          leftIcon={{ type: "font-awesome", name: "comment" }}
-          style={styles}
-          onChangeText={(value) => this.setState({ comment: value })}
-        />
-
-        <Input
-          placeholder="INPUT WITH ERROR MESSAGE"
-          errorStyle={{ color: "red" }}
-          errorMessage="ENTER A VALID ERROR HERE"
-        />
-
-        <Input placeholder="Password" secureTextEntry={true} />
       </View>
+      <View style={{ width: 270, marginBottom: -30 }}>
+        <Input
+          style={{ fontSize: 15 }}
+          onChangeText={(value) => setNom(value)}
+          placeholder="Nom"
+        />
+
+        <Input
+          style={{ fontSize: 15 }}
+          onChangeText={(value) => setPrenom(value)}
+          placeholder="Prénom"
+        />
+
+        <Input
+          style={{ fontSize: 15 }}
+          onChangeText={(value) => setEmail(value)}
+          placeholder="email"
+        />
+
+        <Input
+          style={{ fontSize: 15 }}
+          onChangeText={(value) => setPassword(value)}
+          placeholder="Mot de passe"
+        />
+
+        <Input
+          style={{ fontSize: 15 }}
+          onChangeText={(value) => setConfPassword(value)}
+          placeholder="Confirmer votre mot de passe"
+          secureTextEntry={true}
+        />
+      </View>
+      <Pressable
+        onPress={() => {
+          handleSubmitSignin();
+        }}
+      >
+        <IconFontAwesome5
+          name="user-check"
+          size={55}
+          color="white"
+          style={{ margin: 30, marginBottom: -1 }}
+        />
+      </Pressable>
     </View>
   );
 }
+export default Inscription;

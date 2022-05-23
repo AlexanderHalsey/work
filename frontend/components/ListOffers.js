@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-
+import { TouchableOpacity } from "react-native";
 import { useDisclose, Center } from "native-base";
 import { Button } from "react-native-elements";
 
@@ -20,59 +20,60 @@ export default function ListOffersScreen(props) {
   const isFocused = useIsFocused();
   //variable d'état pour récupérer la liste des offres
   const [offersList, setOffersList] = useState([]);
-
   const { height, width } = useWindowDimensions();
   const { isOpen, onOpen, onClose } = useDisclose();
 
   //fetch pour récupérer les infos en BDD
-  const [screenDisplay, setScreenDisplay] = useState(null);
 
   useEffect(() => {
-    console.log("props: ", props);
     const findOffers = async () => {
       // console.log(isFocused);
       if (isFocused) {
         const data = await fetch("http://10.2.1.215:3000/offers/listOffers");
         const body = await data.json();
         setOffersList(body.offers);
-      } else setScreenDisplay(null);
+      }
     };
     findOffers();
   }, [isFocused]);
 
-  const detail = (offer) => {
-    setScreenDisplay(offer);
-  };
   // console.log("titre annonce : ", screenDisplay.title);
 
-  if (screenDisplay) {
-    //va devoir envoyer vers ScreenOffer avec les props (avant il y avait tout le bloc view qui affiche le détail de l'offre)
-
-    return ScreenOffer;
-  } else
-    return (
-      <SafeAreaView
+  return (
+    <SafeAreaView
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        width: width,
+        marginTop: 30,
+      }}
+    >
+      <ScrollView
         style={{
           flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
           width: width,
-          marginTop: 30,
         }}
+        contentContainerStyle={{ alignItems: "center" }}
       >
-        <ScrollView
-          style={{
-            flex: 1,
-            width: width,
-          }}
-          contentContainerStyle={{ alignItems: "center" }}
-        >
-          {offersList.map((offer, i) => {
-            return <OfferCard key={i} offer={offer} callback={detail} />;
-          })}
-        </ScrollView>
-      </SafeAreaView>
-    );
+        {offersList.map((offer, i) => {
+          return (
+            <TouchableOpacity
+              key={i}
+              onPress={() => {
+                console.log("offer._id sur touchableopacity", offer._id);
+                props.navigation.navigate("ScreenOffer", {
+                  offerId: offer._id,
+                });
+              }}
+            >
+              <OfferCard key={i} offer={offer} />
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+    </SafeAreaView>
+  );
 }
 
 var colorwhite = "white";
@@ -139,6 +140,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     justifyContent: "center",
     alignItems: "flex-start",
-    flexGrow: 1,
+    height: 20,
   },
 });

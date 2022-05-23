@@ -3,7 +3,7 @@ var router = express.Router();
 var bcrypt = require("bcrypt");
 var userModel = require("../models/users");
 var addressModel = require("../models/users");
-
+var bcrypt = require("bcrypt");
 var uid2 = require("uid2");
 
 const PDFParser = require("pdf2json");
@@ -15,12 +15,13 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/inscription", async function (req, res, next) {
+  console.log(req.body);
   var error = [];
   var result = false;
   var saveUser = null;
   var token = null;
 
-  /*const data = await userModel.findOne({
+  const data = await userModel.findOne({
     email: req.body.emailFromFront,
   });
 
@@ -29,24 +30,27 @@ router.post("/inscription", async function (req, res, next) {
   }
 
   if (
-    req.body.usernameFromFront == "" ||
+    req.body.nomFromFront == "" ||
+    req.body.prenomFromFront == "" ||
     req.body.emailFromFront == "" ||
-    req.body.passwordFromFront == ""
+    req.body.passwordFromFront == "" ||
+    req.body.confPasswordFromFront == ""
   ) {
     error.push("champs vides");
-  }*/
+  }
+
+  if (req.body.passwordFromFront !== req.body.confPasswordFromFront) {
+    error.push("votre mot de passe n'est pas identique");
+  }
 
   if (error.length == 0) {
     var hash = bcrypt.hashSync(req.body.passwordFromFront, 10);
     var newUser = new userModel({
-      city: req.body.cityFromFront,
-      firstname: req.body.firstnameFromFront,
-      lastname: req.body.lastnameFromFront,
-      place: req.body.placeFromFront,
+      nom: req.body.nomFromFront,
+      prenom: req.body.prenomFromFront,
+      email: req.body.emailFromFront,
       password: hash,
-      confpassword: hash,
       token: uid2(32),
-      lang: "fr",
     });
 
     saveUser = await newUser.save();
@@ -62,8 +66,8 @@ router.post("/inscription", async function (req, res, next) {
 
 router.post("/sendCV", async function(req,res) {
   const pdfParser = new PDFParser();
-  const callbackFunc = callback => {
-    pdfParser.on("pdfParser_dataReady", pdfData => {
+  const callbackFunc = (callback) => {
+    pdfParser.on("pdfParser_dataReady", (pdfData) => {
       callback(pdfData);
     });
   };

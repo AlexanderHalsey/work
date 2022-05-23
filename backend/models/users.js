@@ -1,15 +1,5 @@
 const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema({
-  username: String,
-  email: String,
-  password: String,
-  token: String,
-  userAddress: addressSchema,
-  skills: [{ type: mongoose.Schema.Types.ObjectId, ref: "skills" }],
-  applications: [applicationSchema],
-});
-
 const addressSchema = mongoose.Schema({
   streetName: String,
   streetName2: String,
@@ -29,6 +19,16 @@ const applicationSchema = mongoose.Schema({
     type: ["Pending", "Accepted", "Refused"],
     default: "Pending",
   },
+});
+const userSchema = mongoose.Schema({
+  nom: String,
+  prenom: String,
+  email: String,
+  password: String,
+  token: String,
+  userAddress: addressSchema,
+  skills: [{ type: mongoose.Schema.Types.ObjectId, ref: "skills" }],
+  applications: [applicationSchema],
 });
 
 const userModel = mongoose.model("users", userSchema);
