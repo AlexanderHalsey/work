@@ -24,12 +24,15 @@ import Inscription from "./components/Inscription";
 import CvPopOver from "./components/CvPopOver";
 import ScreenOffer from "./components/ScreenOffer";
 import SkillsSelect from "./components/SkillsSelect";
+<<<<<<< HEAD
 
 const store = createStore(combineReducers({ 
   userInfo,
   professions,
   jobOffers 
 }));
+=======
+>>>>>>> eddy
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
