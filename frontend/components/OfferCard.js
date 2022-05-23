@@ -20,9 +20,7 @@ import ScreenOffer from "./ScreenOffer";
 function OfferCard(props) {
   // on enregistre la dimension de l'écran de l'utilisateur
   const { height, width } = useWindowDimensions();
-  const [screenDisplay, setScreenDisplay] = useState(null);
   console.log("offerID: ", props.offer._id);
-  if (screenDisplay == "MyLikes") return <MyLikes />;
 
   return (
     <TouchableOpacity
@@ -43,9 +41,6 @@ function OfferCard(props) {
         marginBottom: 8,
         marginTop: 10,
       }}
-      onPress={() =>
-        props.navigation.navigate("ScreenOffer", { offerID: props.offer._id })
-      }
     >
       <Image
         source={{
