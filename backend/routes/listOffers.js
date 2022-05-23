@@ -11,11 +11,17 @@ router.get("/listOffers", async function (req, res, next) {
   res.json({ offers });
 });
 
-router.post("/displayOffer", async function (req, res, next) {
-  console.log("displayOffer OK :");
-  var offer = await offerModel.findById(req.body.offerId);
+router.get("/displayOffer", async function (req, res, next) {
+  console.log("displayOffer req.query :", req.query);
+  var offer = await offerModel.findById(req.query.offerId);
 
   console.log("offer", offer);
+  res.json({ offer });
+});
+
+router.delete("/deleteOffer", async function (req, res, next) {
+  var deleteOffer = await offerModel.deleteOne(req.query.offerId);
+
   res.json({ offer });
 });
 
