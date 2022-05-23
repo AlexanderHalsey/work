@@ -17,6 +17,7 @@ import Welcome2 from "./components/Welcome2";
 import Inscription from "./components/Inscription";
 import CvPopOver from "./components/CvPopOver";
 import ScreenOffer from "./components/ScreenOffer";
+import SkillsSelect from "./components/SkillsSelect";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -94,7 +95,7 @@ export default function App() {
     // dans le future on verifiera dans le backend si la persone qui lance l'appli a une compte deja
     // si oui - on "set" user a true
     // si non - on "set" user a false
-    setIsUser(false);
+    setIsUser(true);
   }, []);
 
   return (

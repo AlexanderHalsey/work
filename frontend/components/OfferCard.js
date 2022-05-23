@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, useWindowDimensions } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  useWindowDimensions,
+  StyleSheet,
+} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import {
@@ -17,13 +23,37 @@ import {
 import ListOffersScreen from "./ListOffers";
 import ScreenOffer from "./ScreenOffer";
 
+var heartColor = "white";
+
 function OfferCard(props) {
   // on enregistre la dimension de l'écran de l'utilisateur
   const { height, width } = useWindowDimensions();
-  console.log("offerID: ", props.offer._id);
+  // console.log("offerID: ", props.offer._id);
+  const [like, setLike] = useState(false);
+
+  var handleClick = () => {
+    console.log("click détecté + id offre :", props.offer._id);
+    if (like == true) setLike(false);
+    else setLike(true);
+  };
+
+  let heartStyle;
+  if (like == true) {
+    heartStyle = {
+      marginRight: 3,
+      marginLeft: 2,
+      color: "red",
+    };
+  } else {
+    heartStyle = {
+      marginRight: 3,
+      marginLeft: 2,
+      color: "#FFD4D4",
+    };
+  }
 
   return (
-    <TouchableOpacity
+    <View
       style={{
         flexDirection: "row",
         backgroundColor: "white",
@@ -83,24 +113,26 @@ function OfferCard(props) {
       >
         <View
           style={{
-            width: width * 0.08,
-            height: width * 0.08,
-            borderRadius: 50,
+            width: width * 0.09,
+            height: width * 0.09,
+            borderRadius: 100,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "#FAFAFA",
+            backgroundColor: "white",
           }}
         >
           <Icon
             name="heart"
-            size={18}
-            color="red"
-            style={{ marginRight: 5, marginLeft: 4 }}
+            size={23}
+            solid
+            style={heartStyle}
+            // onClick={() => changeLiked(props.movieName, props.movieImg)}
+            onPress={() => handleClick()}
           />
         </View>
         <Text style={{ color: "grey" }}>{"7"} km</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 
