@@ -18,6 +18,7 @@ import { Center } from "native-base";
 
 import DropDownList from "./DropDownList";
 
+<<<<<<< Updated upstream
 export default function SkillsSelect() {
     const [dataSource] = useState(['Android Developer','IT Technician','Web Deveoper','UI Designer'])
     const [filter, setFilter] = useState(dataSource)
@@ -39,6 +40,52 @@ export default function SkillsSelect() {
         setSearching(false)
       }
       
+=======
+export default function SkillsSelect(props) {
+
+
+  const [dataStatus, setDataStatus] = useState("loading...");
+  const [searching, setSearching] = useState(0);
+  const [skillsList, setSkillsList] = useState(" ");
+  const [filter, setFilter] = useState(dataSource);
+  const [dataSource, setDatasource] = useState([]);
+
+  useEffect(() => {
+
+    const joblist= async function loadData() {
+            var rawJob = await fetch('https://localhost:3000/skillsSelect');
+            var jobData = await rawJob.json();
+            console.log(jobData)
+            setDataStatus("datas loaded: "+ jobData[0].name+"...");
+    }
+    joblist()
+  }, []);
+
+
+  // 
+  //   "Android Developer",
+  //   "IT Technician",
+  //   "Web Deveoper",
+  //   "UI Designer",
+  // ]);
+
+
+
+  const onSearch = (text) => {
+    if (text) {
+      console.log("text ", text);
+      setSearching(true);
+      const temp = text.toLowerCase();
+
+      const tempList = dataSource.filter((item) => {
+        console.log("item", item);
+        if (item.toLowerCase().match(temp)) return true;
+      });
+      console.log("templist ", tempList);
+      setFilter(tempList);
+    } else {
+      setSearching(false);
+>>>>>>> Stashed changes
     }
 
   return (

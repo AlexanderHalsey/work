@@ -16,6 +16,7 @@ import {
 
 export default function ScreenOffer(props) {
   console.log("id dans screen Offer", props.route.params.offerId);
+<<<<<<< Updated upstream
   const viewSkills = (
     <View style={styles.viewskills}>
       <Text style={{ fontWeight: "bold", fontSize: 18, color: "#000B33" }}>
@@ -29,6 +30,79 @@ export default function ScreenOffer(props) {
       </Text>
     </View>
   );
+=======
+  const [offerData, setOfferData] = useState(null);
+  const { height, width } = useWindowDimensions();
+
+  useEffect(() => {
+    console.log("props: ", props.route.params.offerId);
+    const findOffers = async () => {
+      // console.log(isFocused);
+      console.log("dans useEffect ScreenOffer");
+      const data = await fetch(
+        `http://10.2.2.41:3000/offers/displayOffer?offerId=${props.route.params.offerId}`
+      );
+      const body = await data.json();
+      console.log("body dans ScreenOffer", body.offer);
+      setOfferData(body.offer);
+    };
+
+    findOffers();
+  }, []);
+
+  const viewSkills =
+    offerData &&
+    offerData.jobs[0].skills.map((skill, i) => {
+      return (
+        <View style={styles.viewskills} key={i}>
+          <Text style={{ fontWeight: "bold", fontSize: 18, color: "#000B33" }}>
+            Compétences : {skill.skill_title}
+          </Text>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ fontSize: 18 }}>Aisance : </Text>
+            <>
+              <AntDesign
+                name="star"
+                size={24}
+                color={skill.level > 0 ? "#FFF500" : "#FFFFFF"}
+              />
+              <AntDesign
+                name="star"
+                size={24}
+                color={skill.level > 1 ? "#FFF500" : "#FFFFFF"}
+              />
+              <AntDesign
+                name="star"
+                size={24}
+                color={skill.level > 2 ? "#FFF500" : "#FFFFFF"}
+              />
+            </>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ fontSize: 18 }}>Expérience : </Text>
+            <>
+              <AntDesign
+                name="star"
+                size={24}
+                color={skill.experience > 0 ? "#FFF500" : "#FFFFFF"}
+              />
+              <AntDesign
+                name="star"
+                size={24}
+                color={skill.experience > 1 ? "#FFF500" : "#FFFFFF"}
+              />
+              <AntDesign
+                name="star"
+                size={24}
+                color={skill.experience > 2 ? "#FFF500" : "#FFFFFF"}
+              />
+            </>
+          </View>
+        </View>
+      );
+    });
+
+>>>>>>> Stashed changes
   return (
     <View style={styles.principal}>
       {/* header */}

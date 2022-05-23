@@ -32,7 +32,7 @@ export default function ListOffersScreen(props) {
     const findOffers = async () => {
       // console.log(isFocused);
       if (isFocused) {
-        const data = await fetch("http://10.2.1.215:3000/offers/listOffers");
+        const data = await fetch("http://10.2.2.41:3000/offers/listOffers");
         const body = await data.json();
         setOffersList(body.offers);
       } else setScreenDisplay(null);
