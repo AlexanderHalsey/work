@@ -18,28 +18,54 @@ import { Center } from "native-base";
 
 import DropDownList from "./DropDownList";
 
-export default function SkillsSelect() {
-    const [dataSource] = useState(['Android Developer','IT Technician','Web Deveoper','UI Designer'])
-    const [filter, setFilter] = useState(dataSource)
-    const [searching,setSearching] = useState(0);
+export default function SkillsSelect(props) {
 
-    const onSearch=(text)=> {
 
-      if(text) {
-          setSearching(true);
-          const temp =text.toLowerCase();
+  const [dataStatus, setDataStatus] = useState("loading...");
+  const [searching, setSearching] = useState(0);
+  const [skillsList, setSkillsList] = useState(" ");
+  const [filter, setFilter] = useState(dataSource);
+  const [dataSource, setDatasource] = useState([]);
 
-        const tempList = dataSource.filter(item=>{
-        if (item.match(temp)) 
-        return item
-      })
-      setFilter(tempList)
-      }
-      else {
-        setSearching(false)
-      }
-      
+  useEffect(() => {
+
+    const joblist= async function loadData() {
+            var rawJob = await fetch('https://localhost:3000/skillsSelect');
+            var jobData = await rawJob.json();
+            console.log(jobData)
+            setDataStatus("datas loaded: "+ jobData[0].name+"...");
     }
+    joblist()
+  }, []);
+ 
+  return ( <h1>{dataStatus}</h1> );
+ }
+
+  // 
+  //   "Android Developer",
+  //   "IT Technician",
+  //   "Web Deveoper",
+  //   "UI Designer",
+  // ]);
+
+
+
+  const onSearch = (text) => {
+    if (text) {
+      console.log("text ", text);
+      setSearching(true);
+      const temp = text.toLowerCase();
+
+      const tempList = dataSource.filter((item) => {
+        console.log("item", item);
+        if (item.toLowerCase().match(temp)) return true;
+      });
+      console.log("templist ", tempList);
+      setFilter(tempList);
+    } else {
+      setSearching(false);
+    }
+  };
 
   return (
     <View
@@ -89,8 +115,12 @@ export default function SkillsSelect() {
       >
         <Text>Quel métier recherchez-vous ?</Text>
       </View>
-      
-      <View><Text style={{ marginTop: 20, marginLeft: 60,marginBottom:0}}>Métier</Text></View>
+
+      <View>
+        <Text style={{ marginTop: 20, marginLeft: 60, marginBottom: 0 }}>
+          Métier
+        </Text>
+      </View>
 
       <View style={styles.container}>
         <TextInput
@@ -99,10 +129,8 @@ export default function SkillsSelect() {
           placeholderTextColor={{ color: "black" }}
           onChangeText={onSearch}
         />
-        {   searching &&
-            <DropDownList/>
-        }
-        
+
+        {<DropDownList options={filter}/>}
       </View>
     </View>
   );
@@ -114,7 +142,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     marginTop: 10,
-    
   },
   txtinput: {
     backgroundColor: "white",
@@ -122,11 +149,11 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: "center",
     marginTop: -20,
-    marginBottom:350,
-    marginLeft:0,
-    fontSize:16,
-    fontWeight:"bold",
-    alignItems:"center",
-    paddingHorizontal:10
+    marginBottom: 350,
+    marginLeft: 0,
+    fontSize: 16,
+    fontWeight: "bold",
+    alignItems: "center",
+    paddingHorizontal: 10,
   },
 });
