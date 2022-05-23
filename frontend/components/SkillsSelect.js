@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -9,7 +9,6 @@ import {
   Pressable,
   Image,
 } from "react-native";
-import { useState } from "react";
 import Accordion from "../components/AccordionSelect";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -18,51 +17,25 @@ import { Center } from "native-base";
 
 import DropDownList from "./DropDownList";
 
-export default function SkillsSelect() {
-    const [dataStatus, setDataStatus] = useState("loading...");
-    const [searching, setSearching] = useState(0);
-    const [skillsList, setSkillsList] = useState(" ");
-    const [dataSource] = useState(['Android Developer','IT Technician','Web Deveoper','UI Designer'])
-    const [filter, setFilter] = useState(dataSource)
+export default function SkillsSelect(props) {
+  const [dataStatus, setDataStatus] = useState("loading...");
+  const [searching, setSearching] = useState(0);
+  const [skillsList, setSkillsList] = useState(" ");
+  const [filter, setFilter] = useState(dataSource);
+  const [dataSource, setDatasource] = useState([]);
 
-    const onSearch=(text)=> {
-
-      if(text) {
-          setSearching(true);
-          const temp =text.toLowerCase();
-
-        const tempList = dataSource.filter(item=>{
-        if (item.match(temp)) 
-        return item
-      })
-      setFilter(tempList)
-      }
-      else {
-        setSearching(false)
-      }
-
-
+  //to retrieve information from db
   useEffect(() => {
-
-    const joblist= async function loadData() {
-            var rawJob = await fetch('https://localhost:3000/skillsSelect');
-            var jobData = await rawJob.json();
-            console.log(jobData)
-            setDataStatus("datas loaded: "+ jobData[0].name+"...");
-    }
-    joblist()
+    const joblist = async function loadData() {
+      var rawJob = await fetch("https://localhost:3000/skills");
+      var jobData = await rawJob.json();
+      console.log(jobData);
+      setDataStatus("datas loaded: " + jobData[0].name + "...");
+    };
+    joblist();
   }, []);
 
-
-  // 
-  //   "Android Developer",
-  //   "IT Technician",
-  //   "Web Deveoper",
-  //   "UI Designer",
-  // ]);
-
-
-
+  //to filter with compare the input with db list items
   const onSearch = (text) => {
     if (text) {
       console.log("text ", text);
@@ -79,6 +52,13 @@ export default function SkillsSelect() {
       setSearching(false);
     }
   };
+
+  //
+  //   "Android Developer",
+  //   "IT Technician",
+  //   "Web Deveoper",
+  //   "UI Designer",
+  // ]);
 
   return (
     <View
@@ -143,7 +123,7 @@ export default function SkillsSelect() {
           onChangeText={onSearch}
         />
 
-        {<DropDownList options={filter}/>}
+        {<DropDownList options={filter} />}
       </View>
     </View>
   );

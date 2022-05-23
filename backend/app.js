@@ -10,10 +10,14 @@ var logger = require("morgan");
 
 var signUpRouter = require("./routes/signUp");
 var listOffersRouter = require("./routes/listOffers");
+var jobListRouter = require("./routes/skillList");
 var app = express();
 
+<<<<<<< HEAD
 app.use(fileUpload());
 
+=======
+>>>>>>> blerim
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -22,6 +26,7 @@ app.use(express.static(path.join(__dirname, "frontend/build")));
 
 app.use("/signUp", signUpRouter);
 app.use("/offers", listOffersRouter);
+app.use("/skills", jobListRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
