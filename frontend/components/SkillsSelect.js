@@ -1,152 +1,227 @@
-import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  Animated,
-  TouchableOpacity,
-  Pressable,
-  Image,
-} from "react-native";
-import Accordion from "../components/AccordionSelect";
+// Example of Searchable Dropdown / Picker in React Native
+// https://aboutreact.com/example-of-searchable-dropdown-picker-in-react-native/
+
+// import React in our code
+import React, { useState, useEffect } from "react";
+
+// import all the components we are going to use
+import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { AntDesign } from "@expo/vector-icons";
 import { Center } from "native-base";
+// import SearchableDropdown component
+import SearchableDropdown from "react-native-searchable-dropdown";
 
-import DropDownList from "./DropDownList";
+// Item array for the dropdown
+const testing = [
+  // name key is must. It is to show the text in front
+  { id: 1, name: "Android Developer" },
+  { id: 2, name: "IT Technician" },
+  { id: 3, name: "Web Deveoper" },
+];
 
-export default function SkillsSelect(props) {
-  const [dataStatus, setDataStatus] = useState("loading...");
-  const [searching, setSearching] = useState(0);
-  const [skillsList, setSkillsList] = useState(" ");
-  const [filter, setFilter] = useState(dataSource);
-  const [dataSource, setDatasource] = useState([]);
+export const App = () => {
+  // Data Source for the SearchableDropdown
+  const [serverData, setServerData] = useState([]);
+  // const [jData, setJobData] = useState([]);
 
-  //to retrieve information from db
   useEffect(() => {
     const joblist = async function loadData() {
-      var rawJob = await fetch("https://localhost:3000/skills");
+      var rawJob = await fetch("https://10.2.1.38:3000/skills");
       var jobData = await rawJob.json();
+
+
+      var temp = jobData.skills.map((e,key) => ({id:key,name: e.job_title}));
+      // var temp = jobData.skills.map(e => ({name: e.job_title}));
+
       console.log(jobData);
-      setDataStatus("datas loaded: " + jobData[0].name + "...");
+      // var items = jobData.skills.map((e,key) => ({ id:key.toString() , name: e.job_title.toLowerCase() }));
+      // const items = jobData.skills.map((e, key) => {
+      //   return {
+      //     id: key.toString(),
+      //     name: e.job_title,
+      //   };
+      // });
+      setServerData(temp);
     };
     joblist();
+    console.log("show server data", serverData);
   }, []);
 
-  //to filter with compare the input with db list items
-  const onSearch = (text) => {
-    if (text) {
-      console.log("text ", text);
-      setSearching(true);
-      const temp = text.toLowerCase();
+  // useEffect(() => {
+  //   fetch('https://aboutreact.herokuapp.com/demosearchables.php')
+  //     .then((response) => response.json())
+  //     .then((responseJson) => {
+  //       //Successful response from the API Call
+  //       console.log(responseJson)
+  //       setServerData(responseJson.results);
 
-      const tempList = dataSource.filter((item) => {
-        console.log("item", item);
-        if (item.toLowerCase().match(temp)) return true;
-      });
-      console.log("templist ", tempList);
-      setFilter(tempList);
-    } else {
-      setSearching(false);
-    }
-  };
-
-  //
-  //   "Android Developer",
-  //   "IT Technician",
-  //   "Web Deveoper",
-  //   "UI Designer",
-  // ]);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 50,
-          marginBottom: 40,
-        }}
-      >
-        <MaterialCommunityIcons name="lightning-bolt" size={60} color="black" />
-        <Text style={{ fontWeight: "bold" }}>Métiers & Compétence</Text>
-      </View>
-      <View
-        style={{
-          justifyContent: "space-between",
-          flexDirection: "row",
-          backgroundColor: "#B9FFFF",
-        }}
-      >
-        <View>
-          <Image
-            style={{ width: 120, height: 120, backgroundColor: "#B9FFFF" }}
-            source={require("../assets/icon.jpg")}
-          />
-        </View>
-        <View style={{ marginLeft: 20, marginRight: 150, marginTop: 0 }}>
-          <Text>
-            En répondant aux questions du formulaire ci-dessous, vos critères de
-            recherche vont s’affiner automatiquement. Si vous avez importé votre
-            CV, certaines informations sont déjà remplies !
-          </Text>
-        </View>
-      </View>
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 50,
-          fontWeight: "bold",
-        }}
-      >
-        <Text>Quel métier recherchez-vous ?</Text>
-      </View>
-
-      <View>
-        <Text style={{ marginTop: 20, marginLeft: 60, marginBottom: 0 }}>
-          Métier
-        </Text>
-      </View>
-
+    <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        <TextInput
-          style={styles.txtinput}
-          placeholder="Entrer un métier"
-          placeholderTextColor={{ color: "black" }}
-          onChangeText={onSearch}
-        />
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 50,
+            marginBottom: 40,
+          }}
+        >
+          <MaterialCommunityIcons
+            name="lightning-bolt"
+            size={60}
+            color="black"
+          />
+          <Text style={{ fontWeight: "bold" }}>Métiers & Compétence</Text>
+        </View>
 
-        {<DropDownList options={filter} />}
+        <View
+          style={{
+            justifyContent: "space-between",
+            flexDirection: "row",
+            backgroundColor: "#B9FFFF",
+          }}
+        >
+          <View>
+            <Image
+              style={{ width: 120, height: 120, backgroundColor: "#B9FFFF" }}
+              source={require("../assets/icon.jpg")}
+            />
+          </View>
+          <View style={{ marginLeft: 20, marginRight: 150, marginTop: 0 }}>
+            <Text>
+              En répondant aux questions du formulaire ci-dessous, vos critères
+              de recherche vont s’affiner automatiquement. Si vous avez importé
+              votre CV, certaines informations sont déjà remplies !
+            </Text>
+          </View>
+        </View>
+
+        <View
+          style={{
+            marginTop: 50,
+          }}
+        >
+          <Text style={styles.titleText}>Quel métier recherchez-vous ?</Text>
+        </View>
+        <View>
+          <Text style={styles.headingText}>Métier</Text>
+        </View>
+
+        {/* <SearchableDropdown
+          onTextChange={(text) => console.log(text)}
+          // Listner on the searchable input
+          onItemSelect={(item) => alert(JSON.stringify(item))}
+          // Called after the selection
+          containerStyle={{padding: 5}}
+          // Suggestion container style
+          textInputStyle={{
+            // Inserted text style
+            padding: 12,
+            borderWidth: 1,
+            borderColor: '#ccc',
+            backgroundColor: '#FAF7F6',
+          }}
+          itemStyle={{
+            // Single dropdown item style
+            padding: 10,
+            marginTop: 2,
+            backgroundColor: '#FAF9F8',
+            borderColor: '#bbb',
+            borderWidth: 1,
+          }}
+          itemTextStyle={{
+            // Text style of a single dropdown item
+            color: '#222',
+          }}
+          itemsContainerStyle={{
+            // Items container style you can pass maxHeight
+            // To restrict the items dropdown hieght
+            maxHeight: '60%',
+          }}
+          items={items}
+          // Mapping of item array
+          defaultIndex={2}
+          // Default selected item index
+          placeholder="placeholder"
+          // place holder for the search input
+          resPtValue={false}
+          // Reset textInput Value with true and false state
+          underlineColorAndroid="transparent"
+          // To remove the underline from the android input
+        />
+        <Text style={styles.headingText}>
+          Searchable Dropdown from Dynamic Array from Server
+        </Text> */}
+        <SearchableDropdown
+          onTextChange={(text) => console.log(text)}
+          // Change listner on the searchable input
+          onItemSelect={(item) => alert(JSON.stringify(item.toLowerCase()))}
+          // Called after the selection from the dropdown
+          containerStyle={{ padding: 5 }}
+          // Suggestion container style
+          textInputStyle={{
+            // Inserted text style
+            padding: 12,
+            borderWidth: 1,
+            borderColor: "#ccc",
+            backgroundColor: "#FAF7F6",
+          }}
+          itemStyle={{
+            // Single dropdown item style
+            padding: 10,
+            marginTop: 2,
+            backgroundColor: "#FAF9F8",
+            borderColor: "#bbb",
+            borderWidth: 1,
+          }}
+          itemTextStyle={{
+            // Text style of a single dropdown item
+            color: "#222",
+          }}
+          itemsContainerStyle={{
+            // Items container style you can pass maxHeight
+            // To restrict the items dropdown hieght
+            maxHeight: "50%",
+          }}
+          items={serverData}
+          // Mapping of item arrayskills.
+          defaultIndex={2}
+          // Default selected item index
+          placeholder="Enter métier"
+          // Place holder for the search input
+          resetValue={false}
+          // Reset textInput Value with true and false state
+          underlineColorAndroid="transparent"
+          // To remove the underline from the android input
+        />
       </View>
-    </View>
+    </SafeAreaView>
   );
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    alignItems: "center",
     flex: 1,
-    marginTop: 10,
-  },
-  txtinput: {
     backgroundColor: "white",
-    width: "70%",
-    height: 40,
-    justifyContent: "center",
-    marginTop: -20,
-    marginBottom: 350,
-    marginLeft: 0,
+    padding: 10,
+  },
+  titleText: {
+    padding: 8,
     fontSize: 16,
+    textAlign: "center",
     fontWeight: "bold",
-    alignItems: "center",
-    paddingHorizontal: 10,
+  },
+  headingText: {
+    padding: 8,
   },
 });
