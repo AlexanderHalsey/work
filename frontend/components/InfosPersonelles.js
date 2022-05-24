@@ -63,7 +63,7 @@ function InfosPersonelles(props) {
                 </Text>
             </View>
         </View>}
-        <View style={{alignItems: "center", paddingBottom: 80, marginTop: 10}}>
+        <View style={{alignItems: "center", paddingBottom: 150, marginTop: 10}}>
             
             {Object.keys(props.userInfo).map((key, i) => {
                 return (
@@ -74,9 +74,9 @@ function InfosPersonelles(props) {
                     props.updateUserInfo(obj)
                 }} />)
             })}
-            <Pressable onClick={() => {console.log("Send user Information to backend for storage")}}>
-                <View style={{ borderRadius: 100, height: 50, width: 50, position: "absolute", bottom: 20, backgroundColor: "#00F0FF"}} />
-                <FontAwesome name="check-circle" size={60} color="#000b33" style={{ position: "absolute", bottom: 15}} />
+            <Pressable onClick={() => {console.log("Send user Information to backend for storage")}} style={{marginTop: 50}}>
+                <View style={{ borderRadius: 100, height: 50, width: 50, position: "absolute", bottom: -25, left: -25, backgroundColor: "#00F0FF"}} />
+                <FontAwesome name="check-circle" size={60} color="#000b33" style={{ position: "absolute", bottom: -30, left: -25}} />
             </Pressable>
         </View>
     </ScrollView>

@@ -2,7 +2,11 @@ var mongoose = require("mongoose");
 
 var companySchema = mongoose.Schema({
   _id: String,
-  address: String,
+  address: {
+    streetName: String,
+    town: String,
+    zipCode: String
+  },
   contact_job: String,
   direction: String,
   name: String,
