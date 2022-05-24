@@ -11,13 +11,13 @@ let deviceWidth = Dimensions.get("window").width;
 
 export default function Welcome1(props) {
   useEffect(() => {
-    // si le user accede cette page sans avoir deconnecte depuis le dernier 
+    // si le user accede cette page sans avoir deconnecte depuis le dernier
     // session on va pouvoir recuperer son token et rediriger le user sur son dashboard
     AsyncStorage.getItem("token", function (error, value) {
       if (value !== null) {
         console.log("token local storage app", value);
         props.navigation.navigate("BottomNavigator", { screen: "Dashboard" });
-      } 
+      }
     });
   }, []);
 

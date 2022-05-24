@@ -5,6 +5,7 @@ import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconFontAwesome from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react/cjs/react.production.min";
 
 let deviceHeight = Dimensions.get("window").height;
 let deviceWidth = Dimensions.get("window").width;
