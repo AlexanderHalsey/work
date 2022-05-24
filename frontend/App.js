@@ -17,6 +17,8 @@ import { createStore, combineReducers } from "redux";
 import userInfo from "./reducers/userInfo.js";
 import professions from "./reducers/professions";
 import jobOffers from "./reducers/jobOffers";
+import likes from "./reducers/likes";
+import blackList from "./reducers/blackList";
 
 import Welcome1 from "./components/Welcome1";
 import Welcome2 from "./components/Welcome2";
@@ -30,6 +32,8 @@ const store = createStore(
     userInfo,
     professions,
     jobOffers,
+    likes,
+    blackList,
   })
 );
 

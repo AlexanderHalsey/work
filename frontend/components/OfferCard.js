@@ -6,6 +6,7 @@ import {
   useWindowDimensions,
   StyleSheet,
 } from "react-native";
+import { connect } from "react-redux";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import {
@@ -23,16 +24,17 @@ import {
 import ListOffersScreen from "./ListOffers";
 import ScreenOffer from "./ScreenOffer";
 
-var heartColor = "white";
-
 function OfferCard(props) {
   // on enregistre la dimension de l'écran de l'utilisateur
   const { height, width } = useWindowDimensions();
   // console.log("offerID: ", props.offer._id);
-  const [like, setLike] = useState(false);
+  const [like, setLike] = useState(
+    props.likes.find((el) => el === props.offer._id) ? true : false
+  );
 
   var handleClick = () => {
     console.log("click détecté + id offre :", props.offer._id);
+    props.updateLikes(props.offer._id);
     if (like == true) setLike(false);
     else setLike(true);
   };
@@ -51,7 +53,7 @@ function OfferCard(props) {
       color: "#FFD4D4",
     };
   }
-
+  console.log("props : ", props);
   return (
     <View
       style={{
@@ -136,4 +138,20 @@ function OfferCard(props) {
   );
 }
 
-export default OfferCard;
+const mapStateToProps = (state) => {
+  return {
+    likes: state.likes,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateLikes: (id) =>
+      dispatch({
+        type: "updateLikes",
+        id: id,
+      }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OfferCard);

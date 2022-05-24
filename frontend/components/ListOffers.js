@@ -3,6 +3,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
 import { useDisclose, Center } from "native-base";
 import { Button } from "react-native-elements";
+import { connect } from "react-redux";
 
 import {
   StyleSheet,
@@ -29,7 +30,7 @@ export default function ListOffersScreen(props) {
     const findOffers = async () => {
       // console.log(isFocused);
       if (isFocused) {
-        const data = await fetch("http://10.2.2.41:3000/offers/listOffers");
+        const data = await fetch("http://10.2.1.215:3000/offers/listOffers");
         const body = await data.json();
         setOffersList(body.offers);
       }
@@ -56,6 +57,7 @@ export default function ListOffersScreen(props) {
         }}
         contentContainerStyle={{ alignItems: "center" }}
       >
+        {/* filter avant le map des annonces */}
         {offersList.map((offer, i) => {
           return (
             <TouchableOpacity

@@ -26,6 +26,7 @@ const userSchema = mongoose.Schema({
   email: String,
   password: String,
   token: String,
+  blackListOffer: [String],
   userAddress: addressSchema,
   skills: [{ type: mongoose.Schema.Types.ObjectId, ref: "skills" }],
   applications: [applicationSchema],
