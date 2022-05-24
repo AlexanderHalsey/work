@@ -17,6 +17,10 @@ import Welcome2 from "./components/Welcome2";
 import Inscription from "./components/Inscription";
 import CvPopOver from "./components/CvPopOver";
 import ScreenOffer from "./components/ScreenOffer";
+import LogIn from "./components/LogIn";
+import SkillsSelect from "./components/SkillsSelect";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import MyDocuments from "./components/MyDocuments";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -88,30 +92,20 @@ const BottomNavigator = (props) => {
 };
 
 export default function App() {
-  const [isUser, setIsUser] = useState(null);
-
-  useEffect(() => {
-    // dans le future on verifiera dans le backend si la persone qui lance l'appli a une compte deja
-    // si oui - on "set" user a true
-    // si non - on "set" user a false
-    setIsUser(false);
-  }, []);
-
+  const [isUser, setIsUser] = useState(true);
   return (
     <NavigationContainer>
       {isUser ? (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-          <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Welcome1" component={Welcome1} />
-          <Stack.Screen name="Register" component={Inscription} />
-          <Stack.Screen name="CvPopover" component={CvPopOver} />
           <Stack.Screen name="Welcome2" component={Welcome2} />
-
-          <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
+          <Stack.Screen name="Register" component={Inscription} />
+          <Stack.Screen name="LogIn" component={LogIn} />
+          <Stack.Screen name="CvPopover" component={CvPopOver} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

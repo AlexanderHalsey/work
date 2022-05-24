@@ -7,24 +7,24 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 let deviceHeight = Dimensions.get("window").height;
 let deviceWidth = Dimensions.get("window").width;
 
-function Inscription(props) {
-  const [nom, setNom] = useState("");
-  const [prenom, setPrenom] = useState("");
+function LogIn(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confPassword, setConfPassword] = useState("");
 
   var handleSubmitSignin = async () => {
-    const data = await fetch("http://10.2.2.216:3000/signUp/inscription", {
+    const data = await fetch("http://10.2.2.216:3000/signUp/signIn", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `nomFromFront=${nom}&prenomFromfront=${prenom}&emailFromFront=${email}&passwordFromFront=${password}&confPasswordFromFront=${confPassword}`,
+      body: `&emailFromFront=${email}&passwordFromFront=${password}`,
     });
     var datajson = await data.json();
     console.log(datajson);
+
     if (datajson.result == true) {
       AsyncStorage.setItem("token", JSON.stringify(datajson.token));
       props.navigation.navigate("BottomNavigator", { screen: "Dashboard" });
+    } else {
+      console.log("mot de passe ou email incorrect");
     }
   };
 
@@ -38,8 +38,8 @@ function Inscription(props) {
         alignItems: "center",
       }}
     >
-      <Text style={{ color: "white", marginTop: 40 }}>
-        Validons vos informations personnelles
+      <Text style={{ color: "skyblue", marginTop: 40, fontSize: 20 }}>
+        -LogIn-
       </Text>
 
       <View
@@ -49,39 +49,8 @@ function Inscription(props) {
 
           marginBottom: 30,
         }}
-      >
-        <View style={{ flexDirection: "column", alignItems: "center" }}>
-          <IconFontAwesome5
-            name="male"
-            color="white"
-            size={50}
-            style={{ margin: 50 }}
-          />
-          <Text style={{ color: "skyblue" }}>Homme</Text>
-        </View>
-        <View style={{ flexDirection: "column", alignItems: "center" }}>
-          <IconFontAwesome5
-            name="female"
-            color="white"
-            size={50}
-            style={{ margin: 50 }}
-          />
-          <Text style={{ color: "skyblue" }}>Femme</Text>
-        </View>
-      </View>
+      ></View>
       <View style={{ width: 270, marginBottom: -30 }}>
-        <Input
-          style={{ fontSize: 15 }}
-          onChangeText={(value) => setNom(value)}
-          placeholder="Nom"
-        />
-
-        <Input
-          style={{ fontSize: 15 }}
-          onChangeText={(value) => setPrenom(value)}
-          placeholder="Prénom"
-        />
-
         <Input
           style={{ fontSize: 15 }}
           onChangeText={(value) => setEmail(value)}
@@ -92,13 +61,6 @@ function Inscription(props) {
           style={{ fontSize: 15 }}
           onChangeText={(value) => setPassword(value)}
           placeholder="Mot de passe"
-        />
-
-        <Input
-          style={{ fontSize: 15 }}
-          onChangeText={(value) => setConfPassword(value)}
-          placeholder="Confirmer votre mot de passe"
-          secureTextEntry={true}
         />
       </View>
       <Pressable
@@ -116,4 +78,4 @@ function Inscription(props) {
     </View>
   );
 }
-export default Inscription;
+export default LogIn;

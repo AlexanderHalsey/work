@@ -1,12 +1,5 @@
-
-import React, {useEffect, useState} from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  Image,
-  Pressable 
-} from 'react-native';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -17,17 +10,17 @@ import MyLikes from "./MyLikes";
 import MyDocuments from "./MyDocuments";
 import MyMissions from "./MyMissions";
 
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Dashboard(props) {
-
   const [screenDisplay, setScreenDisplay] = useState(null);
   const isFocused = useIsFocused();
   useEffect(() => {
     if (!isFocused) {
       setScreenDisplay(null);
     }
-  }, [isFocused])
+  }, [isFocused]);
 
   if (screenDisplay == "MyLikes") return <MyLikes />;
   else if (screenDisplay == "MyDocuments") return <MyDocuments />;
@@ -36,17 +29,12 @@ export default function Dashboard(props) {
   else {
     return (
       <View style={styles.container}>
-  
         <View style={styles.me}>
           <Text style={styles.itemText}>Bonjour Maxine</Text>
-          <Image
-            style={styles.image}
-            source={require('../assets/girl.jpg')}
-          />
+          <Image style={styles.image} source={require("../assets/girl.jpg")} />
         </View>
-  
+
         <View style={styles.rowContainer}>
-  
           <Pressable onPress={() => props.navigation.navigate("ListOffers")}>
             <View style={styles.itemContainer}>
               <MaterialCommunityIcons
@@ -57,44 +45,40 @@ export default function Dashboard(props) {
               <Text style={styles.itemText}>Liste annonce</Text>
             </View>
           </Pressable>
-  
+
           <Pressable onPress={() => setScreenDisplay("MyLikes")}>
             <View style={styles.itemContainer}>
               <Feather name="list" size={60} color="#B9FFFF" />
               <Text style={styles.itemText}>A etudier</Text>
             </View>
           </Pressable>
-  
         </View>
-  
+
         <View style={styles.rowContainer}>
-  
           <Pressable onPress={() => setScreenDisplay("MyDocuments")}>
             <View style={styles.itemContainer}>
-              <Ionicons 
-                name="document-attach-outline" 
-                size={60} 
+              <Ionicons
+                name="document-attach-outline"
+                size={60}
                 color="#B9FFFF"
               />
               <Text style={styles.itemText}>Mes documents</Text>
             </View>
           </Pressable>
-  
+
           <Pressable onPress={() => setScreenDisplay("PersonalInfo")}>
             <View style={styles.itemContainer}>
-              <MaterialCommunityIcons 
-                name="account-details-outline" 
-                size={60} 
+              <MaterialCommunityIcons
+                name="account-details-outline"
+                size={60}
                 color="#B9FFFF"
               />
               <Text style={styles.itemText}>Info personnel</Text>
             </View>
           </Pressable>
-  
         </View>
-  
+
         <View style={styles.rowContainer}>
-  
           <Pressable onPress={() => props.navigation.navigate("Skills")}>
             <View style={styles.itemContainer}>
               <MaterialCommunityIcons
@@ -105,18 +89,27 @@ export default function Dashboard(props) {
               <Text style={styles.itemText}>Skills</Text>
             </View>
           </Pressable>
-  
+
           <Pressable onPress={() => setScreenDisplay("MyMissions")}>
             <View style={styles.itemContainer}>
               <Feather name="briefcase" size={60} color="#B9FFFF" />
               <Text style={styles.itemText}>Mission</Text>
             </View>
           </Pressable>
-  
+          <Pressable
+            onPress={() => {
+              AsyncStorage.clear();
+              props.navigation.navigate("Welcome1");
+            }}
+          >
+            <View style={styles.itemContainer}>
+              <Feather name="trash" size={60} color="#B9FFFF" />
+              <Text style={styles.itemText}>Deconnexion</Text>
+            </View>
+          </Pressable>
         </View>
-  
       </View>
-    )
+    );
   }
 }
 

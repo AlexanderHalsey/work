@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var bcrypt = require("bcrypt");
 var userModel = require("../models/users");
-var addressModel = require("../models/users");
+
 var bcrypt = require("bcrypt");
 var uid2 = require("uid2");
 
@@ -12,6 +12,34 @@ const extraireInfos = require("../ocr/extraireInfos");
 /* GET users listing. */
 router.get("/", function (req, res, next) {
   res.send("respond with a resource");
+});
+
+router.post("/signIn", async function (req, res, next) {
+  var error = [];
+  var result = false;
+  var user = null;
+  var token = null;
+  if (req.body.emailFromFront == "" || req.body.passwordFromFront == "") {
+    error.push("champs vides");
+  }
+
+  if (error.length == 0) {
+    user = await userModel.findOne({
+      email: req.body.emailFromFront,
+    });
+    if (user) {
+      if (bcrypt.compareSync(req.body.passwordFromFront, user.password)) {
+        result = true;
+        token = user.token;
+      } else {
+        result = false;
+        error.push("mot de passe incorrect");
+      }
+    } else {
+      error.push("email incorrect");
+    }
+  }
+  res.json({ result, user, error, token });
 });
 
 router.post("/inscription", async function (req, res, next) {
