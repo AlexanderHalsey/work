@@ -9,6 +9,7 @@ import InfosPersonelles from "./InfosPersonelles";
 import MyLikes from "./MyLikes";
 import MyDocuments from "./MyDocuments";
 import Missions from "./Missions/Missions";
+import MyContracts from "./MyContracts";
 
 import { connect } from "react-redux";
 
@@ -100,6 +101,7 @@ function Dashboard(props) {
   else if (screenDisplay == "MyDocuments") return <MyDocuments />;
   else if (screenDisplay == "PersonalInfo") return <InfosPersonelles />;
   else if (screenDisplay == "MyMissions") return <Missions />;
+  else if (screenDisplay == "MyContracts") return <MyContracts />;
   else {
     return (
       <View style={styles.container}>
