@@ -3,7 +3,7 @@ var router = express.Router();
 const jobsModel = require("../models/jobs");
 
 /* GET users listing. */
-router.get("/skills", async function (req, res, next) {
+router.get("/", async function (req, res, next) {
   console.log("hello");
   var skills = await jobsModel.find();
 
