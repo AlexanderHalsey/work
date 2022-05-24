@@ -11,21 +11,14 @@ let deviceWidth = Dimensions.get("window").width;
 
 export default function Welcome1(props) {
   useEffect(() => {
-    // dans le future on verifiera dans le backend si la persone qui lance l'appli a une compte deja
-
-    // si oui - on "set" user a true
+    // si le user accede cette page sans avoir deconnecte depuis le dernier 
+    // session on va pouvoir recuperer son token et rediriger le user sur son dashboard
     AsyncStorage.getItem("token", function (error, value) {
-      console.log(value);
-
       if (value !== null) {
         console.log("token local storage app", value);
         props.navigation.navigate("BottomNavigator", { screen: "Dashboard" });
-      } else {
-        console.log("pas de token trouvé dans le localstorage");
-      }
+      } 
     });
-
-    // si non - on "set" user a false
   }, []);
 
   return (
@@ -49,7 +42,7 @@ export default function Welcome1(props) {
       <View>
         <Button
           onPress={() => {
-            props.navigation.navigate("Register");
+            props.navigation.navigate("Welcome2");
           }}
           buttonStyle={{
             backgroundColor: "#000B33",
