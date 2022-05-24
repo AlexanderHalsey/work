@@ -61,6 +61,7 @@ router.post("/inscription", async function (req, res, next) {
     req.body.nomFromFront == "" ||
     req.body.prenomFromFront == "" ||
     req.body.emailFromFront == "" ||
+    req.body.telFromFront == "" ||
     req.body.passwordFromFront == "" ||
     req.body.confPasswordFromFront == ""
   ) {

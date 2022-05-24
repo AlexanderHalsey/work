@@ -21,6 +21,7 @@ const userSchema = mongoose.Schema({
   nom: String,
   prenom: String,
   email: String,
+  phone: String,
   password: String,
   token: String,
   blackListOffer: [String],

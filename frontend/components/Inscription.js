@@ -1,29 +1,35 @@
 import React, { useState } from "react";
+
 import { View, Text, Dimensions, Pressable } from "react-native";
 import { Input } from "react-native-elements";
+
 import IconFontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { AntDesign } from '@expo/vector-icons'; 
+
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let deviceHeight = Dimensions.get("window").height;
 let deviceWidth = Dimensions.get("window").width;
 
 function Inscription(props) {
-  const [nom, setNom] = useState("");
-  const [prenom, setPrenom] = useState("");
-  const [email, setEmail] = useState("");
+  const [nom, setNom] = useState(props.route.params.name.split(" ")[1]);
+  const [prenom, setPrenom] = useState(props.route.params.name.split(" ")[0]);
+  const [email, setEmail] = useState(props.route.params.email);
+  const [tel, setTel] = useState(props.route.params.phone);
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
 
   var handleSubmitSignin = async () => {
-    const data = await fetch("http://10.2.2.216:3000/signUp/inscription", {
+    const data = await fetch("http://10.2.2.41:3000/signUp/inscription", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `nomFromFront=${nom}&prenomFromfront=${prenom}&emailFromFront=${email}&passwordFromFront=${password}&confPasswordFromFront=${confPassword}`,
+      body: `nomFromFront=${nom}&prenomFromfront=${prenom}&emailFromFront=${email}&telFromFront=${tel}&passwordFromFront=${password}&confPasswordFromFront=${confPassword}`,
     });
     var datajson = await data.json();
-    console.log(datajson);
     if (datajson.result == true) {
       AsyncStorage.setItem("token", JSON.stringify(datajson.token));
+    
       props.navigation.navigate("BottomNavigator", { screen: "Dashboard" });
     }
   };
@@ -34,71 +40,59 @@ function Inscription(props) {
         flex: 1,
         flexDirection: "column",
         backgroundColor: "#000B33",
-        justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <Text style={{ color: "white", marginTop: 40 }}>
+      <Text style={{ color: "white", marginTop: 100 }}>
         Validons vos informations personnelles
       </Text>
 
-      <View
-        style={{
-          marginBottom: -100,
-          flexDirection: "row",
-
-          marginBottom: 30,
-        }}
-      >
-        <View style={{ flexDirection: "column", alignItems: "center" }}>
-          <IconFontAwesome5
-            name="male"
-            color="white"
-            size={50}
-            style={{ margin: 50 }}
-          />
-          <Text style={{ color: "skyblue" }}>Homme</Text>
-        </View>
-        <View style={{ flexDirection: "column", alignItems: "center" }}>
-          <IconFontAwesome5
-            name="female"
-            color="white"
-            size={50}
-            style={{ margin: 50 }}
-          />
-          <Text style={{ color: "skyblue" }}>Femme</Text>
-        </View>
-      </View>
-      <View style={{ width: 270, marginBottom: -30 }}>
+      <View style={{ width: 300, marginTop: 100 }}>
         <Input
-          style={{ fontSize: 15 }}
+          style={{ fontSize: 15, color: "white" }}
           onChangeText={(value) => setNom(value)}
           placeholder="Nom"
+          value={nom}
         />
 
         <Input
-          style={{ fontSize: 15 }}
+          style={{ fontSize: 15, color: "white" }}
           onChangeText={(value) => setPrenom(value)}
           placeholder="Prénom"
+          value={prenom}
         />
 
         <Input
-          style={{ fontSize: 15 }}
+          style={{ fontSize: 15, color: "white" }}
           onChangeText={(value) => setEmail(value)}
           placeholder="email"
+          value={email}
         />
 
         <Input
-          style={{ fontSize: 15 }}
+          style={{ fontSize: 15, color: "white" }}
+          containerStyle={{marginBottom: 30}}
+          onChangeText={(value) => setTel(value)}
+          placeholder="Téléphone"
+          value={tel}
+        />
+
+        <Input
+          style={{ fontSize: 15, color: "white" }}
           onChangeText={(value) => setPassword(value)}
           placeholder="Mot de passe"
+          secureTextEntry={true}
+          value={password}
+          rightIcon={password === confPassword && password !== "" && <AntDesign name="checkcircle" size={24} color="green" />}
         />
 
         <Input
-          style={{ fontSize: 15 }}
+          style={{ fontSize: 15, color: "white" }}
           onChangeText={(value) => setConfPassword(value)}
           placeholder="Confirmer votre mot de passe"
           secureTextEntry={true}
+          value={confPassword}
+          rightIcon={password === confPassword && password !== "" && <AntDesign name="checkcircle" size={24} color="green" />}
         />
       </View>
       <Pressable
@@ -110,7 +104,6 @@ function Inscription(props) {
           name="user-check"
           size={55}
           color="white"
-          style={{ margin: 30, marginBottom: -1 }}
         />
       </Pressable>
     </View>
