@@ -37,7 +37,7 @@ export default function CvPopOver(props) {
 
       <IconFontAwesome5
         onPress={() => {
-          props.navigation.navigate("Inscription");
+          props.navigation.navigate("Register", props.route.params);
         }}
         name="user-check"
         size={55}

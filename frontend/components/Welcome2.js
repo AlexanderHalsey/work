@@ -4,6 +4,8 @@ import { Button } from "react-native-elements";
 import { Dimensions } from "react-native";
 import IconFontAwesome from "react-native-vector-icons/FontAwesome";
 import IconFontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { Feather } from '@expo/vector-icons'; 
+
 
 import * as DocumentPicker from 'expo-document-picker';
 
@@ -18,19 +20,20 @@ export default function Welcome2(props) {
     })
 
     if (result.type != "cancel") {
-      setCV(result.uri);
       const formData = new FormData();
       formData.append("file", {
         uri: result.uri,
         type: "application/pdf",
         name: "cv.pdf"
       })
+
       const res = await fetch("http://10.2.2.41:3000/signUp/sendCV", {
         method: "POST",
         body: formData
       });
       const resJSON = await res.json();
       console.log(resJSON);
+      props.navigation.navigate("CvPopover", resJSON);
     }
   }
 
