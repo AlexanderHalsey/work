@@ -36,6 +36,9 @@ const store = createStore(
     blackList,
   })
 );
+import LogIn from "./components/LogIn";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import MyDocuments from "./components/MyDocuments";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

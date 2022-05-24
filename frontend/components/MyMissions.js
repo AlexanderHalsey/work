@@ -40,7 +40,7 @@ export default function MyMissions() {
         </View>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

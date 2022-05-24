@@ -1,14 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Image, Text } from "react-native";
 import { Button } from "react-native-elements";
 import { Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconFontAwesome from "react-native-vector-icons/FontAwesome";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let deviceHeight = Dimensions.get("window").height;
 let deviceWidth = Dimensions.get("window").width;
 
 export default function Welcome1(props) {
+  useEffect(() => {
+    // dans le future on verifiera dans le backend si la persone qui lance l'appli a une compte deja
+
+    // si oui - on "set" user a true
+    AsyncStorage.getItem("token", function (error, value) {
+      console.log(value);
+
+      if (value !== null) {
+        console.log("token local storage app", value);
+        props.navigation.navigate("BottomNavigator", { screen: "Dashboard" });
+      } else {
+        console.log("pas de token trouvé dans le localstorage");
+      }
+    });
+
+    // si non - on "set" user a false
+  }, []);
+
   return (
     <View
       style={{
@@ -30,7 +49,7 @@ export default function Welcome1(props) {
       <View>
         <Button
           onPress={() => {
-            props.navigation.navigate("Welcome2");
+            props.navigation.navigate("Register");
           }}
           buttonStyle={{
             backgroundColor: "#000B33",
@@ -59,6 +78,7 @@ export default function Welcome1(props) {
             justifyContent: "center",
           }}
           title="Se connecter"
+          onPress={() => props.navigation.navigate("LogIn")}
         />
       </View>
       <Text style={{ alignItems: "center", marginTop: 50, margin: 40 }}>
