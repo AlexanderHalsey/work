@@ -2,11 +2,8 @@ const mongoose = require("mongoose");
 
 const addressSchema = mongoose.Schema({
   streetName: String,
-  streetName2: String,
   town: String,
   zipCode: String,
-  province: String,
-  country: String,
 });
 
 const applicationSchema = mongoose.Schema({
@@ -27,7 +24,14 @@ const userSchema = mongoose.Schema({
   password: String,
   token: String,
   userAddress: addressSchema,
-  skills: [{ type: mongoose.Schema.Types.ObjectId, ref: "skills" }],
+  jobs: [{
+    job_title: String,
+    skills: [{
+      skill_title: String,
+      experience: Number,
+      level: Number
+    }]
+  }],
   applications: [applicationSchema],
 });
 
