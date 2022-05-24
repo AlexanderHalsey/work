@@ -39,6 +39,7 @@ const store = createStore(
 import LogIn from "./components/LogIn";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MyDocuments from "./components/MyDocuments";
+import MyContracts from "./components/MyContracts";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
