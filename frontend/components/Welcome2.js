@@ -9,8 +9,6 @@ import { BACKEND_URL } from '@env'
 
 import * as DocumentPicker from 'expo-document-picker'
 
-import * as DocumentPicker from 'expo-document-picker'
-
 let deviceHeight = Dimensions.get('window').height
 let deviceWidth = Dimensions.get('window').width
 
