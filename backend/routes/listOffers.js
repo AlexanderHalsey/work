@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const offerModel = require("../models/offers");
+const userModel = require("../models/users");
 
 /* GET users listing. */
 router.get("/listOffers", async function (req, res, next) {
@@ -20,7 +21,33 @@ router.get("/displayOffer", async function (req, res, next) {
 });
 
 router.delete("/deleteOffer", async function (req, res, next) {
-  var deleteOffer = await offerModel.deleteOne(req.query.offerId);
+  var deleteOffer = await userModel.deleteOne(req.query.offerId);
+  {
+    token: req.body.token;
+  }
+  {
+    $push: {
+      id: _id;
+    }
+  }
+
+  res.json({ offer });
+});
+
+router.post("/likeOffer", async function (req, res, next) {
+  var likeOffer = await userModel.updateOne(
+    { token: req.body.token },
+    { $push: { id: _id } }
+  );
+
+  res.json({ offer });
+});
+
+router.get("/displayLikeOffer", async function (req, res, next) {
+  var likeOffer = await userModel.findOne(
+    { token: req.body.token },
+    { $push: { id: _id } }
+  );
 
   res.json({ offer });
 });

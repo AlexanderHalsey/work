@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
-import { useDisclose, Center } from "native-base";
+import { useDisclose, Center, Column } from "native-base";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Button } from "react-native-elements";
 import { connect } from "react-redux";
 
@@ -50,6 +51,23 @@ export default function ListOffersScreen(props) {
         marginTop: 30,
       }}
     >
+      <View
+        style={{
+          height: 100,
+          width: width,
+          backgroundColor: "#000B33",
+          flexDirection: "Column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <MaterialCommunityIcons
+          name="text-box-search-outline"
+          size={60}
+          color="#B9FFFF"
+        />
+        <Text style={{ color: "white" }}>Liste annonces</Text>
+      </View>
       <ScrollView
         style={{
           flex: 1,
@@ -85,12 +103,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flexGrow: 2,
   },
-  header: {
-    height: 140,
+  header1: {
+    height: 100,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 15,
-    backgroundColor: colorwhite,
+    backgroundColor: "blue",
     borderBottomWidth: 1,
     borderBottomColor: "black",
   },
