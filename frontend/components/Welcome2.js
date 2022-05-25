@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react'
 import { View, Image, Text, Pressable } from 'react-native'
 import { Button } from 'react-native-elements'
@@ -7,6 +8,15 @@ import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { Feather } from '@expo/vector-icons'
 
 import * as DocumentPicker from 'expo-document-picker'
+=======
+import React, { useState } from "react";
+import { View, Image, Text, Pressable } from "react-native";
+import { Button } from "react-native-elements";
+import { Dimensions } from "react-native";
+import IconFontAwesome from "react-native-vector-icons/FontAwesome";
+import IconFontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { Feather } from "@expo/vector-icons";
+>>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f
 
 let deviceHeight = Dimensions.get('window').height
 let deviceWidth = Dimensions.get('window').width
@@ -21,12 +31,20 @@ export default function Welcome2(props) {
       const formData = new FormData()
       formData.append('file', {
         uri: result.uri,
+<<<<<<< HEAD
         type: 'application/pdf',
         name: 'cv.pdf',
       })
 
       const res = await fetch('http://192.168.43.176:3000/signUp/sendCV', {
         method: 'POST',
+=======
+        type: "application/pdf",
+        name: "cv.pdf",
+      });
+      const res = await fetch("http://10.2.2.41:3000/signUp/sendCV", {
+        method: "POST",
+>>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f
         body: formData,
       })
       const resJSON = await res.json()

@@ -21,9 +21,15 @@ import ScreenOffer from './ScreenOffer'
 export default function ListOffersScreen(props) {
   const isFocused = useIsFocused()
   //variable d'état pour récupérer la liste des offres
+<<<<<<< HEAD
   const [offersList, setOffersList] = useState([])
   const { height, width } = useWindowDimensions()
   const { isOpen, onOpen, onClose } = useDisclose()
+=======
+  const [offersList, setOffersList] = useState(null);
+  const { height, width } = useWindowDimensions();
+  const { isOpen, onOpen, onClose } = useDisclose();
+>>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f
 
   //fetch pour récupérer les infos en BDD
 
@@ -31,9 +37,17 @@ export default function ListOffersScreen(props) {
     const findOffers = async () => {
       // console.log(isFocused);
       if (isFocused) {
+<<<<<<< HEAD
         const data = await fetch('http://192.168.43.176:3000/offers/listOffers')
         const body = await data.json()
         setOffersList(body.offers)
+=======
+        const data = await fetch("http://10.2.1.215:3000/offers/listOffers");
+
+        const body = await data.json();
+        console.log("body:", body);
+        setOffersList(body.offers);
+>>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f
       }
     }
     findOffers()
@@ -76,6 +90,7 @@ export default function ListOffersScreen(props) {
         contentContainerStyle={{ alignItems: 'center' }}
       >
         {/* filter avant le map des annonces */}
+<<<<<<< HEAD
         {offersList.map((offer, i) => {
           return (
             <TouchableOpacity
@@ -91,6 +106,24 @@ export default function ListOffersScreen(props) {
             </TouchableOpacity>
           )
         })}
+=======
+        {offersList &&
+          offersList.map((offer, i) => {
+            return (
+              <TouchableOpacity
+                key={i}
+                onPress={() => {
+                  console.log("offer._id sur touchableopacity", offer._id);
+                  props.navigation.navigate("ScreenOffer", {
+                    offerId: offer._id,
+                  });
+                }}
+              >
+                <OfferCard key={i} offer={offer} />
+              </TouchableOpacity>
+            );
+          })}
+>>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f
       </ScrollView>
     </SafeAreaView>
   )

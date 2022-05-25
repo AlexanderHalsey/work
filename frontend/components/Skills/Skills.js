@@ -1,3 +1,4 @@
+<<<<<<< HEAD:frontend/components/SkillsSelect.js
 // Example of Searchable Dropdown / Picker in React Native
 // https://aboutreact.com/example-of-searchable-dropdown-picker-in-react-native/
 
@@ -50,20 +51,69 @@ export const App = () => {
     joblist()
     console.log('show server data', serverData)
   }, [])
+=======
+import React, { useState, useEffect } from "react";
 
-  // useEffect(() => {
-  //   fetch('https://aboutreact.herokuapp.com/demosearchables.php')
-  //     .then((response) => response.json())
-  //     .then((responseJson) => {
-  //       //Successful response from the API Call
-  //       console.log(responseJson)
-  //       setServerData(responseJson.results);
+// import all the components we are going to use
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }, []);
+import Job from "./Job";
+
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { AntDesign } from "@expo/vector-icons";
+import { Center } from "native-base";
+
+import SearchableDropdown from "react-native-searchable-dropdown";
+
+
+const items = [
+
+  { id: 1, name: "Android Developer" },
+  { id: 2, name: "IT Technician" },
+  { id: 3, name: "Web Deveoper" },
+];
+
+export const App = (props) => {
+
+  const [serverData, setServerData] = useState([]);
+  const [dropDownList, setDropDownList] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  useEffect(() => {
+    const fetchingSkills = async () => {
+      const rawData = await fetch("http://10.2.2.41:3000/skills");
+      const dataJSON = await rawData.json();
+      setServerData(dataJSON.skills);
+      console.log(dataJSON.skills.map(el => el.job_title));
+      setDropDownList(dataJSON.skills.map((el,i) => { return {id: i, name: el.job_title}}));
+    };
+    fetchingSkills();
+  }, []);
+>>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f:frontend/components/Skills/Skills.js
+
+  const addbuttonHandler = (item) => {
+<<<<<<< HEAD:frontend/components/Skills/Skills.js
+    console.log("server data at 0", serverData[0]);
+    console.log("item", item);
+    const newObj = serverData.find(el => el["job_title"] === item["name"]);
+    setSelectedItems([newObj, ...selectedItems]);
+=======
+    let dest = [item, ...selectedItems];
+    setSelectedItems(dest);
+>>>>>>> blerim:frontend/components/SkillsSelect.js
+    
+    // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
+
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -93,8 +143,13 @@ export const App = () => {
         >
           <View>
             <Image
+<<<<<<< HEAD:frontend/components/SkillsSelect.js
               style={{ width: 120, height: 120, backgroundColor: '#B9FFFF' }}
               source={require('../assets/icon.jpg')}
+=======
+              style={{ width: 120, height: 120, backgroundColor: "#B9FFFF" }}
+              source={require("../../assets/icon.jpg")}
+>>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f:frontend/components/Skills/Skills.js
             />
           </View>
           <View style={{ marginLeft: 20, marginRight: 150, marginTop: 0 }}>
@@ -117,67 +172,27 @@ export const App = () => {
           <Text style={styles.headingText}>Métier</Text>
         </View>
 
-        {/* <SearchableDropdown
-          onTextChange={(text) => console.log(text)}
-          // Listner on the searchable input
-          onItemSelect={(item) => alert(JSON.stringify(item))}
-          // Called after the selection
-          containerStyle={{padding: 5}}
-          // Suggestion container style
-          textInputStyle={{
-            // Inserted text style
-            padding: 12,
-            borderWidth: 1,
-            borderColor: '#ccc',
-            backgroundColor: '#FAF7F6',
-          }}
-          itemStyle={{
-            // Single dropdown item style
-            padding: 10,
-            marginTop: 2,
-            backgroundColor: '#FAF9F8',
-            borderColor: '#bbb',
-            borderWidth: 1,
-          }}
-          itemTextStyle={{
-            // Text style of a single dropdown item
-            color: '#222',
-          }}
-          itemsContainerStyle={{
-            // Items container style you can pass maxHeight
-            // To restrict the items dropdown hieght
-            maxHeight: '60%',
-          }}
-          items={items}
-          // Mapping of item array
-          defaultIndex={2}
-          // Default selected item index
-          placeholder="placeholder"
-          // place holder for the search input
-          resPtValue={false}
-          // Reset textInput Value with true and false state
-          underlineColorAndroid="transparent"
-          // To remove the underline from the android input
-        />
-        <Text style={styles.headingText}>
-          Searchable Dropdown from Dynamic Array from Server
-        </Text> */}
         <SearchableDropdown
+          multi={true}
           onTextChange={(text) => console.log(text)}
-          // Change listner on the searchable input
-          onItemSelect={(item) => alert(JSON.stringify(item.toLowerCase()))}
-          // Called after the selection from the dropdown
+          onItemSelect={(item) => {
+            addbuttonHandler(item);
+<<<<<<< HEAD:frontend/components/Skills/Skills.js
+=======
+            
+            // disabled= "false"
+            // onPress={addbuttonHandler}
+            // alert(JSON.stringify(item))
+>>>>>>> blerim:frontend/components/SkillsSelect.js
+          }}
           containerStyle={{ padding: 5 }}
-          // Suggestion container style
           textInputStyle={{
-            // Inserted text style
             padding: 12,
             borderWidth: 1,
             borderColor: '#ccc',
             backgroundColor: '#FAF7F6',
           }}
           itemStyle={{
-            // Single dropdown item style
             padding: 10,
             marginTop: 2,
             backgroundColor: '#FAF9F8',
@@ -185,15 +200,25 @@ export const App = () => {
             borderWidth: 1,
           }}
           itemTextStyle={{
+<<<<<<< HEAD:frontend/components/SkillsSelect.js
             // Text style of a single dropdown item
             color: '#222',
+=======
+            color: "#222",
+            padding: 10,
+            marginTop: 2,
+            backgroundColor: "#ddd",
+            borderColor: "#bbb",
+            borderWidth: 1,
+            borderRadius: 5,
+>>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f:frontend/components/Skills/Skills.js
           }}
           itemsContainerStyle={{
             // Items container style you can pass maxHeight
             // To restrict the items dropdown hieght
             maxHeight: '50%',
           }}
-          items={serverData}
+          items={dropDownList}
           // Mapping of item arrayskills.
           defaultIndex={2}
           // Default selected item index
@@ -205,6 +230,11 @@ export const App = () => {
           // To remove the underline from the android input
         />
       </View>
+      {selectedItems.map((item, key) => {
+        return (
+          <Job key={key} title={item.job_title} skills={item.skills} />
+        );
+      })}
     </SafeAreaView>
   )
 }
@@ -226,4 +256,24 @@ const styles = StyleSheet.create({
   headingText: {
     padding: 8,
   },
+<<<<<<< HEAD:frontend/components/SkillsSelect.js
 })
+=======
+  appButtonContainer: {
+    elevation:5,
+    backgroundColor: "#000B33",
+    borderRadius: 40,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginTop:5,
+    marginBottom:4
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase",
+  },
+});
+>>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f:frontend/components/Skills/Skills.js

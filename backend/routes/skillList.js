@@ -5,10 +5,7 @@ const userModel = require("../models/users");
 
 /* GET users listing. */
 router.get("/", async function (req, res, next) {
-  console.log("hello");
   var skills = await jobsModel.find();
-
-  console.log("show all skillsList", skills);
   res.json({ skills });
 });
 
