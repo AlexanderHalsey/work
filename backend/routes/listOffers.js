@@ -43,9 +43,6 @@ router.get("/listOffers", async function (req, res, next) {
 });
 
 router.delete("/deleteOffer", async function (req, res, next) {
-<<<<<<< HEAD
-  var deleteOffer = await offerModel.deleteOne(req.query.offerId);
-=======
   var deleteOffer = await userModel.deleteOne(req.query.offerId);
   {
     token: req.body.token;
@@ -74,7 +71,6 @@ router.get("/displayLikeOffer", async function (req, res, next) {
     { $push: { id: _id } }
   );
 
->>>>>>> eddy
   res.json({ offer });
 });
 
