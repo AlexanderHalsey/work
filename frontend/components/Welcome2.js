@@ -4,8 +4,7 @@ import { Button } from "react-native-elements";
 import { Dimensions } from "react-native";
 import IconFontAwesome from "react-native-vector-icons/FontAwesome";
 import IconFontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import { Feather } from '@expo/vector-icons'; 
-
+import { Feather } from "@expo/vector-icons";
 
 import * as DocumentPicker from "expo-document-picker";
 
@@ -23,16 +22,9 @@ export default function Welcome2(props) {
       formData.append("file", {
         uri: result.uri,
         type: "application/pdf",
-<<<<<<< HEAD
-        name: "cv.pdf"
-      })
-
-      const res = await fetch("http://10.2.2.41:3000/signUp/sendCV", {
-=======
         name: "cv.pdf",
       });
       const res = await fetch("http://10.2.1.215:3000/signUp/sendCV", {
->>>>>>> eddy
         method: "POST",
         body: formData,
       });
