@@ -1,7 +1,3 @@
-// Example of Searchable Dropdown / Picker in React Native
-// https://aboutreact.com/example-of-searchable-dropdown-picker-in-react-native/
-
-// import React in our code
 import React, { useState, useEffect } from "react";
 
 // import all the components we are going to use
@@ -14,56 +10,31 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { AntDesign } from "@expo/vector-icons";
 import { Center } from "native-base";
-// import SearchableDropdown component
+
 import SearchableDropdown from "react-native-searchable-dropdown";
 
-// Item array for the dropdown
+
 const items = [
-  // name key is must. It is to show the text in front
+
   { id: 1, name: "Android Developer" },
   { id: 2, name: "IT Technician" },
   { id: 3, name: "Web Deveoper" },
 ];
 
 export const App = (props) => {
-  // console.log(selectedItems)
-  // Data Source for the SearchableDropdown
+
   const [serverData, setServerData] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [toggle, setToggle] = useState(false);
-  // const [name, setName] = useState('')
-  // useEffect(() => {
-  //   const joblist = async function loadData() {
-  //     var rawJob = await fetch("https://10.2.1.38:3000/skills");
-  //     var jobData = await rawJob.json();
-
-  //     var temp = jobData.skills.map((e,key) => ({id:key,name: e.job_title}));
-  //     // var temp = jobData.skills.map(e => ({name: e.job_title}));
-
-  //     console.log(jobData);
-  //     // var items = jobData.skills.map((e,key) => ({ id:key.toString() , name: e.job_title.toLowerCase() }));
-  //     // const items = jobData.skills.map((e, key) => {
-  //     //   return {
-  //     //     id: key.toString(),
-  //     //     name: e.job_title,
-  //     //   };
-  //     // });
-  //     setServerData(temp);
-  //   };
-  //   joblist();
-  //   console.log("show server data", serverData);
-  // }, []);
 
   useEffect(() => {
-    fetch("https://aboutreact.herokuapp.com/demosearchables.php")
+    fetch("http://10.2.2.41:3000/skillList")
       .then((response) => response.json())
       .then((responseJson) => {
-        //Successful response from the API Call
-        //console.log(responseJson);
         setServerData(responseJson.results);
       })
       .catch((error) => {
@@ -77,20 +48,6 @@ export const App = (props) => {
     // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
 
   };
-
-  // useEffect(() => {
-  //   async function fetchEmployees() {
-  //     const response = await fetch('/employees');
-  //     const fetchedEmployees = await response.json(response);
-  //     setEmployees(fetchedEmployees);
-  //   }
-  //   fetchEmployees();
-  // }, []);
-  // return (
-  //   <div>
-  //     {employees.map(name => <div>{name}</div>)}
-  //   </div>
-  // );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -147,29 +104,17 @@ export const App = (props) => {
         <SearchableDropdown
           multi={true}
           onTextChange={(text) => console.log(text)}
-          // Change listner on the searchable input
-
           onItemSelect={(item) => {
-            console.log("on item selected :", item.name);
-            setToggle(true);
-            //  items.push({name:item.name})
             addbuttonHandler(item);
-            // disabled= "false"
-            // onPress={addbuttonHandler}
-            // alert(JSON.stringify(item))
           }}
-          // Called after the selection from the dropdown
           containerStyle={{ padding: 5 }}
-          // Suggestion container style
           textInputStyle={{
-            // Inserted text style
             padding: 12,
             borderWidth: 1,
             borderColor: "#ccc",
             backgroundColor: "#FAF7F6",
           }}
           itemStyle={{
-            // Single dropdown item style
             padding: 10,
             marginTop: 2,
             backgroundColor: "#FAF9F8",
@@ -177,7 +122,6 @@ export const App = (props) => {
             borderWidth: 1,
           }}
           itemTextStyle={{
-            // Text style of a single dropdown item
             color: "#222",
             padding: 10,
             marginTop: 2,
@@ -202,13 +146,6 @@ export const App = (props) => {
           underlineColorAndroid="transparent"
           // To remove the underline from the android input
         />
-        <View>
-          {/* <Button
-            onPress={addbuttonHandler}
-            title={"Add items"}
-            // disabled= "false"
-          /> */}
-        </View>
       </View>
       {selectedItems.map((item, key) => {
         return (

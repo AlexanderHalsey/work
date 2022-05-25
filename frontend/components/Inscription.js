@@ -23,14 +23,13 @@ function Inscription(props) {
 
   var handleSubmitSignin = async () => {
     // verifier que le backend accepte les infos de sign up
-    const data = await fetch("http://192.168.1.85:3000/signUp/inscription", {
+    const data = await fetch("http://10.2.2.41:3000/signUp/inscription", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `nomFromFront=${nom}&prenomFromFront=${prenom}&emailFromFront=${email}&telFromFront=${tel}&passwordFromFront=${password}&confPasswordFromFront=${confPassword}`,
     });
     var datajson = await data.json();
     if (datajson.result == true) {
-      console.log("no")
       // on vient "setter" notre token dans le localStorage
       AsyncStorage.setItem("token", JSON.stringify(datajson.token));
       // on initialise les reducers de Redux
@@ -47,9 +46,8 @@ function Inscription(props) {
       });
       props.initialiseProfessionInfo(datajson.saveUser.jobs);
       props.initialiseApplicationsInfo(datajson.saveUser.applications);
-      console.log("hellooooo,kjlhg")
       // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
-      const offersRaw = await fetch(`http://192.168.1.85:3000/offers/listOffers?token=${datajson.token}`)
+      const offersRaw = await fetch(`http://10.2.2.41:3000/offers/listOffers?token=${datajson.token}`)
       const offers = await offersRaw.json();
       console.log(offers);
       props.initialiseJobOffersInfo(offers.offers);

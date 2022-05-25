@@ -14,7 +14,7 @@ let deviceWidth = Dimensions.get("window").width;
 
 function Welcome1(props) {
   useEffect(() => {
-    // AsyncStorage.clear();
+    AsyncStorage.clear();
 
     // si le user accede cette page sans avoir deconnecte depuis le dernier 
     // session on va pouvoir recuperer son token et rediriger le user sur son dashboard
@@ -22,7 +22,7 @@ function Welcome1(props) {
       if (value !== null) {
         var handleSubmitSignin = async () => {
           // verifier que le backend accepte les infos de sign up
-          const data = await fetch(`http://192.168.1.85:3000/signUp/existingToken?token=${JSON.parse(value)}`);
+          const data = await fetch(`http://10.2.2.41:3000/signUp/existingToken?token=${JSON.parse(value)}`);
           var datajson = await data.json();
           console.log("datajson", datajson);
           // on initialise les reducers de Redux
@@ -41,7 +41,7 @@ function Welcome1(props) {
           props.initialiseApplicationsInfo(datajson.user.applications);
     
           // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
-          const offersRaw = await fetch(`http://192.168.1.85:3000/offers/listOffers?token=${datajson.token}`)
+          const offersRaw = await fetch(`http://10.2.2.41:3000/offers/listOffers?token=${datajson.token}`)
           const offers = await offersRaw.json();
           props.initialiseJobOffersInfo(offers.offers);
     
