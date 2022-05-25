@@ -40,7 +40,7 @@ const Job = (props) => {
             <View
                 style={{ flex: 1, backgroundColor:'#001150',marginTop: 20, alignItems:"center"}}
                 >
-                <Text style={{color:"white",marginBottom:45,marginTop:20,fontSize:20}}>Developpeur(se) Full Stack</Text>
+                <Text style={{color:"white",marginBottom:45,marginTop:20,fontSize:20}}>{props.title}</Text>
                 <Text>Ce que je sais faire</Text> 
                 {props.skills.map((el,i) => {
                     <Accordion key={i} skill={el} />
@@ -50,7 +50,6 @@ const Job = (props) => {
                     <AntDesign name="checkcircle" size={60} color="white" style={{justifyContent:"center",marginTop:75}} />
                 </Pressable>    
             </View>
-            
           </>
         )}
       </Animated.View>

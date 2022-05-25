@@ -36,24 +36,20 @@ const testing = [
 ]
 
 export const App = (props) => {
-  const [infoDisplay, setInfoDisplay] = useState(true)
-  const [serverData, setServerData] = useState([])
+
+  const [infoDisplay, setInfoDisplay] = useState(true);
+  const [serverData, setServerData] = useState([]);
+  const [dropDownList, setDropDownList] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
   // const [jData, setJobData] = useState([]);
 
   useEffect(() => {
-    const fetchingSkills = async () => {
       const rawData = await fetch(`${BACKEND_URL}/skills`)
-      const dataJSON = await rawData.json()
-      setServerData(dataJSON.skills)
-      setDropDownList(
-        dataJSON.skills.map((el, i) => {
-          return { id: i, name: el.job_title }
-        })
-      )
-    }
-    joblist()
-    console.log('show server data', serverData)
-  }, [])
+      const dataJSON = await rawData.json();
+      setServerData(dataJSON.skills);
+      setDropDownList(dataJSON.skills.map((el,i) => { return {id: i, name: el.job_title}}));
+    fetchingSkills();
+  }, []);
 
   const addbuttonHandler = (item) => {
     const newObj = serverData.find((el) => el['job_title'] === item['name'])
