@@ -23,16 +23,10 @@ export default function Welcome2(props) {
       formData.append("file", {
         uri: result.uri,
         type: "application/pdf",
-<<<<<<< HEAD
         name: "cv.pdf"
       })
-
+      
       const res = await fetch("http://10.2.2.41:3000/signUp/sendCV", {
-=======
-        name: "cv.pdf",
-      });
-      const res = await fetch("http://10.2.1.215:3000/signUp/sendCV", {
->>>>>>> eddy
         method: "POST",
         body: formData,
       });

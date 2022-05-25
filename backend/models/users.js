@@ -23,6 +23,8 @@ const userSchema = mongoose.Schema({
   email: String,
   phone: String,
   password: String,
+  bornWhen: Date,
+  bornAt: String,
   token: String,
   blackListOffers: [{ type: mongoose.Schema.Types.ObjectId, ref: "offers" }],
   likesOfferIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "offers" }],

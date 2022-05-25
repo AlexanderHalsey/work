@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { View, Image, Text } from "react-native";
 import { Button } from "react-native-elements";
 import { Dimensions } from "react-native";
+
+import { connect } from "react-redux";
+
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconFontAwesome from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,15 +12,45 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 let deviceHeight = Dimensions.get("window").height;
 let deviceWidth = Dimensions.get("window").width;
 
-export default function Welcome1(props) {
+function Welcome1(props) {
   useEffect(() => {
-    // si le user accede cette page sans avoir deconnecte depuis le dernier
+    // AsyncStorage.clear();
+
+    // si le user accede cette page sans avoir deconnecte depuis le dernier 
     // session on va pouvoir recuperer son token et rediriger le user sur son dashboard
     AsyncStorage.getItem("token", function (error, value) {
       if (value !== null) {
-        console.log("token local storage app", value);
-        props.navigation.navigate("BottomNavigator", { screen: "Dashboard" });
-      }
+        var handleSubmitSignin = async () => {
+          // verifier que le backend accepte les infos de sign up
+          const data = await fetch(`http://192.168.1.85:3000/signUp/existingToken?token=${JSON.parse(value)}`);
+          var datajson = await data.json();
+          console.log("datajson", datajson);
+          // on initialise les reducers de Redux
+          props.initialiseUserInfo({
+            "Nom": datajson.user.nom,
+            "Prénom": datajson.user.prenom,
+            "Mail": datajson.user.email,
+            "Téléphone": datajson.user.phone || "",
+            "Date de Naissance": datajson.user.bornWhen || "",
+            "Lieu de Naissance": datajson.user.bornAt || "",
+            "Adresse": datajson.user.userAddress.streetName ,
+            "Ville": datajson.user.userAddress.town,
+            "Code Postal": datajson.user.userAddress.zipCode,
+          });
+          props.initialiseProfessionInfo(datajson.user.jobs);
+          props.initialiseApplicationsInfo(datajson.user.applications);
+    
+          // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
+          const offersRaw = await fetch(`http://192.168.1.85:3000/offers/listOffers?token=${datajson.token}`)
+          const offers = await offersRaw.json();
+          props.initialiseJobOffersInfo(offers.offers);
+    
+          // on navigue vers la page de Dashboard
+          props.navigation.navigate("BottomNavigator", { screen: "Dashboard" });
+      
+        };
+        handleSubmitSignin();
+      } 
     });
   }, []);
 
@@ -101,3 +134,37 @@ export default function Welcome1(props) {
     </View>
   );
 }
+
+const mapDispatchToProps = dispatch => {
+  return {
+    initialiseUserInfo: (userInfo) => {
+      dispatch({
+        type: "initialiseUserInfo",
+        userInfo: userInfo,
+      });
+    },
+    initialiseProfessionInfo: (professionInfo) => {
+      dispatch({
+        type: "initialiseProfesionInfo",
+        professionInfo: professionInfo,
+      });
+    },
+    initialiseApplicationsInfo: applicationInfo => {
+      dispatch({
+        type: "initialiseApplicationInfo",
+        applicationInfo: applicationInfo
+      })
+    },
+    initialiseJobOffersInfo: jobOffers => {
+      dispatch({
+        type: "initialiseJobOffersInfo",
+        jobOffers: jobOffers
+      })
+    }
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Welcome1);
