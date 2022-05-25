@@ -5,7 +5,20 @@
 import React, { useState, useEffect } from "react";
 
 // import all the components we are going to use
-import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+  TouchableOpacity,
+  Pressable
+} from "react-native";
+
+import Job from "./Job";
+
+import { Feather } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { AntDesign } from "@expo/vector-icons";
@@ -21,54 +34,40 @@ const testing = [
   { id: 3, name: "Web Deveoper" },
 ];
 
-export const App = () => {
-  // Data Source for the SearchableDropdown
+export const App = (props) => {
+
+  const [infoDisplay, setInfoDisplay] = useState(true);
   const [serverData, setServerData] = useState([]);
   // const [jData, setJobData] = useState([]);
 
   useEffect(() => {
-    const joblist = async function loadData() {
-      var rawJob = await fetch("https://10.2.1.38:3000/skills");
-      var jobData = await rawJob.json();
-
-      var temp = jobData.skills.map((e, key) => ({
-        id: key,
-        name: e.job_title,
-      }));
-      // var temp = jobData.skills.map(e => ({name: e.job_title}));
-
-      console.log(jobData);
-      // var items = jobData.skills.map((e,key) => ({ id:key.toString() , name: e.job_title.toLowerCase() }));
-      // const items = jobData.skills.map((e, key) => {
-      //   return {
-      //     id: key.toString(),
-      //     name: e.job_title,
-      //   };
-      // });
-      setServerData(temp);
+    const fetchingSkills = async () => {
+      const rawData = await fetch("http://10.2.2.41:3000/skills");
+      const dataJSON = await rawData.json();
+      setServerData(dataJSON.skills);
+      setDropDownList(dataJSON.skills.map((el,i) => { return {id: i, name: el.job_title}}));
     };
     joblist();
     console.log("show server data", serverData);
   }, []);
 
   const addbuttonHandler = (item) => {
-    console.log("server data at 0", serverData[0]);
-    console.log("item", item);
-    const newObj = serverData.find((el) => el["job_title"] === item["name"]);
+    const newObj = serverData.find(el => el["job_title"] === item["name"]);
     setSelectedItems([newObj, ...selectedItems]);
+
+    // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
 
     // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
         <View
           style={{
             justifyContent: "center",
             alignItems: "center",
-            marginTop: 50,
-            marginBottom: 40,
+            marginTop: 30,
+            marginBottom: 20,
           }}
         >
           <MaterialCommunityIcons
@@ -79,27 +78,25 @@ export const App = () => {
           <Text style={{ fontWeight: "bold" }}>Métiers & Compétence</Text>
         </View>
 
-        <View
-          style={{
-            justifyContent: "space-between",
-            flexDirection: "row",
-            backgroundColor: "#B9FFFF",
-          }}
+        {infoDisplay && <View
+            style={styles.infoContainer}
         >
-          <View>
+            <Pressable onPress={() => setInfoDisplay(false)} style={styles.exitInfo}>
+                <Feather name="x-circle" size={24} color="gray" />
+            </Pressable>
             <Image
-              style={{ width: 120, height: 120, backgroundColor: "#B9FFFF" }}
-              source={require("../../assets/icon.jpg")}
+                style={styles.infoManIcon}
+                source={require("../../assets/info_man_icon.png")}
             />
-          </View>
-          <View style={{ marginLeft: 20, marginRight: 150, marginTop: 0 }}>
-            <Text>
-              En répondant aux questions du formulaire ci-dessous, vos critères
-              de recherche vont s’affiner automatiquement. Si vous avez importé
-              votre CV, certaines informations sont déjà remplies !
-            </Text>
-          </View>
-        </View>
+            <View style={styles.infoTextContainer}>
+                <Text style={styles.infotext1}>
+                    En répondant aux questions du formulaire ci-dessous, vos critères de recherche vont s'affiner automatiquement.
+                </Text>
+                <Text style={styles.infotext2}> 
+                    Si vous avez importé votre CV, certaines informations sont déjà replies!
+                </Text>
+            </View>
+        </View>}
 
         <View
           style={{
@@ -108,9 +105,6 @@ export const App = () => {
         >
           <Text style={styles.titleText}>Quel métier recherchez-vous ?</Text>
         </View>
-        <View>
-          <Text style={styles.headingText}>Métier</Text>
-        </View>
 
         <SearchableDropdown
           multi={true}
@@ -118,7 +112,7 @@ export const App = () => {
           onItemSelect={(item) => {
             addbuttonHandler(item);
           }}
-          containerStyle={{ padding: 5 }}
+          containerStyle={{ paddingLeft: 15, paddingRight: 15, paddingTop: 10, width: "100%" }}
           textInputStyle={{
             padding: 12,
             borderWidth: 1,
@@ -152,10 +146,13 @@ export const App = () => {
           underlineColorAndroid="transparent"
           // To remove the underline from the android input
         />
+      <View style={styles.jobResults}>
+        {selectedItems.map((item, key) => {
+          return (
+            <Job key={key} title={item.job_title} skills={item.skills} />
+          );
+        })}
       </View>
-      {selectedItems.map((item, key) => {
-        return <Job key={key} title={item.job_title} skills={item.skills} />;
-      })}
     </SafeAreaView>
   );
 };
@@ -166,7 +163,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    padding: 10,
+    alignItems: "center"
   },
   titleText: {
     padding: 8,
@@ -177,4 +174,58 @@ const styles = StyleSheet.create({
   headingText: {
     padding: 8,
   },
+  appButtonContainer: {
+    elevation:5,
+    backgroundColor: "#000B33",
+    borderRadius: 40,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginTop:5,
+    marginBottom:4
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase",
+  },
+  infoContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    backgroundColor: "#f3fcfe",
+    borderRadius: 23,
+    width: "90%",
+    paddingTop: 27,
+    paddingBottom: 20,
+},
+infoTextContainer: {
+    flex: 1, 
+    padding: 5,
+},
+infoManIcon: {
+    width: 92, 
+    height: 92, 
+    marginLeft: 7
+},
+exitInfo: {
+    position: "absolute", 
+    top: 5, 
+    right: 8
+},
+infotext1: {
+    textAlign: "center",
+    fontSize: 10,
+    marginBottom: 10
+},
+infotext2: {
+    textAlign: "center",
+    fontSize: 10,
+    fontStyle: "italic"
+},
+jobResults: {
+  flex: 1,
+  marginBottom: 100,
+  justifyContent: "flex-end"
+}
 });
