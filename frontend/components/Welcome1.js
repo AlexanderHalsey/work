@@ -14,43 +14,48 @@ let deviceWidth = Dimensions.get("window").width;
 
 function Welcome1(props) {
   useEffect(() => {
-    // AsyncStorage.clear();
+    AsyncStorage.clear();
 
-    // si le user accede cette page sans avoir deconnecte depuis le dernier 
+    // si le user accede cette page sans avoir deconnecte depuis le dernier
     // session on va pouvoir recuperer son token et rediriger le user sur son dashboard
     AsyncStorage.getItem("token", function (error, value) {
       if (value !== null) {
         var handleSubmitSignin = async () => {
           // verifier que le backend accepte les infos de sign up
-          const data = await fetch(`http://192.168.1.85:3000/signUp/existingToken?token=${JSON.parse(value)}`);
+          const data = await fetch(
+            `http://10.2.1.215:3000/signUp/existingToken?token=${JSON.parse(
+              value
+            )}`
+          );
           var datajson = await data.json();
           console.log("datajson", datajson);
           // on initialise les reducers de Redux
           props.initialiseUserInfo({
-            "Nom": datajson.user.nom,
-            "Prénom": datajson.user.prenom,
-            "Mail": datajson.user.email,
-            "Téléphone": datajson.user.phone || "",
+            Nom: datajson.user.nom,
+            Prénom: datajson.user.prenom,
+            Mail: datajson.user.email,
+            Téléphone: datajson.user.phone || "",
             "Date de Naissance": datajson.user.bornWhen || "",
             "Lieu de Naissance": datajson.user.bornAt || "",
-            "Adresse": datajson.user.userAddress.streetName ,
-            "Ville": datajson.user.userAddress.town,
+            Adresse: datajson.user.userAddress.streetName,
+            Ville: datajson.user.userAddress.town,
             "Code Postal": datajson.user.userAddress.zipCode,
           });
           props.initialiseProfessionInfo(datajson.user.jobs);
           props.initialiseApplicationsInfo(datajson.user.applications);
-    
+
           // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
-          const offersRaw = await fetch(`http://192.168.1.85:3000/offers/listOffers?token=${datajson.token}`)
+          const offersRaw = await fetch(
+            `http://10.2.1.215:3000/offers/listOffers?token=${datajson.token}`
+          );
           const offers = await offersRaw.json();
           props.initialiseJobOffersInfo(offers.offers);
-    
+
           // on navigue vers la page de Dashboard
           props.navigation.navigate("BottomNavigator", { screen: "Dashboard" });
-      
         };
         handleSubmitSignin();
-      } 
+      }
     });
   }, []);
 
@@ -135,7 +140,7 @@ function Welcome1(props) {
   );
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     initialiseUserInfo: (userInfo) => {
       dispatch({
@@ -149,22 +154,19 @@ const mapDispatchToProps = dispatch => {
         professionInfo: professionInfo,
       });
     },
-    initialiseApplicationsInfo: applicationInfo => {
+    initialiseApplicationsInfo: (applicationInfo) => {
       dispatch({
         type: "initialiseApplicationInfo",
-        applicationInfo: applicationInfo
-      })
+        applicationInfo: applicationInfo,
+      });
     },
-    initialiseJobOffersInfo: jobOffers => {
+    initialiseJobOffersInfo: (jobOffers) => {
       dispatch({
         type: "initialiseJobOffersInfo",
-        jobOffers: jobOffers
-      })
-    }
-  }
-}
+        jobOffers: jobOffers,
+      });
+    },
+  };
+};
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Welcome1);
+export default connect(null, mapDispatchToProps)(Welcome1);
