@@ -38,6 +38,8 @@ export const App = (props) => {
 
   const [infoDisplay, setInfoDisplay] = useState(true);
   const [serverData, setServerData] = useState([]);
+  const [dropDownList, setDropDownList] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
   // const [jData, setJobData] = useState([]);
 
   useEffect(() => {
@@ -47,8 +49,7 @@ export const App = (props) => {
       setServerData(dataJSON.skills);
       setDropDownList(dataJSON.skills.map((el,i) => { return {id: i, name: el.job_title}}));
     };
-    joblist();
-    console.log("show server data", serverData);
+    fetchingSkills();
   }, []);
 
   const addbuttonHandler = (item) => {
