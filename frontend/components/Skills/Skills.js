@@ -44,10 +44,12 @@ export const App = (props) => {
   // const [jData, setJobData] = useState([]);
 
   useEffect(() => {
-      const rawData = await fetch(`${BACKEND_URL}/skills`)
-      const dataJSON = await rawData.json();
-      setServerData(dataJSON.skills);
-      setDropDownList(dataJSON.skills.map((el,i) => { return {id: i, name: el.job_title}}));
+      const fetchingSkills = async () => {
+        const rawData = await fetch(`${BACKEND_URL}/skills`)
+        const dataJSON = await rawData.json();
+        setServerData(dataJSON.skills);
+        setDropDownList(dataJSON.skills.map((el,i) => { return {id: i, name: el.job_title}}));
+      }
     fetchingSkills();
   }, []);
 
