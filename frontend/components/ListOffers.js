@@ -21,7 +21,7 @@ import ScreenOffer from "./ScreenOffer";
 export default function ListOffersScreen(props) {
   const isFocused = useIsFocused();
   //variable d'état pour récupérer la liste des offres
-  const [offersList, setOffersList] = useState([]);
+  const [offersList, setOffersList] = useState(null);
   const { height, width } = useWindowDimensions();
   const { isOpen, onOpen, onClose } = useDisclose();
 
@@ -32,7 +32,9 @@ export default function ListOffersScreen(props) {
       // console.log(isFocused);
       if (isFocused) {
         const data = await fetch("http://10.2.1.215:3000/offers/listOffers");
+
         const body = await data.json();
+        console.log("body:", body);
         setOffersList(body.offers);
       }
     };
@@ -76,21 +78,22 @@ export default function ListOffersScreen(props) {
         contentContainerStyle={{ alignItems: "center" }}
       >
         {/* filter avant le map des annonces */}
-        {offersList.map((offer, i) => {
-          return (
-            <TouchableOpacity
-              key={i}
-              onPress={() => {
-                console.log("offer._id sur touchableopacity", offer._id);
-                props.navigation.navigate("ScreenOffer", {
-                  offerId: offer._id,
-                });
-              }}
-            >
-              <OfferCard key={i} offer={offer} />
-            </TouchableOpacity>
-          );
-        })}
+        {offersList &&
+          offersList.map((offer, i) => {
+            return (
+              <TouchableOpacity
+                key={i}
+                onPress={() => {
+                  console.log("offer._id sur touchableopacity", offer._id);
+                  props.navigation.navigate("ScreenOffer", {
+                    offerId: offer._id,
+                  });
+                }}
+              >
+                <OfferCard key={i} offer={offer} />
+              </TouchableOpacity>
+            );
+          })}
       </ScrollView>
     </SafeAreaView>
   );
