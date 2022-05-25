@@ -9,7 +9,7 @@ import InfosPersonelles from "./InfosPersonelles";
 import MyLikes from "./MyLikes";
 import MyDocuments from "./MyDocuments";
 import Missions from "./Missions/Missions";
-import SkillsSelect from './SkillsSelect';
+import Skills from './Skills/Skills';
 
 import { connect } from "react-redux";
 
@@ -60,7 +60,7 @@ function Dashboard(props) {
   else if (screenDisplay == "MyDocuments") return <MyDocuments />;
   else if (screenDisplay == "PersonalInfo") return <InfosPersonelles />;
   else if (screenDisplay == "MyMissions") return <Missions />;
-  else if (screenDisplay == "SkillsSelect") return <SkillsSelect/>
+  else if (screenDisplay == "Skills") return <Skills />
   else {
     return (
       <View style={styles.container}>

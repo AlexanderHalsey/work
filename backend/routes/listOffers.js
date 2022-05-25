@@ -6,21 +6,6 @@ const userModel = require("../models/users");
 /* GET users listing. */
 router.get("/listOffers", async function (req, res, next) {
   const user = await userModel.findOne({ token: req.query.token });
-
-  if (!user) {
-    res.json({ result: false, error: "Utilisateur pas trouvé." });
-  } else if (!user.userAddress.town) {
-    res.json({
-      result: false,
-      error: "Veuillez completez les champs dans 'Infos Personelles'.",
-    });
-  } else if (user.jobs.length === 0) {
-    res.json({
-      result: false,
-      error:
-        "Veuillez rajouter des metiers et competences dans la section 'Skills'.",
-    });
-  } else {
     // Filter of offers where the start date is after today's date
     // Filter for the offers where the town of the company posting the offer is the same as the town stored by the user in his/her personal space
     const offers = await offerModel.find({
@@ -51,7 +36,6 @@ router.get("/listOffers", async function (req, res, next) {
       return true;
     });
     res.json({ offers: filterByJobs, user });
-  }
 });
 
 router.delete("/deleteOffer", async function (req, res, next) {

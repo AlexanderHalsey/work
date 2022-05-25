@@ -8,10 +8,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Dashboard from "./components/Dashboard";
-import Skills from "./components/Skills";
+import Skills from "./components/Skills/Skills";
 import Notifications from "./components/Notifications";
 import ListOffers from "./components/ListOffers";
-import SkillsSelect from "./components/SkillsSelect";
 
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
@@ -104,7 +103,6 @@ const BottomNavigator = (props) => {
       <Tab.Screen name="ListOffers" component={ListOffers} />
       <Tab.Screen name="Skills" component={Skills} />
       <Tab.Screen name="Notification" component={Notifications} />
-      <Tab.Screen name="SkillsSelect" component={SkillsSelect} />
     </Tab.Navigator>
   );
 };

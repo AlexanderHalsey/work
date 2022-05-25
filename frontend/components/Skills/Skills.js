@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import Job from "./Job";
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { AntDesign } from "@expo/vector-icons";
@@ -29,22 +31,26 @@ const items = [
 export const App = (props) => {
 
   const [serverData, setServerData] = useState([]);
+  const [dropDownList, setDropDownList] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
 
   useEffect(() => {
-    fetch("http://10.2.2.41:3000/skillList")
-      .then((response) => response.json())
-      .then((responseJson) => {
-        setServerData(responseJson.results);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const fetchingSkills = async () => {
+      const rawData = await fetch("http://10.2.2.41:3000/skills");
+      const dataJSON = await rawData.json();
+      setServerData(dataJSON.skills);
+      console.log(dataJSON.skills.map(el => el.job_title));
+      setDropDownList(dataJSON.skills.map((el,i) => { return {id: i, name: el.job_title}}));
+    };
+    fetchingSkills();
   }, []);
 
   const addbuttonHandler = (item) => {
-    let dest = [item, ...selectedItems];
-    setSelectedItems(dest);
+    console.log("server data at 0", serverData[0]);
+    console.log("item", item);
+    const newObj = serverData.find(el => el["job_title"] === item["name"]);
+    setSelectedItems([newObj, ...selectedItems]);
+    
     // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
 
   };
@@ -78,7 +84,7 @@ export const App = (props) => {
           <View>
             <Image
               style={{ width: 120, height: 120, backgroundColor: "#B9FFFF" }}
-              source={require("../assets/icon.jpg")}
+              source={require("../../assets/icon.jpg")}
             />
           </View>
           <View style={{ marginLeft: 20, marginRight: 150, marginTop: 0 }}>
@@ -135,7 +141,7 @@ export const App = (props) => {
             // To restrict the items dropdown hieght
             maxHeight: "50%",
           }}
-          items={serverData}
+          items={dropDownList}
           // Mapping of item arrayskills.
           defaultIndex={2}
           // Default selected item index
@@ -149,9 +155,7 @@ export const App = (props) => {
       </View>
       {selectedItems.map((item, key) => {
         return (
-          <TouchableOpacity key={key} style={styles.appButtonContainer}>
-            <Text style={styles.appButtonText}>{item.name}</Text>
-          </TouchableOpacity>
+          <Job key={key} title={item.job_title} skills={item.skills} />
         );
       })}
     </SafeAreaView>
