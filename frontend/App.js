@@ -120,8 +120,6 @@ export default function App() {
           <Stack.Screen name="Welcome2" component={Welcome2} />
           <Stack.Screen name="CvPopover" component={CvPopOver} />
           <Stack.Screen name="Register" component={Inscription} />
-          <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-
           <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
         </Stack.Navigator>
       </NavigationContainer>
