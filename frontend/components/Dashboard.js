@@ -1,75 +1,82 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 
-import InfosPersonelles from "./InfosPersonelles";
-import MyLikes from "./MyLikes";
-import MyDocuments from "./MyDocuments";
-import Missions from "./Missions/Missions";
+import InfosPersonelles from './InfosPersonelles'
+import MyLikes from './MyLikes'
+import MyDocuments from './MyDocuments'
+import Missions from './Missions/Missions'
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux'
 
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused } from '@react-navigation/native'
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 function Dashboard(props) {
-  const [screenDisplay, setScreenDisplay] = useState(null);
-  const isFocused = useIsFocused();
+  const [screenDisplay, setScreenDisplay] = useState(null)
+  const isFocused = useIsFocused()
+  console.log('avatar dans dashboard:', props.userInfo['Avatar'])
   useEffect(() => {
     if (!isFocused) {
-      setScreenDisplay(null);
+      setScreenDisplay(null)
     }
-  }, [isFocused]);
+  }, [isFocused])
 
   useEffect(() => {
-    let p = true;
+    let p = true
     for (let key of Object.keys(props.userInfo)) {
       if (!props.userInfo[key]) {
-        p = false;
+        p = false
       }
     }
-    setProfileComplete(p);
-  }, [props.userInfo]);
+    setProfileComplete(p)
+  }, [props.userInfo])
 
   useEffect(() => {
-    let skillsComplete = true;
+    let skillsComplete = true
     for (let job of props.professions) {
       for (let skill of job.skills) {
-        if (skill.experience === 0 || skill.level === 0) skillsComplete = false;
+        if (skill.experience === 0 || skill.level === 0) skillsComplete = false
       }
     }
-    setJobSkillsIncomplete(skillsComplete);
-  }, [props.professions]);
+    setJobSkillsIncomplete(skillsComplete)
+  }, [props.professions])
 
   useEffect(() => {
-    setJobOffersLength(props.jobOffers.length);
-    setLikedJobsLength(props.jobOffers.filter((offer) => offer.liked).length);
-  }, [props.jobOffers]);
+    setJobOffersLength(props.jobOffers.length)
+    setLikedJobsLength(props.jobOffers.filter((offer) => offer.liked).length)
+  }, [props.jobOffers])
 
-  const [jobSkillsIncomplete, setJobSkillsIncomplete] = useState(false);
-  const [profileComplete, setProfileComplete] = useState(false);
-  const [likedJobsLength, setLikedJobsLength] = useState(0);
-  const [jobOffersLength, setJobOffersLength] = useState(0);
+  const [jobSkillsIncomplete, setJobSkillsIncomplete] = useState(false)
+  const [profileComplete, setProfileComplete] = useState(false)
+  const [likedJobsLength, setLikedJobsLength] = useState(0)
+  const [jobOffersLength, setJobOffersLength] = useState(0)
 
-  if (screenDisplay == "MyLikes") return <MyLikes />;
-  else if (screenDisplay == "MyDocuments") return <MyDocuments />;
-  else if (screenDisplay == "PersonalInfo") return <InfosPersonelles />;
-  else if (screenDisplay == "MyMissions") return <Missions />;
+  if (screenDisplay == 'MyLikes') return <MyLikes />
+  else if (screenDisplay == 'MyDocuments') return <MyDocuments />
+  else if (screenDisplay == 'PersonalInfo')
+    return <InfosPersonelles navigation={props.navigation} />
+  else if (screenDisplay == 'MyMissions') return <Missions />
   else {
     return (
       <View style={styles.container}>
         <View style={styles.me}>
-          <Text style={styles.itemText}>Bonjour {props.userInfo["Prénom"]}</Text>
-          <Image style={styles.image} source={require("../assets/girl.jpg")} />
+          <Text style={styles.itemText}>
+            Bonjour {props.userInfo['Prénom']}
+          </Text>
+          <Image
+            style={styles.image}
+            source={{ uri: props.userInfo['Avatar'] }}
+          />
         </View>
 
         <View style={styles.rowContainer}>
           <Pressable
-            onPress={() => props.navigation.navigate("ListOffers")}
+            onPress={() => props.navigation.navigate('ListOffers')}
             style={styles.shadowContainer}
           >
             <View style={styles.itemContainer}>
@@ -77,23 +84,23 @@ function Dashboard(props) {
                 <Text style={styles.infoText}>{jobOffersLength}</Text>
               </View>
               <MaterialCommunityIcons
-                name="text-box-search-outline"
+                name='text-box-search-outline'
                 size={60}
-                color="#B9FFFF"
+                color='#B9FFFF'
               />
               <Text style={styles.itemText}>Liste annonce</Text>
             </View>
           </Pressable>
 
           <Pressable
-            onPress={() => setScreenDisplay("MyLikes")}
+            onPress={() => setScreenDisplay('MyLikes')}
             style={styles.shadowContainer}
           >
             <View style={styles.itemContainer}>
               <View style={[styles.topRight, styles.infoColor]}>
                 <Text style={styles.infoText}>{likedJobsLength}</Text>
               </View>
-              <Feather name="list" size={60} color="#B9FFFF" />
+              <Feather name='list' size={60} color='#B9FFFF' />
               <Text style={styles.itemText}>A etudier</Text>
             </View>
           </Pressable>
@@ -101,21 +108,21 @@ function Dashboard(props) {
 
         <View style={styles.rowContainer}>
           <Pressable
-            onPress={() => setScreenDisplay("MyDocuments")}
+            onPress={() => setScreenDisplay('MyDocuments')}
             style={styles.shadowContainer}
           >
             <View style={styles.itemContainer}>
               <Ionicons
-                name="document-attach-outline"
+                name='document-attach-outline'
                 size={60}
-                color="#B9FFFF"
+                color='#B9FFFF'
               />
               <Text style={styles.itemText}>Mes documents</Text>
             </View>
           </Pressable>
 
           <Pressable
-            onPress={() => setScreenDisplay("PersonalInfo")}
+            onPress={() => setScreenDisplay('PersonalInfo')}
             style={styles.shadowContainer}
           >
             <View style={styles.itemContainer}>
@@ -125,9 +132,9 @@ function Dashboard(props) {
                 </View>
               )}
               <MaterialCommunityIcons
-                name="account-details-outline"
+                name='account-details-outline'
                 size={60}
-                color="#B9FFFF"
+                color='#B9FFFF'
               />
               <Text style={styles.itemText}>Info personnelles</Text>
             </View>
@@ -136,7 +143,7 @@ function Dashboard(props) {
 
         <View style={styles.rowContainer}>
           <Pressable
-            onPress={() => props.navigation.navigate("Skills")}
+            onPress={() => props.navigation.navigate('Skills')}
             style={styles.shadowContainer}
           >
             <View style={styles.itemContainer}>
@@ -146,90 +153,90 @@ function Dashboard(props) {
                 </View>
               )}
               <MaterialCommunityIcons
-                name="lightning-bolt"
+                name='lightning-bolt'
                 size={60}
-                color="#B9FFFF"
+                color='#B9FFFF'
               />
               <Text style={styles.itemText}>Skills</Text>
             </View>
           </Pressable>
 
           <Pressable
-            onPress={() => setScreenDisplay("MyMissions")}
+            onPress={() => setScreenDisplay('MyMissions')}
             style={styles.shadowContainer}
           >
             <View style={styles.itemContainer}>
-              <Feather name="briefcase" size={60} color="#B9FFFF" />
+              <Feather name='briefcase' size={60} color='#B9FFFF' />
               <Text style={styles.itemText}>Mission</Text>
             </View>
           </Pressable>
         </View>
       </View>
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000b33",
+    backgroundColor: '#000b33',
   },
   me: {
     marginTop: 50,
-    alignItems: "center",
+    alignItems: 'center',
   },
   image: {
-    width: 130,
-    height: 130,
+    width: 100,
+    height: 100,
     borderRadius: 150,
     marginTop: 10,
     marginBottom: 60,
   },
   rowContainer: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
     marginBottom: 20,
   },
   itemContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 170,
     borderRadius: 15,
     height: 110,
     margin: 4,
     borderWidth: 2,
-    borderColor: "#00F0FF",
-    backgroundColor: "#000B33",
+    borderColor: '#00F0FF',
+    backgroundColor: '#000B33',
   },
   topRight: {
     borderWidth: 2,
     borderRadius: 10,
     paddingLeft: 5,
     paddingRight: 5,
-    position: "absolute",
+    position: 'absolute',
     top: 5,
     right: 5,
   },
   infoColor: {
-    borderColor: "#B9FFFF",
+    borderColor: '#B9FFFF',
   },
   infoText: {
-    color: "#B9FFFF",
+    color: '#B9FFFF',
   },
   warningColor: {
-    borderColor: "red",
+    borderColor: 'red',
     opacity: 0.8,
   },
   warningText: {
-    color: "red",
-    fontWeight: "900",
+    color: 'red',
+    fontWeight: '900',
     opacity: 0.8,
     marginLeft: 3,
     marginRight: 3,
   },
   shadowContainer: {
-    shadowColor: "#00F0FF",
+    shadowColor: '#00F0FF',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.9,
     shadowRadius: 2,
@@ -237,17 +244,25 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   itemText: {
-    color: "#B9FFFF",
+    color: '#B9FFFF',
   },
-});
+})
 
 const mapStateToProps = (state) => {
   return {
     userInfo: state.userInfo,
     professions: state.professions,
     jobOffers: state.jobOffers,
-  };
-};
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteUserInfo: () => {
+      dispatch({
+        type: 'deleteUserInfo',
+      })
+    },
+  }
+}
 
-
-export default connect(mapStateToProps, null)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

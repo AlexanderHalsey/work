@@ -1,22 +1,22 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const addressSchema = mongoose.Schema({
   streetName: String,
   town: String,
   zipCode: String,
-});
+})
 
 const applicationSchema = mongoose.Schema({
   employerRead: Boolean,
   employerResponse: {
-    type: ["Pending", "Accepted", "Refused"],
-    default: "Pending",
+    type: ['Pending', 'Accepted', 'Refused'],
+    default: 'Pending',
   },
   applicationDecision: {
-    type: ["Pending", "Accepted", "Refused"],
-    default: "Pending",
+    type: ['Pending', 'Accepted', 'Refused'],
+    default: 'Pending',
   },
-});
+})
 const userSchema = mongoose.Schema({
   nom: String,
   prenom: String,
@@ -26,20 +26,25 @@ const userSchema = mongoose.Schema({
   bornWhen: Date,
   bornAt: String,
   token: String,
-  blackListOffers: [{ type: mongoose.Schema.Types.ObjectId, ref: "offers" }],
-  likesOfferIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "offers" }],
+  avatar: String,
+  blackListOffers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'offers' }],
+  likesOfferIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'offers' }],
   userAddress: addressSchema,
-  jobs: [{
-    job_title: String,
-    skills: [{
-      skill_title: String,
-      experience: Number,
-      level: Number
-    }]
-  }],
+  jobs: [
+    {
+      job_title: String,
+      skills: [
+        {
+          skill_title: String,
+          experience: Number,
+          level: Number,
+        },
+      ],
+    },
+  ],
   applications: [applicationSchema],
-});
+})
 
-const userModel = mongoose.model("users", userSchema);
+const userModel = mongoose.model('users', userSchema)
 
-module.exports = userModel;
+module.exports = userModel

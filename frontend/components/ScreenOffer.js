@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useIsFocused } from "@react-navigation/native";
-import MapView, { Marker } from "react-native-maps";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from 'react'
+import { useIsFocused } from '@react-navigation/native'
+import MapView, { Marker } from 'react-native-maps'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { connect } from 'react-redux'
 
-import { useDisclose, Center } from "native-base";
-import { Button } from "react-native-elements";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { useDisclose, Center } from 'native-base'
+import { Button } from 'react-native-elements'
+import { Ionicons, AntDesign } from '@expo/vector-icons'
 
 import {
   StyleSheet,
@@ -15,86 +15,86 @@ import {
   Text,
   Image,
   useWindowDimensions,
-} from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+} from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 function ScreenOffer(props) {
-  console.log("id dans screen Offer", props.route.params.offerId);
-  const [offerData, setOfferData] = useState(null);
-  const { height, width } = useWindowDimensions();
+  console.log('id dans screen Offer', props.route.params.offerId)
+  const [offerData, setOfferData] = useState(null)
+  const { height, width } = useWindowDimensions()
 
   var handleClick = () => {
-    console.log("click détecté + id offre :", props.offer._id);
-    props.updateBlackList(props.offer._id);
-  };
+    console.log('click détecté + id offre :', props.offer._id)
+    props.updateBlackList(props.offer._id)
+  }
 
   useEffect(() => {
-    console.log("props: ", props.route.params.offerId);
+    console.log('props: ', props.route.params.offerId)
     const findOffers = async () => {
       // console.log(isFocused);
-      console.log("dans useEffect ScreenOffer");
+      console.log('dans useEffect ScreenOffer')
       const data = await fetch(
-        `http://10.2.1.215:3000/offers/displayOffer?offerId=${props.route.params.offerId}`
-      );
-      const body = await data.json();
-      console.log("body dans ScreenOffer", body.offer);
-      setOfferData(body.offer);
-    };
+        `http://192.168.43.176:3000/offers/displayOffer?offerId=${props.route.params.offerId}`
+      )
+      const body = await data.json()
+      console.log('body dans ScreenOffer', body.offer)
+      setOfferData(body.offer)
+    }
 
-    findOffers();
-  }, []);
+    findOffers()
+  }, [])
 
   const viewSkills =
     offerData &&
     offerData.jobs[0].skills.map((skill, i) => {
       return (
         <View style={styles.viewskills} key={i}>
-          <Text style={{ fontWeight: "bold", fontSize: 18, color: "#000B33" }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000B33' }}>
             Compétences : {skill.skill_title}
           </Text>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: 'row' }}>
             <Text style={{ fontSize: 18 }}>Aisance : </Text>
             <>
               <AntDesign
-                name="star"
+                name='star'
                 size={24}
-                color={skill.level > 0 ? "#FFF500" : "#FFFFFF"}
+                color={skill.level > 0 ? '#FFF500' : '#FFFFFF'}
               />
               <AntDesign
-                name="star"
+                name='star'
                 size={24}
-                color={skill.level > 1 ? "#FFF500" : "#FFFFFF"}
+                color={skill.level > 1 ? '#FFF500' : '#FFFFFF'}
               />
               <AntDesign
-                name="star"
+                name='star'
                 size={24}
-                color={skill.level > 2 ? "#FFF500" : "#FFFFFF"}
+                color={skill.level > 2 ? '#FFF500' : '#FFFFFF'}
               />
             </>
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: 'row' }}>
             <Text style={{ fontSize: 18 }}>Expérience : </Text>
             <>
               <AntDesign
-                name="star"
+                name='star'
                 size={24}
-                color={skill.experience > 0 ? "#FFF500" : "#FFFFFF"}
+                color={skill.experience > 0 ? '#FFF500' : '#FFFFFF'}
               />
               <AntDesign
-                name="star"
+                name='star'
                 size={24}
-                color={skill.experience > 1 ? "#FFF500" : "#FFFFFF"}
+                color={skill.experience > 1 ? '#FFF500' : '#FFFFFF'}
               />
               <AntDesign
-                name="star"
+                name='star'
                 size={24}
-                color={skill.experience > 2 ? "#FFF500" : "#FFFFFF"}
+                color={skill.experience > 2 ? '#FFF500' : '#FFFFFF'}
               />
             </>
           </View>
         </View>
-      );
-    });
+      )
+    })
 
   return (
     offerData && (
@@ -115,15 +115,15 @@ function ScreenOffer(props) {
           {/* title of jobs and infos */}
           <View style={styles.title}>
             <Text
-              style={{ fontWeight: "bold", fontSize: 20, color: "#00F0FF" }}
+              style={{ fontWeight: 'bold', fontSize: 20, color: '#00F0FF' }}
             >
               {offerData.jobs[0].job_title.toUpperCase()}
             </Text>
-            <Text style={{ fontSize: 18, color: "#00F0FF" }}>
+            <Text style={{ fontSize: 18, color: '#00F0FF' }}>
               {offerData.name}
             </Text>
-            <Text style={{ fontSize: 14, color: "#00F0FF" }}>
-              {Math.floor(offerData.salary * 151.67)} € Brut/M -{" "}
+            <Text style={{ fontSize: 14, color: '#00F0FF' }}>
+              {Math.floor(offerData.salary * 151.67)} € Brut/M -{' '}
               {offerData.contract}
             </Text>
           </View>
@@ -134,9 +134,9 @@ function ScreenOffer(props) {
             <MapView
               style={{
                 flex: 1,
-                height: "100%",
+                height: '100%',
                 width: width * 0.9,
-                alignSelf: "center",
+                alignSelf: 'center',
                 borderRadius: 20,
               }}
               initialRegion={{
@@ -147,7 +147,7 @@ function ScreenOffer(props) {
               }}
             >
               <Marker
-                pinColor="#2D98DA"
+                pinColor='#2D98DA'
                 key={0}
                 coordinate={{
                   latitude: 43.29,
@@ -157,7 +157,7 @@ function ScreenOffer(props) {
               />
               {/* marker city */}
               <Marker
-                pinColor="red"
+                pinColor='red'
                 key={1}
                 coordinate={{
                   latitude: offerData.latitude,
@@ -172,7 +172,7 @@ function ScreenOffer(props) {
           {/* title of description*/}
           <View style={styles.description}>
             <Text
-              style={{ fontSize: 18, fontWeight: "bold", color: "#000B33" }}
+              style={{ fontSize: 18, fontWeight: 'bold', color: '#000B33' }}
             >
               Description & compétences
             </Text>
@@ -183,10 +183,10 @@ function ScreenOffer(props) {
           <ScrollView style={styles.scrollview}>
             <Text
               style={{
-                textAlign: "center",
+                textAlign: 'center',
                 margin: 15,
                 fontSize: 15,
-                color: "#00F0FF",
+                color: '#00F0FF',
               }}
             >
               {offerData.description}
@@ -203,14 +203,14 @@ function ScreenOffer(props) {
 
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-evenly",
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
               height: 70,
             }}
           >
             <View style={styles.buttonView}>
               <Button
-                title="Retour"
+                title='Retour'
                 buttonStyle={styles.button}
                 onPress={() => props.navigation.goBack()}
               />
@@ -220,20 +220,20 @@ function ScreenOffer(props) {
                 height: 40,
                 width: 40,
                 borderRadius: 100,
-                backgroundColor: "red",
-                alignItems: "center",
-                justifyContent: "center",
+                backgroundColor: 'red',
+                alignItems: 'center',
+                justifyContent: 'center',
                 margin: 5,
               }}
               onPress={() => props.navigation.goBack()}
               //
             >
-              <Text style={{ color: "white", fontWeight: "bold" }}>X</Text>
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>X</Text>
             </TouchableOpacity>
 
             <View style={styles.buttonView}>
               <Button
-                title="Postuler !"
+                title='Postuler !'
                 buttonStyle={styles.button}
                 onPress={() => setScreenDisplay(null)}
               />
@@ -243,74 +243,74 @@ function ScreenOffer(props) {
         </View>
       </SafeAreaProvider>
     )
-  );
+  )
 }
 
 const mapStateToProps = (state) => {
   return {
     blackList: state.blackList,
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
     updateBlackList: (id) =>
       dispatch({
-        type: "updateBlackList",
+        type: 'updateBlackList',
         id: id,
       }),
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScreenOffer);
+export default connect(mapStateToProps, mapDispatchToProps)(ScreenOffer)
 
-var colorwhite = "white";
+var colorwhite = 'white'
 const styles = StyleSheet.create({
   principal: {
-    flexDirection: "column",
-    backgroundColor: "white",
+    flexDirection: 'column',
+    backgroundColor: 'white',
     flexGrow: 2,
   },
   header: {
     height: 140,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 25,
   },
   title: {
     height: 80,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#000B33",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000B33',
     borderRadius: 20,
   },
   map: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 20,
-    backgroundColor: "grey",
+    backgroundColor: 'grey',
     margin: 5,
-    height: "20%",
+    height: '20%',
   },
   description: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
 
     height: 30,
   },
   scrollview: {
-    height: "22%",
-    backgroundColor: "#000B33",
+    height: '22%',
+    backgroundColor: '#000B33',
     borderRadius: 20,
   },
   viewskills: {
-    flexDirection: "column",
-    justifyContent: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
     borderRadius: 20,
-    alignItems: "center",
-    backgroundColor: "#00F0FF",
+    alignItems: 'center',
+    backgroundColor: '#00F0FF',
     height: 80,
     margin: 2,
   },
@@ -319,19 +319,19 @@ const styles = StyleSheet.create({
     heigth: 30,
     margin: 5,
     borderRadius: 20,
-    backgroundColor: "#000B33",
+    backgroundColor: '#000B33',
   },
   buttonDelete: {
     width: 30,
     heigth: 30,
     margin: 5,
     borderRadius: 100,
-    backgroundColor: "red",
+    backgroundColor: 'red',
   },
   buttonView: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    justifyContent: "center",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
-});
+})
