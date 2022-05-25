@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#001150",
         borderRadius: 40,
         width: "100%",
-        padding: 7
+        padding: 7,
       },
       appButtonText: {
         fontSize: 11,

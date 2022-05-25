@@ -159,9 +159,6 @@ export const App = (props) => {
           return <Job key={key} title={item.job_title} skills={item.skills} />
         })}
       </View>
-      {selectedItems.map((item, key) => {
-        return <Job key={key} title={item.job_title} skills={item.skills} />
-      })}
     </SafeAreaView>
   )
 }
@@ -234,7 +231,8 @@ const styles = StyleSheet.create({
   },
   jobResults: {
     flex: 1,
-    marginBottom: 100,
+    width: "100%",
+    marginBottom: 80,
     justifyContent: 'flex-end',
   },
 })
