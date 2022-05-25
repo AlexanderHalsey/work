@@ -54,7 +54,7 @@ router.post("/inscription", async function (req, res, next) {
   });
 
   if (data != null) {
-    error.push("utilisateur déjà présent");
+    error.push("Utilisateur déjà inscrit");
   }
 
   if (
@@ -93,18 +93,18 @@ router.post("/inscription", async function (req, res, next) {
   res.json({ result, saveUser, error, token });
 });
 
-router.post("/sendCV", async function(req,res) {
+router.post("/sendCV", async function (req, res) {
   const pdfParser = new PDFParser();
   const callbackFunc = (callback) => {
     pdfParser.on("pdfParser_dataReady", (pdfData) => {
       callback(pdfData);
     });
   };
-  
-  callbackFunc(async result => {
+
+  callbackFunc(async (result) => {
     const infoExtracted = await extraireInfos(result);
     res.json(infoExtracted);
-  })
+  });
 
   pdfParser.parseBuffer(req.files.file.data);
 });

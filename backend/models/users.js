@@ -24,7 +24,8 @@ const userSchema = mongoose.Schema({
   phone: String,
   password: String,
   token: String,
-  blackListOffer: [String],
+  blackListOffers: [{ type: mongoose.Schema.Types.ObjectId, ref: "offers" }],
+  likesOfferIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "offers" }],
   userAddress: addressSchema,
   jobs: [{
     job_title: String,
