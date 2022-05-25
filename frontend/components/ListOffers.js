@@ -22,7 +22,7 @@ import { BACKEND_URL } from '@env'
 export default function ListOffersScreen(props) {
   const isFocused = useIsFocused()
   //variable d'état pour récupérer la liste des offres
-  const [offersList, setOffersList] = useState([])
+  const [offersList, setOffersList] = useState(null)
   const { height, width } = useWindowDimensions()
   const { isOpen, onOpen, onClose } = useDisclose()
 
@@ -57,7 +57,7 @@ export default function ListOffersScreen(props) {
           height: 100,
           width: width,
           backgroundColor: '#000B33',
-          flexDirection: 'crolumn',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
         }}

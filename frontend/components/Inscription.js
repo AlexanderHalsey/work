@@ -38,7 +38,6 @@ function Inscription(props) {
       props.initialiseUserInfo({
         Nom: datajson.saveUser.nom,
         Prénom: datajson.saveUser.prenom,
-        Avatar: datajson.user.avatar,
         Mail: datajson.saveUser.email,
         Téléphone: datajson.saveUser.phone || '',
         'Date de Naissance': datajson.saveUser.bornWhen || '',

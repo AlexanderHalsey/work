@@ -5,11 +5,19 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import { Ionicons } from '@expo/vector-icons'
 
+<<<<<<< HEAD
 import InfosPersonelles from './InfosPersonelles'
 import MyLikes from './MyLikes'
 import MyDocuments from './MyDocuments'
 import Missions from './Missions/Missions'
 import Skills from './Skills/Skills'
+=======
+import InfosPersonelles from "./InfosPersonelles";
+import MyLikes from "./MyLikes";
+import MyDocuments from "./MyDocuments";
+import Missions from "./Missions/Missions";
+import Skills from './Skills/Skills';
+>>>>>>> 07eccc113a5edc5ef0c1182701343e0cba044df9
 
 import { connect } from 'react-redux'
 

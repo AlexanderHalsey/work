@@ -15,7 +15,7 @@ let deviceWidth = Dimensions.get('window').width
 
 function Welcome1(props) {
   useEffect(() => {
-    // AsyncStorage.clear();
+    AsyncStorage.clear()
 
     // si le user accede cette page sans avoir deconnecte depuis le dernier
     // session on va pouvoir recuperer son token et rediriger le user sur son dashboard
@@ -32,9 +32,7 @@ function Welcome1(props) {
           // on initialise les reducers de Redux
           props.initialiseUserInfo({
             Nom: datajson.user.nom,
-            Avatar: datajson.user.avatar,
             Prénom: datajson.user.prenom,
-            token: datajson.user.token,
             Mail: datajson.user.email,
             Téléphone: datajson.user.phone || '',
             'Date de Naissance': datajson.user.bornWhen || '',
