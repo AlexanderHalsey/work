@@ -74,45 +74,43 @@ import { Center } from "native-base";
 
 import SearchableDropdown from "react-native-searchable-dropdown";
 
-
 const items = [
-
   { id: 1, name: "Android Developer" },
   { id: 2, name: "IT Technician" },
   { id: 3, name: "Web Deveoper" },
 ];
 
 export const App = (props) => {
-
   const [serverData, setServerData] = useState([]);
   const [dropDownList, setDropDownList] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  
 
   useEffect(() => {
     const fetchingSkills = async () => {
-      const rawData = await fetch("http://10.2.2.41:3000/skills");
+      const rawData = await fetch("https://aboutreact.herokuapp.com/demosearchables.php");
       const dataJSON = await rawData.json();
-      setServerData(dataJSON.skills);
-      console.log(dataJSON.skills.map(el => el.job_title));
-      setDropDownList(dataJSON.skills.map((el,i) => { return {id: i, name: el.job_title}}));
+      setServerData(dataJSON.results);
+      console.log(dataJSON.results.map((el) => el.job_title));
+      setDropDownList(
+        dataJSON.results.map((el, i) => {
+          return { id: i, name: el.job_title };
+        })
+      );
     };
     fetchingSkills();
   }, []);
 >>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f:frontend/components/Skills/Skills.js
 
+
+
   const addbuttonHandler = (item) => {
-<<<<<<< HEAD:frontend/components/Skills/Skills.js
     console.log("server data at 0", serverData[0]);
     console.log("item", item);
-    const newObj = serverData.find(el => el["job_title"] === item["name"]);
+    const newObj = serverData.find((el) => el["job_title"] === item["name"]);
     setSelectedItems([newObj, ...selectedItems]);
-=======
-    let dest = [item, ...selectedItems];
-    setSelectedItems(dest);
->>>>>>> blerim:frontend/components/SkillsSelect.js
-    
-    // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
 
+    // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
   };
 
   return (
@@ -177,13 +175,6 @@ export const App = (props) => {
           onTextChange={(text) => console.log(text)}
           onItemSelect={(item) => {
             addbuttonHandler(item);
-<<<<<<< HEAD:frontend/components/Skills/Skills.js
-=======
-            
-            // disabled= "false"
-            // onPress={addbuttonHandler}
-            // alert(JSON.stringify(item))
->>>>>>> blerim:frontend/components/SkillsSelect.js
           }}
           containerStyle={{ padding: 5 }}
           textInputStyle={{
@@ -231,9 +222,7 @@ export const App = (props) => {
         />
       </View>
       {selectedItems.map((item, key) => {
-        return (
-          <Job key={key} title={item.job_title} skills={item.skills} />
-        );
+        return <Job key={key} title={item.job_title} skills={item.skills} />;
       })}
     </SafeAreaView>
   )
@@ -260,13 +249,13 @@ const styles = StyleSheet.create({
 })
 =======
   appButtonContainer: {
-    elevation:5,
+    elevation: 5,
     backgroundColor: "#000B33",
     borderRadius: 40,
     paddingVertical: 10,
     paddingHorizontal: 12,
-    marginTop:5,
-    marginBottom:4
+    marginTop: 5,
+    marginBottom: 4,
   },
   appButtonText: {
     fontSize: 18,
