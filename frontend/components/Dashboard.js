@@ -26,47 +26,6 @@ function Dashboard(props) {
   }, [isFocused]);
 
   useEffect(() => {
-    // to incorporate upon user signIn and signUp
-    props.initialiseUserInfo({
-      Nom: "Alex",
-      Prénom: "Halsey",
-      Mail: "alex.halsey@icloud.com",
-      Téléphone: "06060606",
-      "Date de Naissance": "",
-      "Lieu de Naissance": "",
-      Adresse: "123 Avenue",
-      Ville: "Marseille",
-      "Code Postal": "123456",
-    });
-    props.initialiseProfessionInfo([
-      {
-        job_title: "profession 1",
-        skills: [
-          {
-            name: "skill 1",
-            experience: 0,
-            level: 0,
-          },
-          {
-            name: "skill 2",
-            experience: 1,
-            level: 3,
-          },
-          {
-            name: "skill 2",
-            experience: 2,
-            level: 2,
-          },
-        ],
-      },
-    ]);
-    props.initialiseJobOffers([
-      { name: "job offer 1", liked: true },
-      { name: "job offer 2", liked: false },
-    ]);
-  }, []);
-
-  useEffect(() => {
     let p = true;
     for (let key of Object.keys(props.userInfo)) {
       if (!props.userInfo[key]) {
@@ -104,7 +63,7 @@ function Dashboard(props) {
     return (
       <View style={styles.container}>
         <View style={styles.me}>
-          <Text style={styles.itemText}>Bonjour Maxine</Text>
+          <Text style={styles.itemText}>Bonjour {props.userInfo["Prénom"]}</Text>
           <Image style={styles.image} source={require("../assets/girl.jpg")} />
         </View>
 
@@ -290,45 +249,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    initialiseUserInfo: (userInfo) => {
-      dispatch({
-        type: "initialiseUserInfo",
-        userInfo: userInfo,
-      });
-    },
-    updateUserInfo: (updatedInfo) => {
-      dispatch({
-        type: "updateUserInfo",
-        updatedInfo: updatedInfo,
-      });
-    },
-    initialiseProfessionInfo: (professionInfo) => {
-      dispatch({
-        type: "initialiseProfesionInfo",
-        professionInfo: professionInfo,
-      });
-    },
-    updateProfessionInfo: (updatedInfo) => {
-      dispatch({
-        type: "updateProfessionInfo",
-        updatedInfo: updatedInfo,
-      });
-    },
-    initialiseJobOffers: (jobOffers) => {
-      dispatch({
-        type: "initialiseJobOffers",
-        jobOffers: jobOffers,
-      });
-    },
-    updateJobOffers: (updatedInfo) => {
-      dispatch({
-        type: "updateJobOffers",
-        updatedInfo: updatedInfo,
-      });
-    },
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, null)(Dashboard);

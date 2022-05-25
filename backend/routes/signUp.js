@@ -80,6 +80,11 @@ router.post("/inscription", async function (req, res, next) {
       email: req.body.emailFromFront,
       password: hash,
       token: uid2(32),
+      userAddress: {
+        streetName: "",
+        town: "",
+        zipCode: ""
+      }
     });
 
     saveUser = await newUser.save();
@@ -107,6 +112,16 @@ router.post("/sendCV", async function (req, res) {
   });
 
   pdfParser.parseBuffer(req.files.file.data);
+});
+
+router.get("/existingToken", async function(req, res) {
+  console.log(decodeURI(req.query.token));
+  console.log(decodeURIComponent(req.query.token));
+  const users = await userModel.find();
+  console.log("users", users);
+  const user = await userModel.findOne({ token: req.query.token })
+  console.log("user", user);
+  res.json({ user });
 });
 
 module.exports = router;
