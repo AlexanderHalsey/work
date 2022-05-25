@@ -3,6 +3,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native'
 import { useDisclose, Center } from 'native-base'
 import { Button } from 'react-native-elements'
+import { BACKEND_URL } from '@env'
 
 import {
   StyleSheet,
@@ -29,7 +30,7 @@ export default function ListOffersScreen(props) {
     const findOffers = async () => {
       // console.log(isFocused);
       if (isFocused) {
-        const data = await fetch('http://192.168.43.176:3000/offers/listOffers')
+        const data = await fetch(`${BACKEND_URL}/offers/listOffers`)
         const body = await data.json()
         setOffersList(body.offers)
       }

@@ -5,18 +5,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import { Ionicons } from '@expo/vector-icons'
 
-<<<<<<< HEAD
 import InfosPersonelles from './InfosPersonelles'
 import MyLikes from './MyLikes'
 import MyDocuments from './MyDocuments'
 import Missions from './Missions/Missions'
-=======
-import InfosPersonelles from "./InfosPersonelles";
-import MyLikes from "./MyLikes";
-import MyDocuments from "./MyDocuments";
-import Missions from "./Missions/Missions";
-import Skills from './Skills/Skills';
->>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f
+import Skills from './Skills/Skills'
 
 import { connect } from 'react-redux'
 
@@ -55,7 +48,6 @@ function Dashboard(props) {
   }, [props.professions])
 
   useEffect(() => {
-<<<<<<< HEAD
     setJobOffersLength(props.jobOffers.length)
     setLikedJobsLength(props.jobOffers.filter((offer) => offer.liked).length)
   }, [props.jobOffers])
@@ -70,22 +62,6 @@ function Dashboard(props) {
   else if (screenDisplay == 'PersonalInfo')
     return <InfosPersonelles navigation={props.navigation} />
   else if (screenDisplay == 'MyMissions') return <Missions />
-=======
-    setJobOffersLength(props.jobOffers.length);
-    setLikedJobsLength(props.jobOffers.filter((offer) => offer.liked).length);
-  }, [props.jobOffers]);
-
-  const [jobSkillsIncomplete, setJobSkillsIncomplete] = useState(false);
-  const [profileComplete, setProfileComplete] = useState(false);
-  const [likedJobsLength, setLikedJobsLength] = useState(0);
-  const [jobOffersLength, setJobOffersLength] = useState(0);
-
-  if (screenDisplay == "MyLikes") return <MyLikes />;
-  else if (screenDisplay == "MyDocuments") return <MyDocuments />;
-  else if (screenDisplay == "PersonalInfo") return <InfosPersonelles />;
-  else if (screenDisplay == "MyMissions") return <Missions />;
-  else if (screenDisplay == "Skills") return <Skills />
->>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f
   else {
     return (
       <View style={styles.container}>

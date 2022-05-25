@@ -1,58 +1,4 @@
-<<<<<<< HEAD:frontend/components/SkillsSelect.js
-// Example of Searchable Dropdown / Picker in React Native
-// https://aboutreact.com/example-of-searchable-dropdown-picker-in-react-native/
-
-// import React in our code
 import React, { useState, useEffect } from 'react'
-
-// import all the components we are going to use
-import { SafeAreaView, StyleSheet, Text, View, Image } from 'react-native'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import Icon from 'react-native-vector-icons/FontAwesome5'
-import { AntDesign } from '@expo/vector-icons'
-import { Center } from 'native-base'
-// import SearchableDropdown component
-import SearchableDropdown from 'react-native-searchable-dropdown'
-
-// Item array for the dropdown
-const testing = [
-  // name key is must. It is to show the text in front
-  { id: 1, name: 'Android Developer' },
-  { id: 2, name: 'IT Technician' },
-  { id: 3, name: 'Web Deveoper' },
-]
-
-export const App = () => {
-  // Data Source for the SearchableDropdown
-  const [serverData, setServerData] = useState([])
-  // const [jData, setJobData] = useState([]);
-
-  useEffect(() => {
-    const joblist = async function loadData() {
-      var rawJob = await fetch('https://192.168.43.176:3000/skills')
-      var jobData = await rawJob.json()
-
-      var temp = jobData.skills.map((e, key) => ({
-        id: key,
-        name: e.job_title,
-      }))
-      // var temp = jobData.skills.map(e => ({name: e.job_title}));
-
-      console.log(jobData)
-      // var items = jobData.skills.map((e,key) => ({ id:key.toString() , name: e.job_title.toLowerCase() }));
-      // const items = jobData.skills.map((e, key) => {
-      //   return {
-      //     id: key.toString(),
-      //     name: e.job_title,
-      //   };
-      // });
-      setServerData(temp)
-    }
-    joblist()
-    console.log('show server data', serverData)
-  }, [])
-=======
-import React, { useState, useEffect } from "react";
 
 // import all the components we are going to use
 import {
@@ -63,57 +9,49 @@ import {
   Image,
   Button,
   TouchableOpacity,
-} from "react-native";
+} from 'react-native'
 
-import Job from "./Job";
+import Job from './Job'
 
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import { AntDesign } from "@expo/vector-icons";
-import { Center } from "native-base";
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import { AntDesign } from '@expo/vector-icons'
+import { Center } from 'native-base'
 
-import SearchableDropdown from "react-native-searchable-dropdown";
-
+import SearchableDropdown from 'react-native-searchable-dropdown'
 
 const items = [
-
-  { id: 1, name: "Android Developer" },
-  { id: 2, name: "IT Technician" },
-  { id: 3, name: "Web Deveoper" },
-];
+  { id: 1, name: 'Android Developer' },
+  { id: 2, name: 'IT Technician' },
+  { id: 3, name: 'Web Deveoper' },
+]
 
 export const App = (props) => {
-
-  const [serverData, setServerData] = useState([]);
-  const [dropDownList, setDropDownList] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [serverData, setServerData] = useState([])
+  const [dropDownList, setDropDownList] = useState([])
+  const [selectedItems, setSelectedItems] = useState([])
 
   useEffect(() => {
     const fetchingSkills = async () => {
-      const rawData = await fetch("http://10.2.2.41:3000/skills");
-      const dataJSON = await rawData.json();
-      setServerData(dataJSON.skills);
-      console.log(dataJSON.skills.map(el => el.job_title));
-      setDropDownList(dataJSON.skills.map((el,i) => { return {id: i, name: el.job_title}}));
-    };
-    fetchingSkills();
-  }, []);
->>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f:frontend/components/Skills/Skills.js
+      const rawData = await fetch('http://10.2.2.41:3000/skills')
+      const dataJSON = await rawData.json()
+      setServerData(dataJSON.skills)
+      console.log(dataJSON.skills.map((el) => el.job_title))
+      setDropDownList(
+        dataJSON.skills.map((el, i) => {
+          return { id: i, name: el.job_title }
+        })
+      )
+    }
+    fetchingSkills()
+  }, [])
 
   const addbuttonHandler = (item) => {
-<<<<<<< HEAD:frontend/components/Skills/Skills.js
-    console.log("server data at 0", serverData[0]);
-    console.log("item", item);
-    const newObj = serverData.find(el => el["job_title"] === item["name"]);
-    setSelectedItems([newObj, ...selectedItems]);
-=======
-    let dest = [item, ...selectedItems];
-    setSelectedItems(dest);
->>>>>>> blerim:frontend/components/SkillsSelect.js
-    
-    // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
+    let dest = [item, ...selectedItems]
+    setSelectedItems(dest)
 
-  };
+    // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -143,13 +81,8 @@ export const App = (props) => {
         >
           <View>
             <Image
-<<<<<<< HEAD:frontend/components/SkillsSelect.js
               style={{ width: 120, height: 120, backgroundColor: '#B9FFFF' }}
-              source={require('../assets/icon.jpg')}
-=======
-              style={{ width: 120, height: 120, backgroundColor: "#B9FFFF" }}
-              source={require("../../assets/icon.jpg")}
->>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f:frontend/components/Skills/Skills.js
+              source={require('../../assets/icon.jpg')}
             />
           </View>
           <View style={{ marginLeft: 20, marginRight: 150, marginTop: 0 }}>
@@ -176,14 +109,11 @@ export const App = (props) => {
           multi={true}
           onTextChange={(text) => console.log(text)}
           onItemSelect={(item) => {
-            addbuttonHandler(item);
-<<<<<<< HEAD:frontend/components/Skills/Skills.js
-=======
-            
+            addbuttonHandler(item)
+
             // disabled= "false"
             // onPress={addbuttonHandler}
             // alert(JSON.stringify(item))
->>>>>>> blerim:frontend/components/SkillsSelect.js
           }}
           containerStyle={{ padding: 5 }}
           textInputStyle={{
@@ -200,18 +130,13 @@ export const App = (props) => {
             borderWidth: 1,
           }}
           itemTextStyle={{
-<<<<<<< HEAD:frontend/components/SkillsSelect.js
-            // Text style of a single dropdown item
             color: '#222',
-=======
-            color: "#222",
             padding: 10,
             marginTop: 2,
-            backgroundColor: "#ddd",
-            borderColor: "#bbb",
+            backgroundColor: '#ddd',
+            borderColor: '#bbb',
             borderWidth: 1,
             borderRadius: 5,
->>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f:frontend/components/Skills/Skills.js
           }}
           itemsContainerStyle={{
             // Items container style you can pass maxHeight
@@ -231,9 +156,7 @@ export const App = (props) => {
         />
       </View>
       {selectedItems.map((item, key) => {
-        return (
-          <Job key={key} title={item.job_title} skills={item.skills} />
-        );
+        return <Job key={key} title={item.job_title} skills={item.skills} />
       })}
     </SafeAreaView>
   )
@@ -256,24 +179,20 @@ const styles = StyleSheet.create({
   headingText: {
     padding: 8,
   },
-<<<<<<< HEAD:frontend/components/SkillsSelect.js
-})
-=======
   appButtonContainer: {
-    elevation:5,
-    backgroundColor: "#000B33",
+    elevation: 5,
+    backgroundColor: '#000B33',
     borderRadius: 40,
     paddingVertical: 10,
     paddingHorizontal: 12,
-    marginTop:5,
-    marginBottom:4
+    marginTop: 5,
+    marginBottom: 4,
   },
   appButtonText: {
     fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase",
+    color: '#fff',
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    textTransform: 'uppercase',
   },
-});
->>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f:frontend/components/Skills/Skills.js
+})

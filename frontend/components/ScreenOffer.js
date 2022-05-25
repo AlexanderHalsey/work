@@ -3,6 +3,7 @@ import { useIsFocused } from '@react-navigation/native'
 import MapView, { Marker } from 'react-native-maps'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
+import { BACKEND_URL } from '@env'
 
 import { useDisclose, Center } from 'native-base'
 import { Button } from 'react-native-elements'
@@ -34,7 +35,7 @@ function ScreenOffer(props) {
       // console.log(isFocused);
       console.log('dans useEffect ScreenOffer')
       const data = await fetch(
-        `http://192.168.43.176:3000/offers/displayOffer?offerId=${props.route.params.offerId}`
+        `${BACKEND_URL}/offers/displayOffer?offerId=${props.route.params.offerId}`
       )
       const body = await data.json()
       console.log('body dans ScreenOffer', body.offer)

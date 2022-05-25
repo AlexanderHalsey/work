@@ -3,6 +3,7 @@ import { View, Text, Dimensions, Pressable } from 'react-native'
 import { Input } from 'react-native-elements'
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { BACKEND_URL } from '@env'
 
 let deviceHeight = Dimensions.get('window').height
 let deviceWidth = Dimensions.get('window').width
@@ -14,7 +15,7 @@ function LogIn(props) {
 
   var handleSubmitSignin = async () => {
     // verifier que le backend accepte les infos de sign up
-    const data = await fetch('http://192.168.43.176:3000/signUp/signIn', {
+    const data = await fetch(`${BACKEND_URL}/signUp/signIn`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `emailFromFront=${email}&passwordFromFront=${password}`,
@@ -40,7 +41,7 @@ function LogIn(props) {
       props.initialiseApplicationsInfo(datajson.user.applications)
       // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
       const offersRaw = await fetch(
-        `http://192.168.43.176:3000/offers/listOffers?token=${datajson.token}`
+        `${BACKEND_URL}/offers/listOffers?token=${datajson.token}`
       )
       const offers = await offersRaw.json()
       console.log(offers)

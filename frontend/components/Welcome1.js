@@ -4,6 +4,7 @@ import { Button } from 'react-native-elements'
 import { Dimensions } from 'react-native'
 
 import { connect } from 'react-redux'
+import { BACKEND_URL } from '@env'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -24,9 +25,7 @@ function Welcome1(props) {
         var handleSubmitSignin = async () => {
           // verifier que le backend accepte les infos de sign up
           const data = await fetch(
-            `http://192.168.43.176:3000/signUp/existingToken?token=${JSON.parse(
-              value
-            )}`
+            `${BACKEND_URL}/signUp/existingToken?token=${JSON.parse(value)}`
           )
           var datajson = await data.json()
           console.log('datajson', datajson)
@@ -49,7 +48,7 @@ function Welcome1(props) {
 
           // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
           const offersRaw = await fetch(
-            `http://192.168.43.176:3000/offers/listOffers?token=${datajson.user.token}`
+            `${BACKEND_URL}/offers/listOffers?token=${datajson.user.token}`
           )
           const offers = await offersRaw.json()
           console.log('offers.offers après deuxieme fetch', offers.offers)

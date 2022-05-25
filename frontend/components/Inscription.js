@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import { View, Text, Dimensions, Pressable } from 'react-native'
 import { Input } from 'react-native-elements'
+import { BACKEND_URL } from '@env'
 
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { AntDesign } from '@expo/vector-icons'
@@ -12,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 let deviceHeight = Dimensions.get('window').height
 let deviceWidth = Dimensions.get('window').width
+console.log('BACKEND_URL', BACKEND_URL)
 
 function Inscription(props) {
   const [nom, setNom] = useState(props.route.params.name.split(' ')[1])
@@ -23,28 +25,17 @@ function Inscription(props) {
 
   var handleSubmitSignin = async () => {
     // verifier que le backend accepte les infos de sign up
-<<<<<<< HEAD
-    const data = await fetch('http://192.168.43.176:3000/signUp/inscription', {
+    const data = await fetch(`${BACKEND_URL}/signUp/inscription`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-=======
-    const data = await fetch("http://10.2.2.41:3000/signUp/inscription", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
->>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f
       body: `nomFromFront=${nom}&prenomFromFront=${prenom}&emailFromFront=${email}&telFromFront=${tel}&passwordFromFront=${password}&confPasswordFromFront=${confPassword}`,
     })
     var datajson = await data.json()
     if (datajson.result == true) {
-<<<<<<< HEAD
-      console.log('no')
-=======
->>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f
       // on vient "setter" notre token dans le localStorage
       AsyncStorage.setItem('token', JSON.stringify(datajson.token))
       // on initialise les reducers de Redux
       props.initialiseUserInfo({
-<<<<<<< HEAD
         Nom: datajson.saveUser.nom,
         Prénom: datajson.saveUser.prenom,
         Avatar: datajson.user.avatar,
@@ -61,30 +52,11 @@ function Inscription(props) {
       console.log('hellooooo,kjlhg')
       // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
       const offersRaw = await fetch(
-        `http://192.168.43.176:3000/offers/listOffers?token=${datajson.token}`
+        `${BACKEND_URL}/offers/listOffers?token=${datajson.token}`
       )
       const offers = await offersRaw.json()
       console.log(offers)
       props.initialiseJobOffersInfo(offers.offers)
-=======
-        "Nom": datajson.saveUser.nom,
-        "Prénom": datajson.saveUser.prenom,
-        "Mail": datajson.saveUser.email,
-        "Téléphone": datajson.saveUser.phone || "",
-        "Date de Naissance": datajson.saveUser.bornWhen || "",
-        "Lieu de Naissance": datajson.saveUser.bornAt || "",
-        "Adresse": datajson.saveUser.userAddress.streetName,
-        "Ville": datajson.saveUser.userAddress.town,
-        "Code Postal": datajson.saveUser.userAddress.zipCode,
-      });
-      props.initialiseProfessionInfo(datajson.saveUser.jobs);
-      props.initialiseApplicationsInfo(datajson.saveUser.applications);
-      // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
-      const offersRaw = await fetch(`http://10.2.2.41:3000/offers/listOffers?token=${datajson.token}`)
-      const offers = await offersRaw.json();
-      console.log(offers);
-      props.initialiseJobOffersInfo(offers.offers);
->>>>>>> 4225cf73da67b7010f868c7d7c7b0871dd22751f
 
       // on navigue vers la page de Dashboard
       props.navigation.navigate('BottomNavigator', { screen: 'Dashboard' })
