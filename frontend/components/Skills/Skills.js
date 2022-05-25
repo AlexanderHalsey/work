@@ -46,10 +46,15 @@ export const App = (props) => {
   }, []);
 
   const addbuttonHandler = (item) => {
+<<<<<<< HEAD:frontend/components/Skills/Skills.js
     console.log("server data at 0", serverData[0]);
     console.log("item", item);
     const newObj = serverData.find(el => el["job_title"] === item["name"]);
     setSelectedItems([newObj, ...selectedItems]);
+=======
+    let dest = [item, ...selectedItems];
+    setSelectedItems(dest);
+>>>>>>> blerim:frontend/components/SkillsSelect.js
     
     // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
 
@@ -112,6 +117,13 @@ export const App = (props) => {
           onTextChange={(text) => console.log(text)}
           onItemSelect={(item) => {
             addbuttonHandler(item);
+<<<<<<< HEAD:frontend/components/Skills/Skills.js
+=======
+            
+            // disabled= "false"
+            // onPress={addbuttonHandler}
+            // alert(JSON.stringify(item))
+>>>>>>> blerim:frontend/components/SkillsSelect.js
           }}
           containerStyle={{ padding: 5 }}
           textInputStyle={{
