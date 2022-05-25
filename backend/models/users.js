@@ -23,6 +23,8 @@ const userSchema = mongoose.Schema({
   email: String,
   phone: String,
   password: String,
+  bornWhen: Date,
+  bornAt: String,
   token: String,
   blackListOffer: [String],
   userAddress: addressSchema,

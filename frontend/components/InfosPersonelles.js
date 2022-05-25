@@ -19,22 +19,6 @@ import {connect} from 'react-redux';
 function InfosPersonelles(props) {
   const [infoDisplay, setInfoDisplay] = useState(true);
 
-  useEffect(() => {
-    // to incorporate upon user signIn and signUp
-
-    props.initialiseUserInfo({
-        "Nom": "Alex",
-        "Prénom": "Halsey",
-        "Mail": "alex.halsey@icloud.com",
-        "Téléphone": "06060606",
-        "Date de Naissance": "",
-        "Lieu de Naissance": "",
-        "Adresse": "123 Avenue",
-        "Ville": "Marseille",
-        "Code Postal": "123456",
-    });
-  },[])
-
   return (
     <ScrollView style={styles.container} contentContainerStyle={{alignItems: "center"}}>
         <MaterialCommunityIcons 
@@ -135,12 +119,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        initialiseUserInfo: userInfo => {
-            dispatch({
-                type: "initialiseUserInfo",
-                userInfo: userInfo
-            })
-        },
         updateUserInfo: updatedInfo => {
             dispatch({
                 type: "updateUserInfo",

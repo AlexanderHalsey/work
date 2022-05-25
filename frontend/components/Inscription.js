@@ -6,6 +6,7 @@ import { Input } from "react-native-elements";
 import IconFontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { AntDesign } from '@expo/vector-icons'; 
 
+import { connect } from "react-redux";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -21,16 +22,41 @@ function Inscription(props) {
   const [confPassword, setConfPassword] = useState("");
 
   var handleSubmitSignin = async () => {
-    const data = await fetch("http://10.2.2.41:3000/signUp/inscription", {
+    // verifier que le backend accepte les infos de sign up
+    const data = await fetch("http://192.168.1.85:3000/signUp/inscription", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `nomFromFront=${nom}&prenomFromfront=${prenom}&emailFromFront=${email}&telFromFront=${tel}&passwordFromFront=${password}&confPasswordFromFront=${confPassword}`,
+      body: `nomFromFront=${nom}&prenomFromFront=${prenom}&emailFromFront=${email}&telFromFront=${tel}&passwordFromFront=${password}&confPasswordFromFront=${confPassword}`,
     });
     var datajson = await data.json();
     if (datajson.result == true) {
+      console.log("no")
+      // on vient "setter" notre token dans le localStorage
       AsyncStorage.setItem("token", JSON.stringify(datajson.token));
-    
+      // on initialise les reducers de Redux
+      props.initialiseUserInfo({
+        "Nom": datajson.saveUser.nom,
+        "Prénom": datajson.saveUser.prenom,
+        "Mail": datajson.saveUser.email,
+        "Téléphone": datajson.saveUser.phone || "",
+        "Date de Naissance": datajson.saveUser.bornWhen || "",
+        "Lieu de Naissance": datajson.saveUser.bornAt || "",
+        "Adresse": datajson.saveUser.userAddress.streetName,
+        "Ville": datajson.saveUser.userAddress.town,
+        "Code Postal": datajson.saveUser.userAddress.zipCode,
+      });
+      props.initialiseProfessionInfo(datajson.saveUser.jobs);
+      props.initialiseApplicationsInfo(datajson.saveUser.applications);
+      console.log("hellooooo,kjlhg")
+      // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
+      const offersRaw = await fetch(`http://192.168.1.85:3000/offers/listOffers?token=${datajson.token}`)
+      const offers = await offersRaw.json();
+      console.log(offers);
+      props.initialiseJobOffersInfo(offers.offers);
+
+      // on navigue vers la page de Dashboard
       props.navigation.navigate("BottomNavigator", { screen: "Dashboard" });
+
     }
   };
 
@@ -109,4 +135,37 @@ function Inscription(props) {
     </View>
   );
 }
-export default Inscription;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    initialiseUserInfo: (userInfo) => {
+      dispatch({
+        type: "initialiseUserInfo",
+        userInfo: userInfo,
+      });
+    },
+    initialiseProfessionInfo: (professionInfo) => {
+      dispatch({
+        type: "initialiseProfesionInfo",
+        professionInfo: professionInfo,
+      });
+    },
+    initialiseApplicationsInfo: applicationInfo => {
+      dispatch({
+        type: "initialiseApplicationInfo",
+        applicationInfo: applicationInfo
+      })
+    },
+    initialiseJobOffersInfo: jobOffers => {
+      dispatch({
+        type: "initialiseJobOffersInfo",
+        jobOffers: jobOffers
+      })
+    }
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Inscription);
