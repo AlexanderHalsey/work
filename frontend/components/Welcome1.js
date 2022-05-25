@@ -1,80 +1,77 @@
-import React, { useEffect } from 'react'
-import { View, Image, Text } from 'react-native'
-import { Button } from 'react-native-elements'
-import { Dimensions } from 'react-native'
+import React, { useEffect } from "react";
+import { View, Image, Text } from "react-native";
+import { Button } from "react-native-elements";
+import { Dimensions } from "react-native";
 
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 
-import Icon from 'react-native-vector-icons/FontAwesome'
-import IconFontAwesome from 'react-native-vector-icons/FontAwesome'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import Icon from "react-native-vector-icons/FontAwesome";
+import IconFontAwesome from "react-native-vector-icons/FontAwesome";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-let deviceHeight = Dimensions.get('window').height
-let deviceWidth = Dimensions.get('window').width
+let deviceHeight = Dimensions.get("window").height;
+let deviceWidth = Dimensions.get("window").width;
 
 function Welcome1(props) {
   useEffect(() => {
-    // AsyncStorage.clear();
+    AsyncStorage.clear();
 
     // si le user accede cette page sans avoir deconnecte depuis le dernier
     // session on va pouvoir recuperer son token et rediriger le user sur son dashboard
-    AsyncStorage.getItem('token', function (error, value) {
-      console.log('value', value)
+    AsyncStorage.getItem("token", function (error, value) {
+      console.log("value", value);
       if (value !== null) {
         var handleSubmitSignin = async () => {
           // verifier que le backend accepte les infos de sign up
           const data = await fetch(
-            `http://192.168.43.176:3000/signUp/existingToken?token=${JSON.parse(
+            `http://10.2.1.215:3000/signUp/existingToken?token=${JSON.parse(
               value
             )}`
-          )
-          var datajson = await data.json()
-          console.log('datajson', datajson)
+          );
+          var datajson = await data.json();
+          console.log("datajson", datajson);
           // on initialise les reducers de Redux
           props.initialiseUserInfo({
             Nom: datajson.user.nom,
-            Avatar: datajson.user.avatar,
             Prénom: datajson.user.prenom,
-            token: datajson.user.token,
             Mail: datajson.user.email,
-            Téléphone: datajson.user.phone || '',
-            'Date de Naissance': datajson.user.bornWhen || '',
-            'Lieu de Naissance': datajson.user.bornAt || '',
+            Téléphone: datajson.user.phone || "",
+            "Date de Naissance": datajson.user.bornWhen || "",
+            "Lieu de Naissance": datajson.user.bornAt || "",
             Adresse: datajson.user.userAddress.streetName,
             Ville: datajson.user.userAddress.town,
-            'Code Postal': datajson.user.userAddress.zipCode,
-          })
-          props.initialiseProfessionInfo(datajson.user.jobs)
-          props.initialiseApplicationsInfo(datajson.user.applications)
+            "Code Postal": datajson.user.userAddress.zipCode,
+          });
+          props.initialiseProfessionInfo(datajson.user.jobs);
+          props.initialiseApplicationsInfo(datajson.user.applications);
 
           // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
           const offersRaw = await fetch(
-            `http://192.168.43.176:3000/offers/listOffers?token=${datajson.user.token}`
-          )
-          const offers = await offersRaw.json()
-          console.log('offers.offers après deuxieme fetch', offers.offers)
-          props.initialiseJobOffersInfo(offers.offers)
+            `http://10.2.1.215:3000/offers/listOffers?token=${datajson.token}`
+          );
+          const offers = await offersRaw.json();
+          props.initialiseJobOffersInfo(offers.offers);
 
           // on navigue vers la page de Dashboard
-          props.navigation.navigate('BottomNavigator', { screen: 'Dashboard' })
-        }
-        handleSubmitSignin()
+          props.navigation.navigate("BottomNavigator", { screen: "Dashboard" });
+        };
+        handleSubmitSignin();
       }
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <View
       style={{
         flex: 1,
-        flexDirection: 'column',
+        flexDirection: "column",
 
-        alignItems: 'center',
+        alignItems: "center",
       }}
     >
       <Image
-        resizeMode='contain'
-        source={require('../assets/logoWork.png')}
+        resizeMode="contain"
+        source={require("../assets/logoWork.png")}
         style={{
           width: 250,
           height: 250,
@@ -84,10 +81,10 @@ function Welcome1(props) {
       <View>
         <Button
           onPress={() => {
-            props.navigation.navigate('Welcome2')
+            props.navigation.navigate("Welcome2");
           }}
           buttonStyle={{
-            backgroundColor: '#000B33',
+            backgroundColor: "#000B33",
             width: deviceWidth * 0.8,
 
             marginTop: 220,
@@ -95,82 +92,82 @@ function Welcome1(props) {
             padding: 10,
           }}
           containerStyle={{
-            alignItems: 'center',
-            justifyContent: 'center',
+            alignItems: "center",
+            justifyContent: "center",
           }}
           title="S'inscrire en 1 minute avec votre CV"
         />
         <Button
           buttonStyle={{
-            backgroundColor: '#000B33',
+            backgroundColor: "#000B33",
             width: deviceWidth * 0.8,
             marginTop: 15,
             borderRadius: 15,
             padding: 10,
           }}
           containerStyle={{
-            alignItems: 'center',
-            justifyContent: 'center',
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          title='Se connecter'
-          onPress={() => props.navigation.navigate('LogIn')}
+          title="Se connecter"
+          onPress={() => props.navigation.navigate("LogIn")}
         />
       </View>
-      <Text style={{ alignItems: 'center', marginTop: 50, margin: 40 }}>
-        {'- Se connecter avec - '}
+      <Text style={{ alignItems: "center", marginTop: 50, margin: 40 }}>
+        {"- Se connecter avec - "}
       </Text>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={{ flexDirection: "row" }}>
         <Image
-          source={require('../assets/googleLogo.png')}
+          source={require("../assets/googleLogo.png")}
           style={{ width: 50, height: 50, margin: 10 }}
         />
         <Image
-          source={require('../assets/facebookLogo.png')}
+          source={require("../assets/facebookLogo.png")}
           style={{ width: 50, height: 50, margin: 10 }}
         />
       </View>
-      <Text style={{ alignItems: 'center', marginBottom: -50, marginTop: 50 }}>
-        {'Nouveau ? Créer un compte '}
+      <Text style={{ alignItems: "center", marginBottom: -50, marginTop: 50 }}>
+        {"Nouveau ? Créer un compte "}
       </Text>
       <Image
-        resizeMode='contain'
-        source={require('../assets/homme.png')}
+        resizeMode="contain"
+        source={require("../assets/homme.png")}
         style={{
           height: deviceHeight * 0.5,
           marginTop: 20,
         }}
       />
     </View>
-  )
+  );
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     initialiseUserInfo: (userInfo) => {
       dispatch({
-        type: 'initialiseUserInfo',
+        type: "initialiseUserInfo",
         userInfo: userInfo,
-      })
+      });
     },
     initialiseProfessionInfo: (professionInfo) => {
       dispatch({
-        type: 'initialiseProfesionInfo',
+        type: "initialiseProfesionInfo",
         professionInfo: professionInfo,
-      })
+      });
     },
     initialiseApplicationsInfo: (applicationInfo) => {
       dispatch({
-        type: 'initialiseApplicationInfo',
+        type: "initialiseApplicationInfo",
         applicationInfo: applicationInfo,
-      })
+      });
     },
     initialiseJobOffersInfo: (jobOffers) => {
       dispatch({
-        type: 'initialiseJobOffersInfo',
+        type: "initialiseJobOffersInfo",
         jobOffers: jobOffers,
-      })
+      });
     },
-  }
-}
+  };
+};
 
-export default connect(null, mapDispatchToProps)(Welcome1)
+export default connect(null, mapDispatchToProps)(Welcome1);
