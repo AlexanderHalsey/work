@@ -5,7 +5,15 @@
 import React, { useState, useEffect } from "react";
 
 // import all the components we are going to use
-import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { AntDesign } from "@expo/vector-icons";
@@ -14,54 +22,75 @@ import { Center } from "native-base";
 import SearchableDropdown from "react-native-searchable-dropdown";
 
 // Item array for the dropdown
-const testing = [
+const items = [
   // name key is must. It is to show the text in front
   { id: 1, name: "Android Developer" },
   { id: 2, name: "IT Technician" },
   { id: 3, name: "Web Deveoper" },
 ];
 
-export const App = () => {
+export const App = (props) => {
+  // console.log(selectedItems)
   // Data Source for the SearchableDropdown
   const [serverData, setServerData] = useState([]);
-  // const [jData, setJobData] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [toggle, setToggle] = useState(false);
+  // const [name, setName] = useState('')
+  // useEffect(() => {
+  //   const joblist = async function loadData() {
+  //     var rawJob = await fetch("https://10.2.1.38:3000/skills");
+  //     var jobData = await rawJob.json();
+
+  //     var temp = jobData.skills.map((e,key) => ({id:key,name: e.job_title}));
+  //     // var temp = jobData.skills.map(e => ({name: e.job_title}));
+
+  //     console.log(jobData);
+  //     // var items = jobData.skills.map((e,key) => ({ id:key.toString() , name: e.job_title.toLowerCase() }));
+  //     // const items = jobData.skills.map((e, key) => {
+  //     //   return {
+  //     //     id: key.toString(),
+  //     //     name: e.job_title,
+  //     //   };
+  //     // });
+  //     setServerData(temp);
+  //   };
+  //   joblist();
+  //   console.log("show server data", serverData);
+  // }, []);
 
   useEffect(() => {
-    const joblist = async function loadData() {
-      var rawJob = await fetch("https://10.2.1.38:3000/skills");
-      var jobData = await rawJob.json();
-
-
-      var temp = jobData.skills.map((e,key) => ({id:key,name: e.job_title}));
-      // var temp = jobData.skills.map(e => ({name: e.job_title}));
-
-      console.log(jobData);
-      // var items = jobData.skills.map((e,key) => ({ id:key.toString() , name: e.job_title.toLowerCase() }));
-      // const items = jobData.skills.map((e, key) => {
-      //   return {
-      //     id: key.toString(),
-      //     name: e.job_title,
-      //   };
-      // });
-      setServerData(temp);
-    };
-    joblist();
-    console.log("show server data", serverData);
+    fetch("https://aboutreact.herokuapp.com/demosearchables.php")
+      .then((response) => response.json())
+      .then((responseJson) => {
+        //Successful response from the API Call
+        //console.log(responseJson);
+        setServerData(responseJson.results);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
-  // useEffect(() => {
-  //   fetch('https://aboutreact.herokuapp.com/demosearchables.php')
-  //     .then((response) => response.json())
-  //     .then((responseJson) => {
-  //       //Successful response from the API Call
-  //       console.log(responseJson)
-  //       setServerData(responseJson.results);
+  const addbuttonHandler = (item) => {
+    let dest = [item, ...selectedItems];
+    setSelectedItems(dest);
+    // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
 
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
+  };
+
+  // useEffect(() => {
+  //   async function fetchEmployees() {
+  //     const response = await fetch('/employees');
+  //     const fetchedEmployees = await response.json(response);
+  //     setEmployees(fetchedEmployees);
+  //   }
+  //   fetchEmployees();
   // }, []);
+  // return (
+  //   <div>
+  //     {employees.map(name => <div>{name}</div>)}
+  //   </div>
+  // );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -115,55 +144,20 @@ export const App = () => {
           <Text style={styles.headingText}>Métier</Text>
         </View>
 
-        {/* <SearchableDropdown
-          onTextChange={(text) => console.log(text)}
-          // Listner on the searchable input
-          onItemSelect={(item) => alert(JSON.stringify(item))}
-          // Called after the selection
-          containerStyle={{padding: 5}}
-          // Suggestion container style
-          textInputStyle={{
-            // Inserted text style
-            padding: 12,
-            borderWidth: 1,
-            borderColor: '#ccc',
-            backgroundColor: '#FAF7F6',
-          }}
-          itemStyle={{
-            // Single dropdown item style
-            padding: 10,
-            marginTop: 2,
-            backgroundColor: '#FAF9F8',
-            borderColor: '#bbb',
-            borderWidth: 1,
-          }}
-          itemTextStyle={{
-            // Text style of a single dropdown item
-            color: '#222',
-          }}
-          itemsContainerStyle={{
-            // Items container style you can pass maxHeight
-            // To restrict the items dropdown hieght
-            maxHeight: '60%',
-          }}
-          items={items}
-          // Mapping of item array
-          defaultIndex={2}
-          // Default selected item index
-          placeholder="placeholder"
-          // place holder for the search input
-          resPtValue={false}
-          // Reset textInput Value with true and false state
-          underlineColorAndroid="transparent"
-          // To remove the underline from the android input
-        />
-        <Text style={styles.headingText}>
-          Searchable Dropdown from Dynamic Array from Server
-        </Text> */}
         <SearchableDropdown
+          multi={true}
           onTextChange={(text) => console.log(text)}
           // Change listner on the searchable input
-          onItemSelect={(item) => alert(JSON.stringify(item.toLowerCase()))}
+
+          onItemSelect={(item) => {
+            console.log("on item selected :", item.name);
+            setToggle(true);
+            //  items.push({name:item.name})
+            addbuttonHandler(item);
+            // disabled= "false"
+            // onPress={addbuttonHandler}
+            // alert(JSON.stringify(item))
+          }}
           // Called after the selection from the dropdown
           containerStyle={{ padding: 5 }}
           // Suggestion container style
@@ -185,6 +179,12 @@ export const App = () => {
           itemTextStyle={{
             // Text style of a single dropdown item
             color: "#222",
+            padding: 10,
+            marginTop: 2,
+            backgroundColor: "#ddd",
+            borderColor: "#bbb",
+            borderWidth: 1,
+            borderRadius: 5,
           }}
           itemsContainerStyle={{
             // Items container style you can pass maxHeight
@@ -202,7 +202,21 @@ export const App = () => {
           underlineColorAndroid="transparent"
           // To remove the underline from the android input
         />
+        <View>
+          {/* <Button
+            onPress={addbuttonHandler}
+            title={"Add items"}
+            // disabled= "false"
+          /> */}
+        </View>
       </View>
+      {selectedItems.map((item, key) => {
+        return (
+          <TouchableOpacity key={key} style={styles.appButtonContainer}>
+            <Text style={styles.appButtonText}>{item.name}</Text>
+          </TouchableOpacity>
+        );
+      })}
     </SafeAreaView>
   );
 };
@@ -223,5 +237,21 @@ const styles = StyleSheet.create({
   },
   headingText: {
     padding: 8,
+  },
+  appButtonContainer: {
+    elevation:5,
+    backgroundColor: "#000B33",
+    borderRadius: 40,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginTop:5,
+    marginBottom:4
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase",
   },
 });
