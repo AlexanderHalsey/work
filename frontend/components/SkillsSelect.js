@@ -74,6 +74,7 @@ export const App = (props) => {
   const addbuttonHandler = (item) => {
     let dest = [item, ...selectedItems];
     setSelectedItems(dest);
+    
     // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
 
   };
@@ -154,6 +155,7 @@ export const App = (props) => {
             setToggle(true);
             //  items.push({name:item.name})
             addbuttonHandler(item);
+            
             // disabled= "false"
             // onPress={addbuttonHandler}
             // alert(JSON.stringify(item))
