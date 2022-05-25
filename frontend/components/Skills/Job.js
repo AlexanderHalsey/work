@@ -25,21 +25,14 @@ const Job = (props) => {
     <TouchableOpacity onPress={() => setToggled((prev) => !prev)}>
       <Animated.View
         style={{
-          backgroundColor: '#B9FFFF',
-          overflow: 'hidden',
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: 20,
-          marginTop: 5,
-
           height: height.interpolate({
             inputRange: [0, 1],
-            outputRange: [35, 200],
+            outputRange: [50, 200],
           }),
         }}
       >
         {!toggled ? (
-          <TouchableOpacity style={styles.appButtonContainer}>
+          <TouchableOpacity style={[styles.appButtonContainer]}>
             <Text style={styles.appButtonText}>{props.title}</Text>
           </TouchableOpacity>
         ) : (
@@ -67,16 +60,14 @@ const Job = (props) => {
 
 const styles = StyleSheet.create({
     appButtonContainer: {
-        elevation:5,
-        backgroundColor: "#000B33",
+        backgroundColor: "#001150",
         borderRadius: 40,
-        paddingVertical: 10,
-        paddingHorizontal: 12,
-        marginTop:5,
-        marginBottom:4
+        width: "100%",
+        padding: 7
       },
       appButtonText: {
-        fontSize: 18,
+        fontSize: 11,
+        textAlign: "center",
         color: "#fff",
         fontWeight: "bold",
         alignSelf: "center",
