@@ -10,7 +10,7 @@ router.get("/", async function (req, res, next) {
 });
 
 router.post("/newSkill", async function(req, res) {
-
+  console.log(req.body)
   const user = await userModel.findOne({ token: req.body.userToken });
 
   if (!user) {
@@ -18,7 +18,7 @@ router.post("/newSkill", async function(req, res) {
   } else {
     user.jobs.push({
       job_title: req.body.jobTitleFromFront,
-      skills: req.body.skillsFromFront.map(skill => {
+      skills: req.body.skillsFromFront.split(",").map(skill => {
         return {
           skill_title: skill,
           experience: 0,

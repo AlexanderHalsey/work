@@ -10,6 +10,7 @@ import {
 
 import Accordion from './Accordion';
 import {connect} from 'react-redux';
+import { AntDesign } from '@expo/vector-icons';
 
 
 
@@ -27,41 +28,39 @@ const Job = (props) => {
   }, [toggled])
 
   return (
-      <TouchableOpacity onPress={() => console.log("kjhg")}>
-        <Animated.View
-            style={{
-              overflow: "hidden",
-              justifyContent: "center",
-              alignItems: "center",
-              height: height.interpolate({
-                inputRange: [0, 1],
-                outputRange: [50, 200],
-            }),
-            }}
-        >
-            {!toggled ? (
-            <TouchableOpacity style={[styles.appButtonContainer]}>
-                <Text style={styles.appButtonText}>{props.title}</Text>
-            </TouchableOpacity>
-            ) : (
-            <>
-                <View
-                    style={{ flex: 1, backgroundColor:'#001150',marginTop: 20, alignItems:"center"}}
-                    >
-                    <Text style={{color:"white",marginBottom:45,marginTop:20,fontSize:20}}>{props.title}</Text>
-                    <Text>Ce que je sais faire</Text> 
-                    {props.skills.map((el,i) => {
-                        <Accordion key={i} skill={el} />
-                    })}
+    <Animated.View
+        style={{
+          overflow: "hidden",
+          justifyContent: "center",
+          alignItems: "center",
+          height: height.interpolate({
+            inputRange: [0, 1],
+            outputRange: [50, 200],
+        }),
+        }}
+    >
+        {!toggled ? (
+        <TouchableOpacity style={[styles.appButtonContainer]} onPress={() => setToggled(!toggled)}>
+            <Text style={styles.appButtonText}>{props.title}</Text>
+        </TouchableOpacity>
+        ) : (
+        <>
+            <TouchableOpacity onPress={() => setToggled(!toggled)}
+                style={{ flex: 1, backgroundColor:'#001150',marginTop: 20, alignItems:"center"}}
+                >
+                <Text style={{color:"white",marginBottom:45,marginTop:20,fontSize:20}}>{props.title}</Text>
+                <Text>Ce que je sais faire</Text> 
+                {props.skills.map((el,i) => {
+                    <Accordion key={i} skill={el} />
+                })}
 
-                    <Pressable onPress={() => props.navigation.navigate()}>
-                        <AntDesign name="checkcircle" size={60} color="white" style={{justifyContent:"center",marginTop:75}} />
-                    </Pressable>    
-                </View>
-            </>
-            )}
-        </Animated.View>
-      </TouchableOpacity>
+                <Pressable onPress={() => props.navigation.navigate()}>
+                    <AntDesign name="checkcircle" size={60} color="white" style={{justifyContent:"center",marginTop:75}} />
+                </Pressable>    
+            </TouchableOpacity>
+        </>
+        )}
+    </Animated.View>
   )
 }
 
