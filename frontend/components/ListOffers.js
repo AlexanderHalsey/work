@@ -27,18 +27,19 @@ function ListOffersScreen(props) {
   const { isOpen, onOpen, onClose } = useDisclose()
 
   //fetch pour récupérer les infos en BDD
+  console.log('token ds listoffer', props.userInfo.token)
+  console.log('offersList ds listoffer', offersList)
 
   useEffect(() => {
     const findOffers = async () => {
-      // console.log(isFocused);
-      if (isFocused) {
-        const data = await fetch(`${BACKEND_URL}/offers/listOffers?token=${props.user.Token}`)
-        const body = await data.json()
-        setOffersList(body.offers)
-      }
+      const data = await fetch(
+        `${BACKEND_URL}/offers/listOffers?token=${props.userInfo.token}`
+      )
+      const body = await data.json()
+      setOffersList(body.offers)
     }
     findOffers()
-  }, [isFocused])
+  }, [isFocused, props.blackList, props.likes])
 
   // console.log("titre annonce : ", screenDisplay.title);
 
@@ -166,10 +167,13 @@ const styles = StyleSheet.create({
   },
 })
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.userInfo
+    userInfo: state.userInfo,
+    professions: state.professions,
+    jobOffers: state.jobOffers,
+    blackList: state.blackList,
+    likes: state.likes,
   }
 }
-
-export default connect(mapStateToProps, null)(ListOffersScreen);
+export default connect(mapStateToProps, null)(ListOffersScreen)

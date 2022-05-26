@@ -19,8 +19,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 function Dashboard(props) {
   const [screenDisplay, setScreenDisplay] = useState(null)
+  const [jobSkillsIncomplete, setJobSkillsIncomplete] = useState(false)
+  const [profileComplete, setProfileComplete] = useState(false)
+  const [likedJobsLength, setLikedJobsLength] = useState(0)
+  const [jobOffersLength, setJobOffersLength] = useState(0)
   const isFocused = useIsFocused()
-  console.log("user", props.userInfo);
   console.log('avatar dans dashboard:', props.userInfo['Avatar'])
   useEffect(() => {
     if (!isFocused) {
@@ -49,14 +52,10 @@ function Dashboard(props) {
   }, [props.professions])
 
   useEffect(() => {
+    console.log('jobOffers ds store update:', props.jobOffers)
     setJobOffersLength(props.jobOffers.length)
-    setLikedJobsLength(props.jobOffers.filter((offer) => offer.liked).length)
-  }, [props.jobOffers])
-
-  const [jobSkillsIncomplete, setJobSkillsIncomplete] = useState(false)
-  const [profileComplete, setProfileComplete] = useState(false)
-  const [likedJobsLength, setLikedJobsLength] = useState(0)
-  const [jobOffersLength, setJobOffersLength] = useState(0)
+    setLikedJobsLength(props.likes.length)
+  }, [isFocused, props.jobOffers])
 
   if (screenDisplay == 'MyLikes') return <MyLikes />
   else if (screenDisplay == 'MyDocuments') return <MyDocuments />
@@ -83,7 +82,7 @@ function Dashboard(props) {
           >
             <View style={styles.itemContainer}>
               <View style={[styles.topRight, styles.infoColor]}>
-                <Text style={styles.infoText}>{jobOffersLength}</Text>
+                <Text style={styles.infoText}>{props.jobOffers.length}</Text>
               </View>
               <MaterialCommunityIcons
                 name='text-box-search-outline'
@@ -100,10 +99,10 @@ function Dashboard(props) {
           >
             <View style={styles.itemContainer}>
               <View style={[styles.topRight, styles.infoColor]}>
-                <Text style={styles.infoText}>{likedJobsLength}</Text>
+                <Text style={styles.infoText}>{props.likes.length}</Text>
               </View>
               <Feather name='list' size={60} color='#B9FFFF' />
-              <Text style={styles.itemText}>A etudier</Text>
+              <Text style={styles.itemText}>Ma WishList</Text>
             </View>
           </Pressable>
         </View>
@@ -255,8 +254,10 @@ const mapStateToProps = (state) => {
     userInfo: state.userInfo,
     professions: state.professions,
     jobOffers: state.jobOffers,
+    likes: state.likes,
   }
 }
+
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteUserInfo: () => {

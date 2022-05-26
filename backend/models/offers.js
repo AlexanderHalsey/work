@@ -1,11 +1,11 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose')
 
 var companySchema = mongoose.Schema({
   _id: String,
   address: {
     streetName: String,
     town: String,
-    zipCode: String
+    zipCode: String,
   },
   contact_job: String,
   direction: String,
@@ -15,7 +15,7 @@ var companySchema = mongoose.Schema({
   tel: String,
   company_presentation: String,
   logo: String,
-});
+})
 
 var offerSchema = mongoose.Schema({
   creation_date: Date,
@@ -39,8 +39,8 @@ var offerSchema = mongoose.Schema({
   ],
 
   company: companySchema,
-});
+})
 
-var offerModel = mongoose.model("offers.js", offerSchema);
+var offerModel = mongoose.model('offers.js', offerSchema)
 
-module.exports = offerModel;
+module.exports = offerModel
