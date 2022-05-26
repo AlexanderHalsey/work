@@ -8,10 +8,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign } from '@expo/vector-icons';
 
 import Dashboard from "./components/Dashboard";
 import Skills from "./components/Skills/Skills";
-import Notifications from "./components/Notifications";
+import Deconnect from "./components/Deconnect";
 import ListOffers from "./components/ListOffers";
 
 import { Provider } from "react-redux";
@@ -65,11 +66,9 @@ const BottomNavigator = (props) => {
                 color={color}
               />
             );
-            // iconName = "ios-options";
-          } else if (route.name === "Notification") {
-            // iconName = "notifications-sharp";
+          } else if (route.name === "Deconnect") {
             return (
-              <Ionicons name={"notifications-sharp"} size={25} color={color} />
+              <AntDesign name="logout" size={25} color={color} />
             );
           } else if (route.name === "Skills") {
             return (
@@ -104,7 +103,7 @@ const BottomNavigator = (props) => {
       <Tab.Screen name="Dashboard" component={Dashboard} />
       <Tab.Screen name="ListOffers" component={ListOffers} />
       <Tab.Screen name="Skills" component={Skills} />
-      <Tab.Screen name="Notification" component={Notifications} />
+      <Tab.Screen name="Deconnect" component={Deconnect} />
     </Tab.Navigator>
   );
 };
@@ -114,12 +113,12 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
           <Stack.Screen name="Welcome1" component={Welcome1} />
           <Stack.Screen name="LogIn" component={LogIn} />
           <Stack.Screen name="Welcome2" component={Welcome2} />
           <Stack.Screen name="CvPopover" component={CvPopOver} />
           <Stack.Screen name="Register" component={Inscription} />
+          <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
           <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
         </Stack.Navigator>
       </NavigationContainer>

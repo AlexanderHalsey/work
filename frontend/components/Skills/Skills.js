@@ -27,6 +27,8 @@ import { Center } from 'native-base'
 // import SearchableDropdown component
 import SearchableDropdown from 'react-native-searchable-dropdown'
 
+import { connect } from 'react-redux'
+
 // Item array for the dropdown
 const testing = [
   // name key is must. It is to show the text in front
@@ -35,15 +37,16 @@ const testing = [
   { id: 3, name: 'Web Deveoper' },
 ]
 
-export const App = (props) => {
+const Skills = (props) => {
 
   const [infoDisplay, setInfoDisplay] = useState(true);
   const [serverData, setServerData] = useState([]);
   const [dropDownList, setDropDownList] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState(props.userSkills);
   // const [jData, setJobData] = useState([]);
 
   useEffect(() => {
+    console.log("heelo props", props.userSkills);
       const fetchingSkills = async () => {
         const rawData = await fetch(`${BACKEND_URL}/skills`)
         const dataJSON = await rawData.json();
@@ -53,10 +56,17 @@ export const App = (props) => {
     fetchingSkills();
   }, []);
 
-  const addbuttonHandler = (item) => {
+  const addbuttonHandler = async (item) => {
+  
     const newObj = serverData.find((el) => el['job_title'] === item['name'])
     setSelectedItems([newObj, ...selectedItems])
-
+    
+    // envoyer au backend un nouveau skill pour enregistrer
+    await fetch(`${BACKEND_URL}/skills/newSkill`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded"},
+      body: `jobTitleFromFront=${newObj.job_title}&skillsFromFront=${newObj.skills}&userToken=${props.userInfo.Token}`
+    });
     // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
 
     // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
@@ -163,8 +173,6 @@ export const App = (props) => {
   )
 }
 
-export default App
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -231,8 +239,27 @@ const styles = StyleSheet.create({
   },
   jobResults: {
     flex: 1,
-    width: "100%",
+    width: "95%",
     marginBottom: 80,
     justifyContent: 'flex-end',
   },
 })
+
+const mapStateToProps = state => {
+  return {
+    userSkills: state.professions
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addNewSkill: newSkill => dispatch({
+      type: "addNewSkill", newSkill: newSkill
+    }),
+    updateSkill: skill => dispatch({
+      type: "updateSkill", skill: skill
+    })
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Skills);

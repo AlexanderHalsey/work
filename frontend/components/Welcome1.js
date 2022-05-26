@@ -15,12 +15,11 @@ let deviceWidth = Dimensions.get('window').width
 
 function Welcome1(props) {
   useEffect(() => {
-    AsyncStorage.clear()
+    // AsyncStorage.clear()
 
     // si le user accede cette page sans avoir deconnecte depuis le dernier
     // session on va pouvoir recuperer son token et rediriger le user sur son dashboard
     AsyncStorage.getItem('token', function (error, value) {
-      console.log('value', value)
       if (value !== null) {
         var handleSubmitSignin = async () => {
           // verifier que le backend accepte les infos de sign up
@@ -28,12 +27,12 @@ function Welcome1(props) {
             `${BACKEND_URL}/signUp/existingToken?token=${JSON.parse(value)}`
           )
           var datajson = await data.json()
-          console.log('datajson', datajson)
           // on initialise les reducers de Redux
           props.initialiseUserInfo({
             Nom: datajson.user.nom,
             Prénom: datajson.user.prenom,
             Mail: datajson.user.email,
+            Token: datajson.user.token,
             Téléphone: datajson.user.phone || '',
             'Date de Naissance': datajson.user.bornWhen || '',
             'Lieu de Naissance': datajson.user.bornAt || '',
@@ -43,13 +42,13 @@ function Welcome1(props) {
           })
           props.initialiseProfessionInfo(datajson.user.jobs)
           props.initialiseApplicationsInfo(datajson.user.applications)
-
           // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
           const offersRaw = await fetch(
             `${BACKEND_URL}/offers/listOffers?token=${datajson.user.token}`
           )
           const offers = await offersRaw.json()
           console.log('offers.offers après deuxieme fetch', offers.offers)
+    
           props.initialiseJobOffersInfo(offers.offers)
 
           // on navigue vers la page de Dashboard
@@ -151,7 +150,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     initialiseProfessionInfo: (professionInfo) => {
       dispatch({
-        type: 'initialiseProfesionInfo',
+        type: 'initialiseProfessionInfo',
         professionInfo: professionInfo,
       })
     },

@@ -76,13 +76,13 @@ function LogIn(props) {
       ></View>
       <View style={{ width: 270, marginBottom: -30 }}>
         <Input
-          style={{ fontSize: 15 }}
+          style={{ fontSize: 15, color: "white" }}
           onChangeText={(value) => setEmail(value)}
           placeholder='email'
         />
 
         <Input
-          style={{ fontSize: 15 }}
+          style={{ fontSize: 15, color: "white" }}
           onChangeText={(value) => setPassword(value)}
           placeholder='Mot de passe'
         />

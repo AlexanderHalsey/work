@@ -60,7 +60,7 @@ function InfosPersonelles(props) {
         </View>
       )}
       <View style={{ alignItems: 'center', paddingBottom: 150, marginTop: 10 }}>
-        {Object.keys(props.userInfo).map((key, i) => {
+        {Object.keys(props.userInfo).filter(el => el !== "Token").map((key, i) => {
           return (
             <Input
               key={i}
@@ -103,18 +103,6 @@ function InfosPersonelles(props) {
             style={{ marginTop: 50 }}
           >
             <FontAwesome name='check-circle' size={60} color='#000b33' />
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              AsyncStorage.clear()
-              props.deleteUserInfo()
-              props.navigation.navigate('Welcome1')
-            }}
-            style={{
-              marginTop: 50,
-            }}
-          >
-            <FontAwesome name='times-circle' size={60} color='red' />
           </Pressable>
         </View>
       </View>

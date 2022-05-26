@@ -20,6 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 function Dashboard(props) {
   const [screenDisplay, setScreenDisplay] = useState(null)
   const isFocused = useIsFocused()
+  console.log("user", props.userInfo);
   console.log('avatar dans dashboard:', props.userInfo['Avatar'])
   useEffect(() => {
     if (!isFocused) {
