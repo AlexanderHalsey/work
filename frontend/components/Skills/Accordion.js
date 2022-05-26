@@ -9,16 +9,20 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { connect } from 'react-redux'
 
-const Accordion = () => {
+const Accordion = (props) => {
   let [toggled, setToggled] = useState(false)
   const height = useRef(new Animated.Value(1)).current
 
   useEffect(() => {
+    console.log(props)
     Animated.timing(height, {
       toValue: toggled ? 1 : 0,
       duration: 400,
     }).start()
   }, [toggled])
+
+
+  
   return (
     <TouchableOpacity onPress={() => setToggled((prev) => !prev)}>
       <Animated.View
@@ -27,7 +31,7 @@ const Accordion = () => {
           overflow: 'hidden',
           justifyContent: 'center',
           alignItems: 'center',
-          borderRadius: 20,
+          borderRadius: 0,
           marginTop: 5,
 
           height: height.interpolate({
@@ -46,7 +50,7 @@ const Accordion = () => {
               }}
             >
               <Text style={{ fontSize: 9 }}>
-                Analyser les besoins du client
+                {props.skill}
               </Text>
             </View>
             <View
@@ -75,7 +79,7 @@ const Accordion = () => {
                   marginTop: 5,
                 }}
               >
-                <Text>Analyser les besoins du client</Text>
+                <Text>{props.skill}</Text>
               </View>
               <Text
                 style={{
