@@ -19,7 +19,7 @@ import OfferCard from './OfferCard'
 import ScreenOffer from './ScreenOffer'
 import { BACKEND_URL } from '@env'
 
-export default function ListOffersScreen(props) {
+function ListOffersScreen(props) {
   const isFocused = useIsFocused()
   //variable d'état pour récupérer la liste des offres
   const [offersList, setOffersList] = useState(null)
@@ -32,7 +32,7 @@ export default function ListOffersScreen(props) {
     const findOffers = async () => {
       // console.log(isFocused);
       if (isFocused) {
-        const data = await fetch(`${BACKEND_URL}/offers/listOffers`)
+        const data = await fetch(`${BACKEND_URL}/offers/listOffers?token=${props.user.Token}`)
         const body = await data.json()
         setOffersList(body.offers)
       }
@@ -165,3 +165,11 @@ const styles = StyleSheet.create({
     height: 20,
   },
 })
+
+const mapStateToProps = state => {
+  return {
+    user: state.userInfo
+  }
+}
+
+export default connect(mapStateToProps, null)(ListOffersScreen);

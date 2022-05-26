@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Badge } from 'react-native-elements'
 
 import { Feather } from '@expo/vector-icons'
@@ -10,7 +10,13 @@ import { FontAwesome } from '@expo/vector-icons'
 
 import AccordionMission from './AccordionMission'
 
-export default function Missions() {
+import { connect } from 'react-redux'
+
+function Missions(props) {
+  useEffect(() => {
+    console.log("props is empty", props);
+  }, [])
+
   const missionList = [
     {
       title: 'Candidatures',
@@ -21,52 +27,53 @@ export default function Missions() {
           color='#B9FFFF'
         />
       ),
-      notifications: 0,
-      items: [],
+      notifications: props.applications.length,
+      items: []
+      // items: [
+      //   {
+      //     companyName: 'Facebook',
+      //     companyLogo: '',
+      //     jobTitle: 'Developpeur Front End',
+      //     dateSent: '12 Mai 2022',
+      //     timeSent: '10h05',
+      //     stage: 1,
+      //   },
+      //   {
+      //     companyName: 'Facebook',
+      //     companyLogo: '',
+      //     jobTitle: 'Developpeur Front End',
+      //     dateSent: '12 Mai 2022',
+      //     timeSent: '10h05',
+      //     stage: 2,
+      //   },
+      //   {
+      //     companyName: 'Facebook',
+      //     companyLogo: '',
+      //     jobTitle: 'Developpeur Front End',
+      //     dateSent: '12 Mai 2022',
+      //     timeSent: '10h05',
+      //     stage: 3,
+      //   },
+      //   {
+      //     companyName: 'Facebook',
+      //     companyLogo: '',
+      //     jobTitle: 'Developpeur Front End',
+      //     dateSent: '12 Mai 2022',
+      //     timeSent: '10h05',
+      //     stage: 4,
+      //   },
+      // ]
     },
     {
       title: 'Offres reçues',
       icon: <Ionicons name='contract' size={40} color='#B9FFFF' />,
-      notifications: 4,
-      items: [
-        {
-          companyName: 'Facebook',
-          companyLogo: '',
-          jobTitle: 'Developpeur Front End',
-          dateSent: '12 Mai 2022',
-          timeSent: '10h05',
-          stage: 1,
-        },
-        {
-          companyName: 'Facebook',
-          companyLogo: '',
-          jobTitle: 'Developpeur Front End',
-          dateSent: '12 Mai 2022',
-          timeSent: '10h05',
-          stage: 2,
-        },
-        {
-          companyName: 'Facebook',
-          companyLogo: '',
-          jobTitle: 'Developpeur Front End',
-          dateSent: '12 Mai 2022',
-          timeSent: '10h05',
-          stage: 3,
-        },
-        {
-          companyName: 'Facebook',
-          companyLogo: '',
-          jobTitle: 'Developpeur Front End',
-          dateSent: '12 Mai 2022',
-          timeSent: '10h05',
-          stage: 4,
-        },
-      ],
+      notifications: 0,
+      items: []
     },
     {
       title: 'Missions à venir',
       icon: <FontAwesome5 name='business-time' size={40} color='#B9FFFF' />,
-      notifications: 0,
+      notifications: props.upcomingMissions.length,
       items: [],
     },
     {
@@ -119,3 +126,12 @@ const styles = StyleSheet.create({
     color: '#B9FFFF',
   },
 })
+
+const mapStateToProps = state => {
+  return {
+    upcomingMissions: state.upcomingMissions,
+    applications: state.applications
+  }
+};
+
+export default connect(mapStateToProps, null)(Missions);

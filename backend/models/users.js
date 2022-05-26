@@ -7,14 +7,18 @@ const addressSchema = mongoose.Schema({
 })
 
 const applicationSchema = mongoose.Schema({
-  employerRead: Boolean,
-  employerResponse: {
-    type: ['Pending', 'Accepted', 'Refused'],
-    default: 'Pending',
+  offerId: String,
+  employerRead: {
+    type: Boolean,
+    default: false
   },
-  applicationDecision: {
-    type: ['Pending', 'Accepted', 'Refused'],
-    default: 'Pending',
+  employerStudying: {
+    type: Boolean,
+    default: false
+  },
+  employerResponse: {
+    type: Boolean,
+    default: false,
   },
 })
 const userSchema = mongoose.Schema({
@@ -23,7 +27,7 @@ const userSchema = mongoose.Schema({
   email: String,
   phone: String,
   password: String,
-  bornWhen: Date,
+  bornWhen: String,
   bornAt: String,
   token: String,
   avatar: String,

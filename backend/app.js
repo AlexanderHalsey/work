@@ -11,6 +11,7 @@ var logger = require("morgan");
 var signUpRouter = require("./routes/signUp");
 var listOffersRouter = require("./routes/listOffers");
 var jobListRouter = require("./routes/skillList");
+var userInfoRouter = require("./routes/userInfo");
 var app = express();
 
 app.use(fileUpload());
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, "frontend/build")));
 app.use("/signUp", signUpRouter);
 app.use("/offers", listOffersRouter);
 app.use("/skills", jobListRouter);
+app.use("/userInfo", userInfoRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -78,6 +78,7 @@ router.post('/inscription', async function (req, res, next) {
       nom: req.body.nomFromFront,
       prenom: req.body.prenomFromFront,
       email: req.body.emailFromFront,
+      phone: req.body.telFromFront,
       password: hash,
       token: uid2(32),
       userAddress: {

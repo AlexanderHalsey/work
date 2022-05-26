@@ -75,4 +75,15 @@ router.get("/displayLikeOffer", async function (req, res, next) {
   res.json({ offer });
 });
 
+router.post("/apply", async function(req, res) {
+  console.log(req.body);
+  var user = await userModel.findOne(
+    { token: req.body.token },
+    { $push: { applications: { 
+      offerId: req.body.offerId,
+    } } }
+  );
+  res.json({ result: true });
+})
+
 module.exports = router;

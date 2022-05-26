@@ -45,6 +45,20 @@ function ScreenOffer(props) {
     findOffers()
   }, [])
 
+  const sendApplication = async () => {
+    // sauvgarder le candidature dans le collection du user
+    const applyDataRaw = await fetch(`${BACKEND_URL}/offers/apply`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `offerId=${props.route.params.offerId}&userToken=${props.userInfo.Token}`
+    });
+    const applyResponse = await applyDataRaw.json();
+    console.log(applyResponse);
+
+    // sauvegarder le candidature dans redux
+    props.addApplication(props.route.params.offerId);
+  }
+
   const viewSkills =
     offerData &&
     offerData.jobs[0].skills.map((skill, i) => {
@@ -236,7 +250,7 @@ function ScreenOffer(props) {
               <Button
                 title='Postuler !'
                 buttonStyle={styles.button}
-                onPress={() => setScreenDisplay(null)}
+                onPress={() => sendApplication()}
               />
             </View>
           </View>
@@ -247,25 +261,6 @@ function ScreenOffer(props) {
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    blackList: state.blackList,
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateBlackList: (id) =>
-      dispatch({
-        type: 'updateBlackList',
-        id: id,
-      }),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ScreenOffer)
-
-var colorwhite = 'white'
 const styles = StyleSheet.create({
   principal: {
     flexDirection: 'column',
@@ -336,3 +331,25 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
 })
+
+const mapStateToProps = (state) => {
+  return {
+    blackList: state.blackList,
+    userInfo: state.userInfo,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateBlackList: (id) => dispatch({
+      type: 'updateBlackList',
+      id: id,
+    }),
+    addApplication: application => dispatch({
+      type: "addApplication",
+      application: application
+    })
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScreenOffer);

@@ -22,6 +22,8 @@ import professions from "./reducers/professions";
 import likes from "./reducers/likes";
 import blackList from "./reducers/blackList";
 import jobOffers from "./reducers/jobOffers";
+import applications from "./reducers/applications";
+import upcomingMissions from "./reducers/upcomingMissions";
 
 import Welcome1 from "./components/Welcome1";
 import Welcome2 from "./components/Welcome2";
@@ -39,6 +41,8 @@ const store = createStore(
     jobOffers,
     likes,
     blackList,
+    upcomingMissions,
+    applications
   })
 );
 

@@ -18,11 +18,21 @@ import { Feather } from '@expo/vector-icons'
 import { FontAwesome } from '@expo/vector-icons'
 
 import { connect } from 'react-redux'
+import { BACKEND_URL } from '@env'
 
 function InfosPersonelles(props) {
   const [infoDisplay, setInfoDisplay] = useState(true)
   let deviceHeight = Dimensions.get('window').height
   let deviceWidth = Dimensions.get('window').width
+
+  const confirm = async () => {
+    await fetch(`${BACKEND_URL}/userInfo/update`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `adresse=${props.userInfo.Adresse}&codePostal=${props.userInfo["Code Postal"]}&dateN=${props.userInfo["Date de Naissance"]}&lieuN=${props.userInfo["Lieu de Naissance"]}&ville=${props.userInfo.Ville}&token=${props.userInfo.Token}`
+    });
+    
+  }
 
   return (
     <ScrollView
@@ -89,22 +99,15 @@ function InfosPersonelles(props) {
             />
           )
         })}
-        <View
-          style={{
-            flexDirection: 'row',
-            width: deviceWidth * 0.5,
-            justifyContent: 'space-between',
+        <Pressable
+          onPress={() => {
+            confirm();
           }}
+          style={{ marginTop: 50 }}
         >
-          <Pressable
-            onPress={() => {
-              console.log('Send user Information to backend for storage')
-            }}
-            style={{ marginTop: 50 }}
-          >
-            <FontAwesome name='check-circle' size={60} color='#000b33' />
-          </Pressable>
-        </View>
+          <FontAwesome name='check-circle' size={60} color='#000b33' />
+        </Pressable>
+
       </View>
     </ScrollView>
   )

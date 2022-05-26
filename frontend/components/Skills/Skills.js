@@ -46,7 +46,6 @@ const Skills = (props) => {
   // const [jData, setJobData] = useState([]);
 
   useEffect(() => {
-    console.log("heelo props", props.userSkills);
       const fetchingSkills = async () => {
         const rawData = await fetch(`${BACKEND_URL}/skills`)
         const dataJSON = await rawData.json();
@@ -247,7 +246,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    userSkills: state.professions
+    userSkills: state.professions,
+    userInfo: state.userInfo
   }
 }
 
