@@ -15,24 +15,25 @@ let deviceWidth = Dimensions.get('window').width
 
 function Welcome1(props) {
   useEffect(() => {
-    // AsyncStorage.clear()
-
     // si le user accede cette page sans avoir deconnecte depuis le dernier
     // session on va pouvoir recuperer son token et rediriger le user sur son dashboard
     AsyncStorage.getItem('token', function (error, value) {
-      if (value !== null) {
+      console.log('value', value)
+      if (value) {
         var handleSubmitSignin = async () => {
           // verifier que le backend accepte les infos de sign up
           const data = await fetch(
             `${BACKEND_URL}/signUp/existingToken?token=${JSON.parse(value)}`
           )
           var datajson = await data.json()
+          console.log('datajson', datajson)
           // on initialise les reducers de Redux
           props.initialiseUserInfo({
             Nom: datajson.user.nom,
             Prénom: datajson.user.prenom,
+            token: datajson.token,
+            Avatar: datajson.user.avatar,
             Mail: datajson.user.email,
-            Token: datajson.user.token,
             Téléphone: datajson.user.phone || '',
             'Date de Naissance': datajson.user.bornWhen || '',
             'Lieu de Naissance': datajson.user.bornAt || '',
@@ -42,13 +43,14 @@ function Welcome1(props) {
           })
           props.initialiseProfessionInfo(datajson.user.jobs)
           props.initialiseApplicationsInfo(datajson.user.applications)
+          props.initialiseLikes(datajson.user.likesOfferIds)
+
           // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
           const offersRaw = await fetch(
-            `${BACKEND_URL}/offers/listOffers?token=${datajson.user.token}`
+            `${BACKEND_URL}/offers/listOffers?token=${datajson.token}`
           )
           const offers = await offersRaw.json()
           console.log('offers.offers après deuxieme fetch', offers.offers)
-    
           props.initialiseJobOffersInfo(offers.offers)
 
           // on navigue vers la page de Dashboard
@@ -150,7 +152,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     initialiseProfessionInfo: (professionInfo) => {
       dispatch({
-        type: 'initialiseProfessionInfo',
+        type: 'initialiseProfesionInfo',
         professionInfo: professionInfo,
       })
     },
@@ -164,6 +166,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: 'initialiseJobOffersInfo',
         jobOffers: jobOffers,
+      })
+    },
+    initialiseLikes: (offerIds) => {
+      dispatch({
+        type: 'setAllLikes',
+        offerIds: offerIds,
       })
     },
   }

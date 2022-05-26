@@ -4,25 +4,23 @@ import { TouchableOpacity } from 'react-native'
 import { useDisclose, Center } from 'native-base'
 import { Button } from 'react-native-elements'
 import { BACKEND_URL } from '@env'
+import { useNavigation } from '@react-navigation/native'
 
 import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
   useWindowDimensions,
-  View,
-  Text,
-  Image,
 } from 'react-native'
 import OfferCard from './OfferCard'
-import ScreenOffer from './ScreenOffer'
+import { connect } from 'react-redux'
 
-export default function ListOffersScreen(props) {
+function MyLikes(props) {
   const isFocused = useIsFocused()
   //variable d'état pour récupérer la liste des offres
-  const [offersList, setOffersList] = useState([])
+  const [offersList, setOffersList] = useState(null)
   const { height, width } = useWindowDimensions()
-  const { isOpen, onOpen, onClose } = useDisclose()
+  const navigation = useNavigation()
 
   //fetch pour récupérer les infos en BDD
 
@@ -30,13 +28,15 @@ export default function ListOffersScreen(props) {
     const findOffers = async () => {
       // console.log(isFocused);
       if (isFocused) {
-        const data = await fetch(`${BACKEND_URL}/offers/listOffers`)
+        const data = await fetch(
+          `${BACKEND_URL}/offers/displayLikeOffer?token=${props.userInfo.token}`
+        )
         const body = await data.json()
         setOffersList(body.offers)
       }
     }
     findOffers()
-  }, [isFocused])
+  }, [isFocused, props.likes])
 
   // console.log("titre annonce : ", screenDisplay.title);
 
@@ -57,21 +57,21 @@ export default function ListOffersScreen(props) {
         }}
         contentContainerStyle={{ alignItems: 'center' }}
       >
-        {offersList.map((offer, i) => {
-          return (
-            <TouchableOpacity
-              key={i}
-              onPress={() => {
-                console.log('offer._id sur touchableopacity', offer._id)
-                props.navigation.navigate('ScreenOffer', {
-                  offerId: offer._id,
-                })
-              }}
-            >
-              <OfferCard key={i} offer={offer} />
-            </TouchableOpacity>
-          )
-        })}
+        {offersList &&
+          offersList.map((offer, i) => {
+            return (
+              <TouchableOpacity
+                key={i}
+                onPress={() => {
+                  navigation.navigate('ScreenOffer', {
+                    offerId: offer._id,
+                  })
+                }}
+              >
+                <OfferCard key={i} offer={offer} />
+              </TouchableOpacity>
+            )
+          })}
       </ScrollView>
     </SafeAreaView>
   )
@@ -144,3 +144,11 @@ const styles = StyleSheet.create({
     height: 20,
   },
 })
+
+const mapStateToProps = (state) => {
+  return {
+    userInfo: state.userInfo,
+    likes: state.likes,
+  }
+}
+export default connect(mapStateToProps, null)(MyLikes)

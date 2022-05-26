@@ -18,6 +18,7 @@ import {
   useWindowDimensions,
 } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import userInfo from '../reducers/userInfo'
 
 function ScreenOffer(props) {
   console.log('id dans screen Offer', props.route.params.offerId)
@@ -26,14 +27,20 @@ function ScreenOffer(props) {
 
   var handleClick = () => {
     console.log('click détecté + id offre :', props.offer._id)
-    props.updateBlackList(props.offer._id)
   }
-
+  const handleClickBlock = async () => {
+    const data = await fetch(
+      `${BACKEND_URL}/offers/blockOffer?offerId=${props.route.params.offerId}&token=${props.userInfo.token}`
+    )
+    const body = await data.json()
+    props.updateBlackList(props.route.params.offerId)
+    // props.blockOffer(props.route.params.offerId)
+    props.navigation.navigate('ListOffers')
+  }
   useEffect(() => {
     console.log('props: ', props.route.params.offerId)
-    const findOffers = async () => {
+    const screenOfferData = async () => {
       // console.log(isFocused);
-      console.log('dans useEffect ScreenOffer')
       const data = await fetch(
         `${BACKEND_URL}/offers/displayOffer?offerId=${props.route.params.offerId}`
       )
@@ -42,67 +49,53 @@ function ScreenOffer(props) {
       setOfferData(body.offer)
     }
 
-    findOffers()
+    screenOfferData()
   }, [])
-
-  const sendApplication = async () => {
-    // sauvgarder le candidature dans le collection du user
-    const applyDataRaw = await fetch(`${BACKEND_URL}/offers/apply`, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `offerId=${props.route.params.offerId}&userToken=${props.userInfo.Token}`
-    });
-    const applyResponse = await applyDataRaw.json();
-    console.log(applyResponse);
-
-    // sauvegarder le candidature dans redux
-    props.addApplication(props.route.params.offerId);
-  }
 
   const viewSkills =
     offerData &&
     offerData.jobs[0].skills.map((skill, i) => {
       return (
         <View style={styles.viewskills} key={i}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000B33' }}>
+          <Text style={{ fontWeight: 'bold', fontSize: 16, color: '#000B33' }}>
             Compétences : {skill.skill_title}
           </Text>
           <View style={{ flexDirection: 'row' }}>
-            <Text style={{ fontSize: 18 }}>Aisance : </Text>
+            <Text style={{ fontSize: 16 }}>Aisance : </Text>
             <>
               <AntDesign
                 name='star'
-                size={24}
+                size={21}
                 color={skill.level > 0 ? '#FFF500' : '#FFFFFF'}
               />
               <AntDesign
                 name='star'
-                size={24}
+                size={21}
                 color={skill.level > 1 ? '#FFF500' : '#FFFFFF'}
               />
               <AntDesign
                 name='star'
-                size={24}
+                size={21}
                 color={skill.level > 2 ? '#FFF500' : '#FFFFFF'}
               />
             </>
           </View>
           <View style={{ flexDirection: 'row' }}>
-            <Text style={{ fontSize: 18 }}>Expérience : </Text>
+            <Text style={{ fontSize: 16 }}>Expérience : </Text>
             <>
               <AntDesign
                 name='star'
-                size={24}
+                size={21}
                 color={skill.experience > 0 ? '#FFF500' : '#FFFFFF'}
               />
               <AntDesign
                 name='star'
-                size={24}
+                size={21}
                 color={skill.experience > 1 ? '#FFF500' : '#FFFFFF'}
               />
               <AntDesign
                 name='star'
-                size={24}
+                size={21}
                 color={skill.experience > 2 ? '#FFF500' : '#FFFFFF'}
               />
             </>
@@ -120,9 +113,9 @@ function ScreenOffer(props) {
           <View style={styles.header}>
             <Image
               source={{
-                uri: offerData.logo,
+                uri: offerData.company.logo,
               }}
-              style={{ width: width * 0.25, height: width * 0.25 }}
+              style={{ width: width * 0.2, height: width * 0.2 }}
             />
           </View>
           {/* header */}
@@ -130,15 +123,15 @@ function ScreenOffer(props) {
           {/* title of jobs and infos */}
           <View style={styles.title}>
             <Text
-              style={{ fontWeight: 'bold', fontSize: 20, color: '#00F0FF' }}
+              style={{ fontWeight: 'bold', fontSize: 15, color: '#00F0FF' }}
             >
               {offerData.jobs[0].job_title.toUpperCase()}
             </Text>
-            <Text style={{ fontSize: 18, color: '#00F0FF' }}>
-              {offerData.name}
+            <Text style={{ fontSize: 16, color: '#00F0FF' }}>
+              {offerData.company.name}
             </Text>
             <Text style={{ fontSize: 14, color: '#00F0FF' }}>
-              {Math.floor(offerData.salary * 151.67)} € Brut/M -{' '}
+              {Math.floor(offerData.salary * 151.67)} € Brut/Mois -
               {offerData.contract}
             </Text>
           </View>
@@ -175,8 +168,8 @@ function ScreenOffer(props) {
                 pinColor='red'
                 key={1}
                 coordinate={{
-                  latitude: offerData.latitude,
-                  longitude: offerData.longitude,
+                  latitude: Number(offerData.latitude),
+                  longitude: Number(offerData.longitude),
                 }}
                 opacity={1} // Modifier l'opacité
               />
@@ -240,7 +233,7 @@ function ScreenOffer(props) {
                 justifyContent: 'center',
                 margin: 5,
               }}
-              onPress={() => props.navigation.goBack()}
+              onPress={() => handleClickBlock()}
               //
             >
               <Text style={{ color: 'white', fontWeight: 'bold' }}>X</Text>
@@ -250,17 +243,47 @@ function ScreenOffer(props) {
               <Button
                 title='Postuler !'
                 buttonStyle={styles.button}
-                onPress={() => sendApplication()}
+                onPress={() => setScreenDisplay(null)}
               />
             </View>
           </View>
-          {/* bloc scrollView with skills & details of job */}
         </View>
       </SafeAreaProvider>
     )
   )
 }
 
+const mapStateToProps = (state) => {
+  return {
+    blackList: state.blackList,
+    userInfo: state.userInfo,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateBlackList: (id) =>
+      dispatch({
+        type: 'updateBlackList',
+        id: id,
+      }),
+    updateLikes: (id) =>
+      dispatch({
+        type: 'updateLikes',
+        id: id,
+      }),
+    // blockOffer: (id) => {
+    //   dispatch({
+    //     type: 'blockOffer',
+    //     jobOfferId: id,
+    //   })
+    // },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScreenOffer)
+
+var colorwhite = 'white'
 const styles = StyleSheet.create({
   principal: {
     flexDirection: 'column',
@@ -268,7 +291,7 @@ const styles = StyleSheet.create({
     flexGrow: 2,
   },
   header: {
-    height: 140,
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 25,
@@ -284,7 +307,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
+    borderRadius: 30,
     backgroundColor: 'grey',
     margin: 5,
     height: '20%',
@@ -331,25 +354,3 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
 })
-
-const mapStateToProps = (state) => {
-  return {
-    blackList: state.blackList,
-    userInfo: state.userInfo,
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateBlackList: (id) => dispatch({
-      type: 'updateBlackList',
-      id: id,
-    }),
-    addApplication: application => dispatch({
-      type: "addApplication",
-      application: application
-    })
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ScreenOffer);

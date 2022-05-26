@@ -38,8 +38,9 @@ function Inscription(props) {
       props.initialiseUserInfo({
         Nom: datajson.saveUser.nom,
         Prénom: datajson.saveUser.prenom,
+        token: datajson.token,
+
         Mail: datajson.saveUser.email,
-        Token: datajson.saveUser.token,
         Téléphone: datajson.saveUser.phone || '',
         'Date de Naissance': datajson.saveUser.bornWhen || '',
         'Lieu de Naissance': datajson.saveUser.bornAt || '',
@@ -49,11 +50,13 @@ function Inscription(props) {
       })
       props.initialiseProfessionInfo(datajson.saveUser.jobs)
       props.initialiseApplicationsInfo(datajson.saveUser.applications)
+      console.log('hellooooo,kjlhg')
       // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
       const offersRaw = await fetch(
         `${BACKEND_URL}/offers/listOffers?token=${datajson.token}`
       )
       const offers = await offersRaw.json()
+      console.log(offers)
       props.initialiseJobOffersInfo(offers.offers)
 
       // on navigue vers la page de Dashboard

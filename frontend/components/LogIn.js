@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 function LogIn(props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
+  console.log(BACKEND_URL)
   var handleSubmitSignin = async () => {
     // verifier que le backend accepte les infos de sign up
     const data = await fetch(`${BACKEND_URL}/signUp/signIn`, {
@@ -21,6 +21,10 @@ function LogIn(props) {
       body: `emailFromFront=${email}&passwordFromFront=${password}`,
     })
     var datajson = await data.json()
+    console.log(
+      'datajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajson',
+      datajson
+    )
     if (datajson.result == true) {
       // on vient "setter" notre token dans le localStorage
       AsyncStorage.setItem('token', JSON.stringify(datajson.token))
@@ -29,6 +33,7 @@ function LogIn(props) {
         Nom: datajson.user.nom,
         Prénom: datajson.user.prenom,
         Avatar: datajson.user.avatar,
+        token: datajson.token,
         Mail: datajson.user.email,
         Téléphone: datajson.user.phone || '',
         'Date de Naissance': datajson.user.bornWhen || '',
@@ -39,6 +44,7 @@ function LogIn(props) {
       })
       props.initialiseProfessionInfo(datajson.user.jobs)
       props.initialiseApplicationsInfo(datajson.user.applications)
+      props.initialiseLikes(datajson.user.likesOfferIds)
       // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
       const offersRaw = await fetch(
         `${BACKEND_URL}/offers/listOffers?token=${datajson.token}`
@@ -76,13 +82,13 @@ function LogIn(props) {
       ></View>
       <View style={{ width: 270, marginBottom: -30 }}>
         <Input
-          style={{ fontSize: 15, color: "white" }}
+          style={{ fontSize: 15 }}
           onChangeText={(value) => setEmail(value)}
           placeholder='email'
         />
 
         <Input
-          style={{ fontSize: 15, color: "white" }}
+          style={{ fontSize: 15 }}
           onChangeText={(value) => setPassword(value)}
           placeholder='Mot de passe'
         />
@@ -127,6 +133,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: 'initialiseJobOffersInfo',
         jobOffers: jobOffers,
+      })
+    },
+    initialiseLikes: (offerIds) => {
+      dispatch({
+        type: 'setAllLikes',
+        offerIds: offerIds,
       })
     },
   }
