@@ -1,34 +1,34 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import React, {useEffect} from 'react'
-import { Badge } from 'react-native-elements'
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import React, { useEffect } from "react";
+import { Badge } from "react-native-elements";
 
-import { Feather } from '@expo/vector-icons'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { Ionicons } from '@expo/vector-icons'
-import { FontAwesome5 } from '@expo/vector-icons'
-import { FontAwesome } from '@expo/vector-icons'
+import { Feather } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 
-import AccordionMission from './AccordionMission'
+import AccordionMission from "./AccordionMission";
 
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 
 function Missions(props) {
   useEffect(() => {
     console.log("props is empty", props);
-  }, [])
+  }, []);
 
   const missionList = [
     {
-      title: 'Candidatures',
+      title: "Candidatures",
       icon: (
         <MaterialCommunityIcons
-          name='file-document-edit'
+          name="file-document-edit"
           size={40}
-          color='#B9FFFF'
+          color="#B9FFFF"
         />
       ),
       notifications: props.applications.length,
-      items: []
+      items: [],
       // items: [
       //   {
       //     companyName: 'Facebook',
@@ -65,29 +65,29 @@ function Missions(props) {
       // ]
     },
     {
-      title: 'Offres reçues',
-      icon: <Ionicons name='contract' size={40} color='#B9FFFF' />,
+      title: "Offres reçues",
+      icon: <Ionicons name="contract" size={40} color="#B9FFFF" />,
       notifications: 0,
-      items: []
+      items: [],
     },
     {
-      title: 'Missions à venir',
-      icon: <FontAwesome5 name='business-time' size={40} color='#B9FFFF' />,
+      title: "Missions à venir",
+      icon: <FontAwesome5 name="business-time" size={40} color="#B9FFFF" />,
       notifications: props.upcomingMissions.length,
       items: [],
     },
     {
-      title: 'Missions archivées',
-      icon: <FontAwesome name='archive' size={40} color='#B9FFFF' />,
+      title: "Missions archivées",
+      icon: <FontAwesome name="archive" size={40} color="#B9FFFF" />,
       notifications: 0,
       items: [],
     },
-  ]
+  ];
 
   return (
     <ScrollView style={styles.body}>
       <View style={styles.container}>
-        <Feather name='briefcase' size={60} color='#B9FFFF' />
+        <Feather name="briefcase" size={60} color="#B9FFFF" />
         <Text style={styles.textTitle}>Mes Missions</Text>
         <View style={styles.missionOptions}>
           {missionList.map((missionOption, index) => {
@@ -99,39 +99,39 @@ function Missions(props) {
                 notifications={missionOption.notifications}
                 items={missionOption.items}
               />
-            )
+            );
           })}
         </View>
       </View>
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   body: {
     flex: 1,
-    backgroundColor: '#000b33',
+    backgroundColor: "#000b33",
   },
   container: {
     flex: 1,
     marginTop: 50,
-    alignItems: 'center',
+    alignItems: "center",
   },
   missionOptions: {
     marginTop: 30,
     flex: 1,
-    width: '100%',
+    width: "100%",
   },
   textTitle: {
-    color: '#B9FFFF',
+    color: "#B9FFFF",
   },
-})
+});
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     upcomingMissions: state.upcomingMissions,
-    applications: state.applications
-  }
+    applications: state.applications,
+  };
 };
 
 export default connect(mapStateToProps, null)(Missions);
