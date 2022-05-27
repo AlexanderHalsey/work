@@ -19,15 +19,13 @@ import {
 } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import userInfo from '../reducers/userInfo'
+import { applyMiddleware } from 'redux'
 
 function ScreenOffer(props) {
   console.log('id dans screen Offer', props.route.params.offerId)
   const [offerData, setOfferData] = useState(null)
   const { height, width } = useWindowDimensions()
 
-  var handleClick = () => {
-    console.log('click détecté + id offre :', props.offer._id)
-  }
   const handleClickBlock = async () => {
     const data = await fetch(
       `${BACKEND_URL}/offers/blockOffer?offerId=${props.route.params.offerId}&token=${props.userInfo.token}`
@@ -51,6 +49,17 @@ function ScreenOffer(props) {
 
     screenOfferData()
   }, [])
+
+  const apply = async () => {
+    const data = await fetch(`${BACKEND_URL}/offers/apply`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `token=${props.userInfo.Token}&offerId=${props.route.params.offerId}`
+    });
+    const dataJSON = await data.json();
+    props.initialiseApplicationInfo(dataJSON.applications);
+    props.navigation.navigate("Dashboard", { missions: "Missions" })
+  }
 
   const viewSkills =
     offerData &&
@@ -243,7 +252,7 @@ function ScreenOffer(props) {
               <Button
                 title='Postuler !'
                 buttonStyle={styles.button}
-                onPress={() => setScreenDisplay(null)}
+                onPress={() => apply()}
               />
             </View>
           </View>
@@ -272,6 +281,10 @@ const mapDispatchToProps = (dispatch) => {
         type: 'updateLikes',
         id: id,
       }),
+    initialiseApplicationInfo: applications => dispatch({
+      type: "initialiseApplicationInfo",
+      applicationInfo: applications
+    })
     // blockOffer: (id) => {
     //   dispatch({
     //     type: 'blockOffer',

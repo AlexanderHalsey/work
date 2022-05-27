@@ -6,7 +6,10 @@ import {
   Animated,
   TouchableOpacity,
   Pressable,
+  ScrollView
 } from "react-native";
+
+import { BACKEND_URL } from "@env";
 
 import Accordion from "./Accordion";
 import { connect } from "react-redux";
@@ -17,7 +20,6 @@ const Job = (props) => {
   const height = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    console.log(props);
     Animated.timing(height, {
       toValue: toggled ? 1 : 0,
       duration: 400,
@@ -25,10 +27,23 @@ const Job = (props) => {
     }).start();
   }, [toggled]);
 
+  const updateJobBackend = async jobToUpdate => {
+    const updateSkillReq = await fetch(`${BACKEND_URL}/skills/updateSkills`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `userToken=${props.userInfo.Token}&jobSkills=${JSON.stringify(props.professions.find(prof => prof.job_title === jobToUpdate))}`
+    });
+    const jobResults = await updateSkillReq.json()
+    // initialise or reset job results after updating a skill
+    props.initialiseJobOffersInfo(jobResults.offers);
+    props.createNotification();
+  };
+
   return (
     <Animated.View
       style={{
         overflow: "hidden",
+        display: props.hidden ? "none" : "flex",
         justifyContent: "center",
         alignItems: "center",
         marginBottom:-5,
@@ -43,32 +58,47 @@ const Job = (props) => {
       {!toggled ? (
         <TouchableOpacity
           style={[styles.appButtonContainer]}
-          onPress={() => setToggled(!toggled)}
+          onPress={() => {
+            setToggled(!toggled);
+            props.callback(true, props.k);
+          }}
         >
           <Text style={styles.appButtonText}>{props.title}</Text>
         </TouchableOpacity>
       ) : (
         <>
           <TouchableOpacity
-            onPress={() => setToggled(!toggled)}
+            onPress={() => {
+              setToggled(!toggled);
+              props.callback(false, props.k);
+            }}
             style={{
-              flex: 1,
+              zIndex: 1,
+              borderRadius: 20,
               backgroundColor: "#001150",
               marginTop: 20,
+              marginBottom: 20,
+              padding: 10,
               alignItems: "center",
             }}
           >
             <Text
               style={{
                 color: "white",
-                marginBottom: 45,
-                marginTop: 50,
+                marginBottom: 20,
+                marginTop: 10,
                 fontSize: 20,
+                textAlign: "center"
               }}
             >
               {props.title}
             </Text>
-            <Text>Ce que je sais faire</Text>
+            <Text 
+              style={{
+                color: "white",
+                marginBottom: 5
+              }}>Ce que je sais faire</Text>
+            <ScrollView>
             <View
               style={{
                 flex: 1,
@@ -77,16 +107,31 @@ const Job = (props) => {
               }}
             >
               {props.skills.map((skill, i) => {
-                return <Accordion key={i} skill={skill} />;
+                return (<Accordion 
+                  key={i}
+                  job={props.title} 
+                  skill={skill.skill_title} 
+                  experience={skill.experience}
+                  level={skill.level} 
+                />);
               })}
             </View>
+            </ScrollView>
 
-            <Pressable onPress={() => props.navigation.navigate()}>
+            <Pressable onPress={() => {
+              updateJobBackend(props.title);
+              setToggled(!toggled);
+              props.callback(false, props.k);
+            }}>
               <AntDesign
                 name="checkcircle"
                 size={60}
                 color="white"
-                style={{ justifyContent: "center", marginTop: 75,marginBottom:20 }}
+                style={{ 
+                  justifyContent: "center", 
+                  marginTop: 15, 
+                  //marginBottom: 10 
+                }}
               />
             </Pressable>
           </TouchableOpacity>
@@ -113,4 +158,20 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Job;
+const mapStateToProps = state => {
+  return {
+    userInfo: state.userInfo,
+    professions: state.professions
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    initialiseJobOffersInfo: jobOffers => dispatch({
+      type: "initialiseJobOffersInfo",
+      jobOffers: jobOffers
+    })
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Job);

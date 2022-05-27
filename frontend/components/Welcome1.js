@@ -27,19 +27,20 @@ function Welcome1(props) {
           )
           var datajson = await data.json()
           console.log('datajson', datajson)
+          console.log("existing token succes --> user info", datajson.user)
           // on initialise les reducers de Redux
           props.initialiseUserInfo({
             Nom: datajson.user.nom,
             Prénom: datajson.user.prenom,
-            token: datajson.token,
+            Token: datajson.user.token,
             Avatar: datajson.user.avatar,
             Mail: datajson.user.email,
             Téléphone: datajson.user.phone || '',
             'Date de Naissance': datajson.user.bornWhen || '',
             'Lieu de Naissance': datajson.user.bornAt || '',
-            Adresse: datajson.user.userAddress.streetName,
-            Ville: datajson.user.userAddress.town,
-            'Code Postal': datajson.user.userAddress.zipCode,
+            Adresse: datajson.user.userAddress.streetName || "",
+            Ville: datajson.user.userAddress.town || "",
+            'Code Postal': datajson.user.userAddress.zipCode || "",
           })
           props.initialiseProfessionInfo(datajson.user.jobs)
           props.initialiseApplicationsInfo(datajson.user.applications)
@@ -47,7 +48,7 @@ function Welcome1(props) {
 
           // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
           const offersRaw = await fetch(
-            `${BACKEND_URL}/offers/listOffers?token=${datajson.token}`
+            `${BACKEND_URL}/offers/listOffers?token=${datajson.user.token}`
           )
           const offers = await offersRaw.json()
           console.log('offers.offers après deuxieme fetch', offers.offers)
@@ -152,7 +153,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     initialiseProfessionInfo: (professionInfo) => {
       dispatch({
-        type: 'initialiseProfesionInfo',
+        type: 'initialiseProfessionInfo',
         professionInfo: professionInfo,
       })
     },

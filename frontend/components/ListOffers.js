@@ -33,7 +33,7 @@ function ListOffersScreen(props) {
   useEffect(() => {
     const findOffers = async () => {
       const data = await fetch(
-        `${BACKEND_URL}/offers/listOffers?token=${props.userInfo.token}`
+        `${BACKEND_URL}/offers/listOffers?token=${props.userInfo.Token}`
       )
       const body = await data.json()
       setOffersList(body.offers)

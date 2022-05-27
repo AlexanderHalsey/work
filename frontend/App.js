@@ -31,6 +31,7 @@ import LogIn from "./components/LogIn";
 import Inscription from "./components/Inscription";
 import CvPopOver from "./components/CvPopOver";
 import ScreenOffer from "./components/ScreenOffer";
+import ContractsDetails from "./components/ContractsDetails";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -88,6 +89,7 @@ const BottomNavigator = (props) => {
       tabBarOptions={{
         activeTintColor: "#00F0FF",
         inactiveTintColor: "#B9FFFF",
+        keyboardHidesTabBar: true,
         style: {
           backgroundColor: "#001150",
           height: 67,
@@ -117,14 +119,14 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-
           <Stack.Screen name="Welcome1" component={Welcome1} />
           <Stack.Screen name="LogIn" component={LogIn} />
           <Stack.Screen name="Welcome2" component={Welcome2} />
           <Stack.Screen name="CvPopover" component={CvPopOver} />
           <Stack.Screen name="Register" component={Inscription} />
+          <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
           <Stack.Screen name="ScreenOffer" component={ScreenOffer} />
+          <Stack.Screen name="ContractsDetails" component={ContractsDetails} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

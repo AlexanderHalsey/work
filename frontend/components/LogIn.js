@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 function LogIn(props) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  console.log(BACKEND_URL)
+
   var handleSubmitSignin = async () => {
     // verifier que le backend accepte les infos de sign up
     const data = await fetch(`${BACKEND_URL}/signUp/signIn`, {
@@ -20,12 +20,11 @@ function LogIn(props) {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: `emailFromFront=${email}&passwordFromFront=${password}`,
     })
-    var datajson = await data.json()
-    console.log(
-      'datajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajsondatajson',
-      datajson
-    )
+    var datajson = await data.json();
+
+    console.log("is result true", datajson.result);
     if (datajson.result == true) {
+      console.log("sign In data json user", datajson.user)
       // on vient "setter" notre token dans le localStorage
       AsyncStorage.setItem('token', JSON.stringify(datajson.token))
       // on initialise les reducers de Redux
@@ -33,21 +32,21 @@ function LogIn(props) {
         Nom: datajson.user.nom,
         Prénom: datajson.user.prenom,
         Avatar: datajson.user.avatar,
-        token: datajson.token,
+        Token: datajson.user.token,
         Mail: datajson.user.email,
         Téléphone: datajson.user.phone || '',
         'Date de Naissance': datajson.user.bornWhen || '',
         'Lieu de Naissance': datajson.user.bornAt || '',
-        Adresse: datajson.user.userAddress.streetName,
-        Ville: datajson.user.userAddress.town,
-        'Code Postal': datajson.user.userAddress.zipCode,
+        Adresse: datajson.user.userAddress.streetName || "",
+        Ville: datajson.user.userAddress.town || "",
+        'Code Postal': datajson.user.userAddress.zipCode || "",
       })
       props.initialiseProfessionInfo(datajson.user.jobs)
       props.initialiseApplicationsInfo(datajson.user.applications)
       props.initialiseLikes(datajson.user.likesOfferIds)
       // on cree une deuxieme fetch en GET pour chercher les offers liées a notre utilisateur
       const offersRaw = await fetch(
-        `${BACKEND_URL}/offers/listOffers?token=${datajson.token}`
+        `${BACKEND_URL}/offers/listOffers?token=${datajson.user.token}`
       )
       const offers = await offersRaw.json()
       console.log(offers)
@@ -119,7 +118,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     initialiseProfessionInfo: (professionInfo) => {
       dispatch({
-        type: 'initialiseProfesionInfo',
+        type: 'initialiseProfessionInfo',
         professionInfo: professionInfo,
       })
     },

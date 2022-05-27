@@ -39,13 +39,13 @@ function OfferCard(props) {
 
     if (like == true) {
       fetch(
-        `${BACKEND_URL}/offers/removeLikeOffer?token=${props.userInfo.token}&offerId=${props.offer._id}`
+        `${BACKEND_URL}/offers/removeLikeOffer?token=${props.userInfo.Token}&offerId=${props.offer._id}`
       )
 
       setLike(false)
     } else {
       fetch(
-        `${BACKEND_URL}/offers/likeOffer?token=${props.userInfo.token}&offerId=${props.offer._id}`
+        `${BACKEND_URL}/offers/likeOffer?token=${props.userInfo.Token}&offerId=${props.offer._id}`
       )
       setLike(true)
     }

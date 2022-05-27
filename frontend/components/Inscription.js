@@ -38,8 +38,8 @@ function Inscription(props) {
       props.initialiseUserInfo({
         Nom: datajson.saveUser.nom,
         Prénom: datajson.saveUser.prenom,
-        token: datajson.token,
-
+        Token: datajson.token,
+        Avatar: datajson.avatar,
         Mail: datajson.saveUser.email,
         Téléphone: datajson.saveUser.phone || '',
         'Date de Naissance': datajson.saveUser.bornWhen || '',
@@ -156,7 +156,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     initialiseProfessionInfo: (professionInfo) => {
       dispatch({
-        type: 'initialiseProfesionInfo',
+        type: 'initialiseProfessionInfo',
         professionInfo: professionInfo,
       })
     },

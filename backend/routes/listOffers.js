@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+var mongoose = require('mongoose');
 const offerModel = require('../models/offers')
 const userModel = require('../models/users')
 
@@ -10,8 +11,6 @@ router.get('/listOffers', async function (req, res, next) {
     token: req.query.token,
   })
 
-  console.log('user', user)
-
   // Filter of offers where the start date is after today's date
   // Filter for the offers where the town of the company posting the offer is the same as the town stored by the user in his/her personal space
   let filterByJobs = []
@@ -19,8 +18,6 @@ router.get('/listOffers', async function (req, res, next) {
     const offers = await offerModel.find({
       'company.address.town': user.userAddress.town,
     })
-
-    console.log('offers', offers)
     filterByJobs = [...offers]
     filterByJobs = filterByJobs.filter((offer) => {
       for (let job of offer.jobs) {
@@ -34,12 +31,14 @@ router.get('/listOffers', async function (req, res, next) {
           let userSkill = user.jobs
             .find((j) => j.job_title === job.job_title)
             .skills.find((s) => s.skill_title === skill.skill_title)
-          if (
-            userSkill.experience < skill.experience ||
-            userSkill.level < skill.level
-          ) {
-            return false
-          }
+          if (userSkill) {
+            if (
+              userSkill.experience < skill.experience ||
+              userSkill.level < skill.level
+            ) {
+              return false
+            }
+          } else return false
         }
       }
       return true
@@ -104,17 +103,19 @@ router.get('/blockOffer', async function (req, res, next) {
 
 router.post('/apply', async function (req, res) {
   console.log(req.body)
-  var user = await userModel.findOne(
-    { token: req.body.token },
-    {
-      $push: {
-        applications: {
-          offerId: req.body.offerId,
-        },
-      },
-    }
-  )
-  res.json({ result: true })
-})
+  var user = await userModel.findOne({token: req.body.token});
+  user.applications.push({
+    offerId: req.body.offerId
+  });
+  const userSaved = await user.save(); 
+  res.json({ applications: userSaved.applications })
+});
+
+router.get('/nextStage', async function(req, res) {
+  var user = await userModel.findOne({
+    token: req.body.token
+  });
+
+});
 
 module.exports = router

@@ -30,8 +30,9 @@ const biggestWords = objJSON => {
             textObjects.push(textObj.R[0])
         }
     }
-    const two_biggest_words = textObjects.sort((a,b) => b.TS[1] - a.TS[1]).slice(0, 2).map(obj => decodeURIComponent(obj.T));
-    return two_biggest_words[0].match(/\t/) ? [two_biggest_words[0].split("\t").map(word => word[0].toUpperCase() + word.slice(1).toLowerCase()).join(" ")] : two_biggest_words.map(word => word[0].toUpperCase() + word.slice(1).toLowerCase());
+    const biggest_words = textObjects.sort((a,b) => b.TS[1] - a.TS[1]).map(obj => decodeURIComponent(obj.T));
+    // to change
+    return [biggest_words.join("").split(" ").join("").slice(0,1)+biggest_words.join("").split(" ").join("").slice(1,5).toLowerCase(), biggest_words.join("").split(" ").join("").slice(5,6) + biggest_words.join("").split(" ").join("").slice(6,16).toLowerCase()]
 }
 
 const findName = data => {

@@ -39,7 +39,7 @@ export default function AccordionMission(props) {
             }),
             height: height.interpolate({
               inputRange: [0, 1],
-              outputRange: [85, props.items.length * 129 + 75],
+              outputRange: [85, props.items.length * (props.isAMission ? 80 : 129) + 85],
             }),
           },
         ]}
@@ -63,7 +63,7 @@ export default function AccordionMission(props) {
                   {
                     height: height.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [0, 115],
+                      outputRange: [0, props.isAMission ? 80 : 130],
                     }),
                   },
                 ]}
@@ -72,7 +72,7 @@ export default function AccordionMission(props) {
                   <View style={styles.itemFirstLineCompany}>
                     <Image
                       style={styles.logo}
-                      source={require("../../assets/facebook_icon.png")}
+                      source={{ uri: item.companyLogo }}
                     />
                     <Text style={styles.companyName}>{item.companyName}</Text>
                   </View>
@@ -84,7 +84,7 @@ export default function AccordionMission(props) {
                   </View>
                 </View>
                 {/* <Text>{item.stage}</Text> */}
-                <View style={styles.stage}>
+                <View style={[styles.stage, {display: props.isAMission ? "none" : "flex"}]}>
                   <View style={styles.overlainInfo}>
                     <View
                       style={{
@@ -95,31 +95,30 @@ export default function AccordionMission(props) {
                     >
                       <View style={styles.viewCircle}>
                         <Text style={styles.textCircle}>Envoyée</Text>
-                        <View style={styles.circle}></View>
+                        <View style={[styles.circle, {backgroundColor: item.stage > 0 ? "#4CA6A8" : "white"}]}></View>
                       </View>
                       <View style={styles.viewCircle}>
                         <Text style={styles.textCircle}>Reçue</Text>
-                        <View style={styles.circle}></View>
+                        <View style={[styles.circle, {backgroundColor: item.stage > 1 ? "#4CA6A8" : "white"}]}></View>
                       </View>
                       <View style={styles.viewCircle}>
                         <Text style={styles.textCircle}>A l'étude</Text>
-                        <View style={styles.circle}></View>
+                        <View style={[styles.circle, {backgroundColor: item.stage > 2 ? "#4CA6A8" : "white"}]}></View>
                       </View>
                       <View style={styles.viewCircle}>
                         <Text style={styles.textCircle}>Validée !</Text>
-                        <View style={styles.circle}></View>
+                        <View style={[styles.circle, {backgroundColor: item.stage > 3 ? "#4CA6A8" : "white"}]}></View>
                       </View>
                     </View>
                   </View>
-
+                  <View style={{width: "82%"}}>
                   <LinearProgress
-                    color="secondary"
+                    color="#4CA6A8"
+                    trackColor="lightblue"
                     variant="determinate"
-                    value={0.08}
-                    // value={0.35}
-                    // value={0.63}
-                    // value={0.92}
+                    value={(item.stage - 1) * 0.33}
                   ></LinearProgress>
+                  </View>
                 </View>
               </Animated.View>
             );
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 10,
     backgroundColor: "white",
-    padding: 5,
+    padding: 10,
     marginBottom: 15,
   },
   itemFirstLine: {
@@ -189,6 +188,7 @@ const styles = StyleSheet.create({
   jobTitle: {
     fontSize: 12,
     fontWeight: "bold",
+    textAlign: "center"
   },
   sentAt: {
     fontSize: 10,
@@ -205,18 +205,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  circle: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    borderColor: "#add8e6",
-    borderWidth: 2,
-  },
-  progressLine: {
-    height: 4,
-    width: "79%",
-    backgroundColor: "#000b33",
-  },
   overlainInfo: {
     flexDirection: "column",
     width: "100%",
@@ -228,18 +216,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  circleAndText: {
-    marginLeft: 17,
-    maxWidth: "20%",
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-
   circle: {
+    borderColor: "green",
+    borderWidth: 1,
     height: 10,
     width: 10,
     borderRadius: 100,
-    backgroundColor: "blue",
   },
   textCircle: {
     fontSize: 10,

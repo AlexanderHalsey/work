@@ -29,7 +29,7 @@ function MyLikes(props) {
       // console.log(isFocused);
       if (isFocused) {
         const data = await fetch(
-          `${BACKEND_URL}/offers/displayLikeOffer?token=${props.userInfo.token}`
+          `${BACKEND_URL}/offers/displayLikeOffer?token=${props.userInfo.Token}`
         )
         const body = await data.json()
         setOffersList(body.offers)

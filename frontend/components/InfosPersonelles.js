@@ -31,7 +31,7 @@ function InfosPersonelles(props) {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `adresse=${props.userInfo.Adresse}&codePostal=${props.userInfo["Code Postal"]}&dateN=${props.userInfo["Date de Naissance"]}&lieuN=${props.userInfo["Lieu de Naissance"]}&ville=${props.userInfo.Ville}&token=${props.userInfo.Token}`
     });
-    
+    props.goBack(null);
   }
 
   return (
@@ -70,7 +70,7 @@ function InfosPersonelles(props) {
         </View>
       )}
       <View style={{ alignItems: 'center', paddingBottom: 150, marginTop: 10 }}>
-        {Object.keys(props.userInfo).filter(el => el !== "Token").map((key, i) => {
+        {Object.keys(props.userInfo).filter(el => el !== "Token" && el !== "Avatar").map((key, i) => {
           return (
             <Input
               key={i}

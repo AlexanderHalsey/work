@@ -79,6 +79,7 @@ router.post('/inscription', async function (req, res, next) {
       prenom: req.body.prenomFromFront,
       email: req.body.emailFromFront,
       phone: req.body.telFromFront,
+      avatar: "https://res.cloudinary.com/matthieudev/image/upload/v1653480800/generic_avatar_mnfcbx.png",
       password: hash,
       token: uid2(32),
       userAddress: {
@@ -117,7 +118,7 @@ router.post('/sendCV', async function (req, res) {
 
 router.get('/existingToken', async function (req, res) {
   console.log('req.query.token', req.query.token)
-
+  console.log("hello");
   const user = await userModel.findOne({ token: req.query.token })
   console.log('user', user)
   res.json({ user })

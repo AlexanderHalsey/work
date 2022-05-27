@@ -21,10 +21,8 @@ function Dashboard(props) {
   const [screenDisplay, setScreenDisplay] = useState(null)
   const [jobSkillsIncomplete, setJobSkillsIncomplete] = useState(false)
   const [profileComplete, setProfileComplete] = useState(false)
-  const [likedJobsLength, setLikedJobsLength] = useState(0)
-  const [jobOffersLength, setJobOffersLength] = useState(0)
   const isFocused = useIsFocused()
-  console.log('avatar dans dashboard:', props.userInfo['Avatar'])
+
   useEffect(() => {
     if (!isFocused) {
       setScreenDisplay(null)
@@ -33,7 +31,7 @@ function Dashboard(props) {
 
   useEffect(() => {
     let p = true
-    for (let key of Object.keys(props.userInfo)) {
+    for (let key of Object.keys(props.userInfo).filter(el => el !== "Avatar")) {
       if (!props.userInfo[key]) {
         p = false
       }
@@ -43,36 +41,36 @@ function Dashboard(props) {
 
   useEffect(() => {
     let skillsComplete = true
+    if (props.professions.length === 0) skillsComplete = false
     for (let job of props.professions) {
       for (let skill of job.skills) {
-        if (skill.experience === 0 || skill.level === 0) skillsComplete = false
+        if (skill.experience === 0 || skill.level === 0) {
+          skillsComplete = false
+        }
       }
     }
-    setJobSkillsIncomplete(skillsComplete)
+    setJobSkillsIncomplete(!skillsComplete)
   }, [props.professions])
 
-  useEffect(() => {
-    console.log('jobOffers ds store update:', props.jobOffers)
-    setJobOffersLength(props.jobOffers.length)
-    setLikedJobsLength(props.likes.length)
-  }, [isFocused, props.jobOffers])
 
   if (screenDisplay == 'MyLikes') return <MyLikes />
   else if (screenDisplay == 'MyDocuments') return <MyDocuments />
   else if (screenDisplay == 'PersonalInfo')
-    return <InfosPersonelles navigation={props.navigation} />
-  else if (screenDisplay == 'MyMissions') return <Missions />
+    return <InfosPersonelles goBack={setScreenDisplay} />
+  else if (screenDisplay == 'MyMissions') return <Missions change={setScreenDisplay} />
   else {
     return (
       <View style={styles.container}>
         <View style={styles.me}>
-          <Text style={styles.itemText}>
+          <Text style={styles.bonjourText}>
             Bonjour {props.userInfo['Prénom']}
           </Text>
-          <Image
-            style={styles.image}
-            source={{ uri: props.userInfo['Avatar'] }}
-          />
+          <View style={styles.avatarShadowContainer}>
+            <Image
+              style={styles.image}
+              source={{ uri: props.userInfo['Avatar'] }}
+            />
+          </View>
         </View>
 
         <View style={styles.rowContainer}>
@@ -190,8 +188,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 150,
-    marginTop: 10,
-    marginBottom: 60,
+    borderWidth: 2,
+    borderColor: '#00F0FF',
   },
   rowContainer: {
     flexDirection: 'row',
@@ -244,9 +242,24 @@ const styles = StyleSheet.create({
     elevation: 2,
     borderRadius: 20,
   },
+  avatarShadowContainer: {
+    shadowColor: '#00F0FF',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 5,
+    borderRadius: 150,
+    marginTop: 10,
+    marginBottom: 60,
+  },
   itemText: {
+    fontSize: 14,
     color: '#B9FFFF',
   },
+  bonjourText: {
+    fontSize: 18,
+    color: '#B9FFFF',
+  }
 })
 
 const mapStateToProps = (state) => {

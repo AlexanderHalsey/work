@@ -5,7 +5,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Deconnect(props) {
   useEffect(() => {
-    AsyncStorage.clear()
+    const clearStorage = async () => {
+      AsyncStorage.removeItem("token")
+    }
+    clearStorage();
     props.deleteUserInfo()
     props.navigation.navigate('Welcome1')
   })

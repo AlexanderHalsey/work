@@ -11,9 +11,11 @@ import {
   Text,
   View,
   Image,
+  Modal,
   Button,
   TouchableOpacity,
   Pressable,
+  Vibration
 } from 'react-native'
 import { BACKEND_URL } from '@env'
 
@@ -23,26 +25,22 @@ import { Feather } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { AntDesign } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'; 
+
 import { Center } from 'native-base'
 // import SearchableDropdown component
 import SearchableDropdown from 'react-native-searchable-dropdown'
 
 import { connect } from 'react-redux'
 
-// Item array for the dropdown
-const testing = [
-  // name key is must. It is to show the text in front
-  { id: 1, name: 'Android Developer' },
-  { id: 2, name: 'IT Technician' },
-  { id: 3, name: 'Web Deveoper' },
-]
 
 const Skills = (props) => {
-
+  const [notification, setNotification] = useState(false);
   const [infoDisplay, setInfoDisplay] = useState(true);
   const [serverData, setServerData] = useState([]);
   const [dropDownList, setDropDownList] = useState([]);
   const [selectedItems, setSelectedItems] = useState(props.userSkills);
+  const [hiddenJobs, setHiddenJobs] = useState(props.userSkills.map(job => false));
   // const [jData, setJobData] = useState([]);
 
   useEffect(() => {
@@ -58,7 +56,20 @@ const Skills = (props) => {
   const addbuttonHandler = async (item) => {
   
     const newObj = serverData.find((el) => el['job_title'] === item['name'])
-    setSelectedItems([newObj, ...selectedItems])
+    const newJobSkills = {
+      job_title: newObj.job_title, 
+      skills: newObj.skills.map(skill => {
+        return {
+          skill_title: skill,
+          experience: 0,
+          level: 0
+        }
+      })
+    };
+    setSelectedItems([newJobSkills, ...selectedItems])
+    // add new skill to redux
+    props.addNewSkill(newJobSkills)
+
     
     // envoyer au backend un nouveau skill pour enregistrer
     await fetch(`${BACKEND_URL}/skills/newSkill`, {
@@ -66,13 +77,53 @@ const Skills = (props) => {
       headers: { "Content-Type": "application/x-www-form-urlencoded"},
       body: `jobTitleFromFront=${newObj.job_title}&skillsFromFront=${newObj.skills}&userToken=${props.userInfo.Token}`
     });
-    // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
-
-    // const newitemtosendtoback = dataBackend.find(el => el.job_title === item.name)
   }
+
+  const hideJobs = (bool, key) => {
+    let hiddenJobsCopy = [...hiddenJobs];
+    if (bool) {
+      setHiddenJobs(hiddenJobsCopy.map((el,i) => {
+        if (key === i) return false;
+        else return true;
+      }))
+    } else {
+      setHiddenJobs(hiddenJobsCopy.map(el => false));
+    }
+  }
+
+  const addNotif = () => {
+    setNotification(true);
+    Vibration.vibrate(800);
+  }
+
+  const notificationModal = <Modal
+    animationType="slide"
+    transparent={true}
+    visible={notification}
+    onRequestClose={() => {
+      setNotification(!notification);
+    }}
+  >
+    <View style={styles.centeredView}>
+      <View style={styles.modalView}>
+        <Pressable onPress={() => setNotification(!notification)}>
+          <View
+            style={styles.exitInfoNotif}
+            >
+            <Feather name='x-circle' size={18} color='gray' />
+          </View>
+          <View style={{flexDirection: "row"}}>
+            <Ionicons name="notifications-sharp" size={30} color="#4CA6A8" />
+            <Text style={styles.modalText}>Vous avez des offres qui corresponds a votre profil ! Allez les verifier dans ListOffers</Text>
+          </View>
+        </Pressable>
+      </View>
+    </View>
+  </Modal>
 
   return (
     <SafeAreaView style={styles.container}>
+      {notificationModal}
       <View
         style={{
           justifyContent: 'center',
@@ -112,7 +163,7 @@ const Skills = (props) => {
 
       <View
         style={{
-          marginTop: 50,
+          marginTop: 20,
         }}
       >
         <Text style={styles.titleText}>Quel métier recherchez-vous ?</Text>
@@ -156,7 +207,7 @@ const Skills = (props) => {
         // Mapping of item arrayskills.
         defaultIndex={2}
         // Default selected item index
-        placeholder='Enter métier'
+        placeholder='Cherchez un métier ...'
         // Place holder for the search input
         resetValue={false}
         // Reset textInput Value with true and false state
@@ -165,7 +216,17 @@ const Skills = (props) => {
       />
       <View style={styles.jobResults}>
         {selectedItems.map((item, key) => {
-          return <Job key={key} title={item.job_title} skills={item.skills} />
+          return (
+            <Job 
+              key={key}
+              k={key} 
+              title={item.job_title} 
+              skills={item.skills} 
+              hidden={hiddenJobs[key]}
+              callback={hideJobs}
+              createNotification={addNotif}
+            />
+          );
         })}
       </View>
     </SafeAreaView>
@@ -226,6 +287,11 @@ const styles = StyleSheet.create({
     top: 5,
     right: 8,
   },
+  exitInfoNotif: {
+    position: 'absolute',
+    top: 5,
+    right: -5
+  },
   infotext1: {
     textAlign: 'center',
     fontSize: 10,
@@ -238,9 +304,39 @@ const styles = StyleSheet.create({
   },
   jobResults: {
     flex: 1,
-    width: "95%",
+    width: "90%",
     marginBottom: 80,
     justifyContent: 'flex-end',
+  },
+  centeredView: {
+    flex: 1,
+    alignItems: "center",
+    marginTop: 5
+  },
+  modalView: {
+    backgroundColor: '#B9FFFF',
+    borderRadius: 20,
+    padding: 10,
+    width: "95%",
+    alignContent: "center",
+    borderWidth: 2,
+    borderColor: "#FFFDC7",
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalText: {
+    flex: 1,
+    flexWrap: "wrap",
+    textAlign: 'center',
+    fontSize: 12,
+    paddingTop: 2,
+    color: "#000B33"
   },
 })
 
@@ -255,11 +351,8 @@ const mapDispatchToProps = dispatch => {
   return {
     addNewSkill: newSkill => dispatch({
       type: "addNewSkill", newSkill: newSkill
-    }),
-    updateSkill: skill => dispatch({
-      type: "updateSkill", skill: skill
     })
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Skills);
+export default connect(mapStateToProps, mapDispatchToProps)(Skills)

@@ -32,17 +32,34 @@ router.post("/newSkill", async function(req, res) {
   }
 })
 
-router.post("/updateSkill", async function(req, res) {
+router.post("/updateSkills", async function(req, res) {
   const user = await userModel.findOne({ token: req.body.userToken });
   if (!user) {
     res.json({ result: false, error: "Utilisateur pas trouvé." })
   } else {
-    let skillToChange = user.jobs.find(job => job.job_title === req.body.jobTitleFromFront).skills.find(skill => skill.skill_title === req.body.skillTitleFromFront);
-    skillToChange.experience = req.body.skillExperienceFromFront;
-    skillToChange.level = req.body.skillLevelFromFront
+    let skillObjFromFront = JSON.parse(req.body.jobSkills);
+    let jobs = user.jobs;
+    let jobFound = jobs.find(job => job.job_title === skillObjFromFront.job_title);
+    jobFound = {
+      job_title: skillObjFromFront.job_title,
+      skills: skillObjFromFront.skills.map(skillObj => {
+        return {
+          skill_title: skillObj.skill_title,
+          experience: skillObj.experience,
+          level: skillObj.level
+        }
+      })
+    };
+    jobs = jobs.map(j => {
+      if (j.job_title === skillObjFromFront.job_title) {
+        return jobFound;
+      } else return j;
+    });
+    user.jobs = jobs;
+
     var userSaved = await user.save();
 
-    res.json({ result: userSaved });
+    res.redirect(`/offers/listOffers?token=${req.body.userToken}`);
   }
 });
 
