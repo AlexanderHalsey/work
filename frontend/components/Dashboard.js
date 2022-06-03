@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons'
 
 import InfosPersonelles from './InfosPersonelles'
 import MyLikes from './MyLikes'
-import MyDocuments from './MyDocuments'
+import MyDocuments from './Documents/MyDocuments'
 import Missions from './Missions/Missions'
 import Skills from './Skills/Skills'
 

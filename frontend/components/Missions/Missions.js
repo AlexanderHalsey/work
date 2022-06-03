@@ -94,7 +94,7 @@ function Missions(props) {
   }, [props.applications])
 
   const proceedApplication = async () => {
-    const applicationRaw = await fetch(`${BACKEND_URL}/userInfo/proceedApplication`, {
+    const applicationRaw = await fetch(`${BACKEND_URL}/user/proceedApplication`, {
       method: "POST",
       headers: { "Content-Type" : "application/x-www-form-urlencoded" },
       body: `token=${props.userInfo.Token}`

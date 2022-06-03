@@ -9,11 +9,6 @@ var uid2 = require('uid2')
 const PDFParser = require('pdf2json')
 const extraireInfos = require('../ocr/extraireInfos')
 
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.send('respond with a resource')
-})
-
 router.post('/signIn', async function (req, res, next) {
   var error = []
   var result = false

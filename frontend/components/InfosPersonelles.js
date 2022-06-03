@@ -26,7 +26,7 @@ function InfosPersonelles(props) {
   let deviceWidth = Dimensions.get('window').width
 
   const confirm = async () => {
-    await fetch(`${BACKEND_URL}/userInfo/update`, {
+    await fetch(`${BACKEND_URL}/user/update`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `adresse=${props.userInfo.Adresse}&codePostal=${props.userInfo["Code Postal"]}&dateN=${props.userInfo["Date de Naissance"]}&lieuN=${props.userInfo["Lieu de Naissance"]}&ville=${props.userInfo.Ville}&token=${props.userInfo.Token}`

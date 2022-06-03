@@ -51,7 +51,7 @@ function ScreenOffer(props) {
   }, [])
 
   const apply = async () => {
-    const data = await fetch(`${BACKEND_URL}/offers/apply`, {
+    const data = await fetch(`${BACKEND_URL}/user/apply`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `token=${props.userInfo.Token}&offerId=${props.route.params.offerId}`

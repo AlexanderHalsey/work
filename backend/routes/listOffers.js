@@ -101,21 +101,4 @@ router.get('/blockOffer', async function (req, res, next) {
   res.json({ user })
 })
 
-router.post('/apply', async function (req, res) {
-  console.log(req.body)
-  var user = await userModel.findOne({token: req.body.token});
-  user.applications.push({
-    offerId: req.body.offerId
-  });
-  const userSaved = await user.save(); 
-  res.json({ applications: userSaved.applications })
-});
-
-router.get('/nextStage', async function(req, res) {
-  var user = await userModel.findOne({
-    token: req.body.token
-  });
-
-});
-
 module.exports = router

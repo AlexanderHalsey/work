@@ -18,6 +18,16 @@ router.post("/update", async function(req, res) {
     res.json({ result: true });
 });
 
+router.post('/apply', async function (req, res) {
+    console.log(req.body)
+    var user = await userModel.findOne({token: req.body.token});
+    user.applications.push({
+      offerId: req.body.offerId
+    });
+    const userSaved = await user.save(); 
+    res.json({ applications: userSaved.applications })
+});
+
 router.post("/proceedApplication", async function(req, res) {
     const user = await userModel.findOne({ token: req.body.token });
     if (user.applications[0].employerStudying) {

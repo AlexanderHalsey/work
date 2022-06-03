@@ -13,7 +13,7 @@ import { AntDesign } from '@expo/vector-icons';
 import Dashboard from "./components/Dashboard";
 import Skills from "./components/Skills/Skills";
 import Deconnect from "./components/Deconnect";
-import ListOffers from "./components/ListOffers";
+import ListOffers from "./components/Offers/ListOffers";
 
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
@@ -25,13 +25,14 @@ import jobOffers from "./reducers/jobOffers";
 import applications from "./reducers/applications";
 import upcomingMissions from "./reducers/upcomingMissions";
 
-import Welcome1 from "./components/Welcome1";
-import Welcome2 from "./components/Welcome2";
-import LogIn from "./components/LogIn";
-import Inscription from "./components/Inscription";
-import CvPopOver from "./components/CvPopOver";
-import ScreenOffer from "./components/ScreenOffer";
-import ContractsDetails from "./components/ContractsDetails";
+import Welcome1 from "./components/SignUp/Welcome1";
+import Welcome2 from "./components/SignUp/Welcome2";
+import LogIn from "./components/SignUp/LogIn";
+import Inscription from "./components/SignUp/Inscription";
+import CvPopOver from "./components/SignUp/CvPopOver";
+
+import ScreenOffer from "./components/Offers/ScreenOffer";
+import ContractsDetails from "./components/Documents/ContractsDetails";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

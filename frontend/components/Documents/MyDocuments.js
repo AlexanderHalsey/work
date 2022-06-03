@@ -4,9 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import IconFontAwesome from "react-native-vector-icons/FontAwesome";
 import IconFontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MyContracts from "./MyContracts";
-import MyPayslips from "./MyPayslips";
-import MyOtherDocuments from "./MyOtherDocuments";
-import MyWorkCertificates from "./MyWorkCertificates";
+
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
